@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "932781534312",
+    "project_id": "travel-assistant-project",
+    "storage_bucket": "travel-assistant-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932781534312:android:5283e2d8e99906ea815fdd",
+        "android_client_info": {
+          "package_name": "edu.self.travel_assistant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSfvZDM2MY8EfaQFmFeQ7lq4D_0gtyF5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

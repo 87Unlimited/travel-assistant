@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
+import 'package:travel_assistant/features/auth/presentation/widgets/snackbar.dart';
 
 import '../../domain/entities/user_model.dart';
 
@@ -13,15 +14,9 @@ class UserRepository extends GetxController {
 
   final _db = FirebaseFirestore.instance;
 
-  createUser(UserModel user) async {
+  Future createUser(UserModel user) async {
     await _db.collection("Users").add(user.toJson()).whenComplete(() {
-      Get.snackbar(
-        "Success",
-        "Your account has been created.",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.blue.withOpacity(0.3),
-        colorText: Colors.white,
-      );
+      return CustomSnackbar();
     }).catchError((error, stackTrace){
       Get.snackbar("Error", "Something went wrong. Try again",
         snackPosition: SnackPosition.BOTTOM,

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
@@ -11,10 +11,9 @@ import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
 import 'package:travel_assistant/features/auth/presentation/views/login/widgets/login_header.dart';
 import 'package:travel_assistant/features/auth/presentation/views/register/register_view.dart';
 import 'package:travel_assistant/features/auth/presentation/widgets/snackbar.dart';
+import 'package:travel_assistant/navigation_menu.dart';
 
 import '../../../../../core/util/constants/colors.dart';
-import '../../../../../core/util/constants/image_strings.dart';
-import '../../widgets/custom_form_field.dart';
 import '../../widgets/social_button.dart';
 
 class LoginView extends StatefulWidget {
@@ -126,9 +125,12 @@ class _LoginViewState extends State<LoginView> {
                 // Login Button
                 Center(
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width - 70,
+                    width: CustomSizes.buttonWidth,
+                    height: CustomSizes.buttonHeight,
                     child: ElevatedButton(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        Get.to(const NavigationMenu());
+                      },
                       child: const Center(
                         child: Text('Login'),
                       ),
@@ -145,6 +147,27 @@ class _LoginViewState extends State<LoginView> {
                     child: Text(
                       'Not registered yet? Register here!',
                       style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Not registered yet? ",
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        TextSpan(
+                          text: "Register here! ",
+                          style: Theme.of(context).textTheme.bodyMedium!.apply(
+                            color: CustomColors.secondary,
+                          ),
+                          recognizer: TapGestureRecognizer()..onTap = () {
+                            Get.to(const RegisterView());
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),

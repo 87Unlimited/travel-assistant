@@ -5,6 +5,7 @@ import 'package:travel_assistant/config/theme/custom_theme/outlined_button_theme
 import 'package:travel_assistant/config/theme/custom_theme/text_field_theme.dart';
 import 'package:travel_assistant/config/theme/custom_theme/text_theme.dart';
 
+import 'custom_theme/appbar_theme.dart';
 import 'custom_theme/elevated_button_theme.dart';
 
 class AppTheme {
@@ -12,6 +13,7 @@ class AppTheme {
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.light,
+    appBarTheme: CustomAppBarTheme.lightAppBarTheme,
     textTheme: CustomTextTheme.lightTextTheme,
     scaffoldBackgroundColor: Colors.white,
     elevatedButtonTheme: CustomElevatedButtonTheme.lightElevatedButtonTheme,
@@ -29,16 +31,16 @@ class AppTheme {
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.dark,
+    appBarTheme: CustomAppBarTheme.darkAppBarTheme,
     textTheme: CustomTextTheme.darkTextTheme,
     scaffoldBackgroundColor: Colors.blue[1000],
     elevatedButtonTheme: CustomElevatedButtonTheme.darkElevatedButtonTheme,
     outlinedButtonTheme: CustomOutlinedButtonTheme.darkOutlinedButtonTheme,
     checkboxTheme: CustomCheckboxTheme.darkCheckboxTheme,
     inputDecorationTheme: CustomTextFormFieldTheme.darkCheckboxTheme,
-    // colorScheme: ColorScheme.dark(
-    //   background: Color(0xff002147),
-    //   primary: Color(0xff002147),
-    //   secondary: Color(0xff1bc9f4),
-    // ),
+    colorScheme: const ColorScheme.dark(
+      primary: Color(0xff002147),
+      secondary: Color(0xff1bc9f4),
+    ),
   );
 }

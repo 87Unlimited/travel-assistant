@@ -63,6 +63,7 @@ dependencies:
   flutter_bloc: ^8.1.4
   google_fonts: ^6.1.0
   flutter_native_splash: ^2.3.7
+  iconsax: ^0.0.8
 
 dev_dependencies:
   flutter_test:

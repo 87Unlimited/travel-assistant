@@ -25,7 +25,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> {
           destinations: const <Widget>[
             NavigationDestination(
               selectedIcon: Icon(Icons.home),
-              icon: Icon(Icons.home_outlined),
+              icon: Icon(Icons.home),
               label: 'Home',
             ),
             NavigationDestination(

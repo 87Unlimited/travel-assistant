@@ -4,6 +4,7 @@ import 'package:travel_assistant/config/theme/custom_theme/checkbox_theme.dart';
 import 'package:travel_assistant/config/theme/custom_theme/outlined_button_theme.dart';
 import 'package:travel_assistant/config/theme/custom_theme/text_field_theme.dart';
 import 'package:travel_assistant/config/theme/custom_theme/text_theme.dart';
+import 'package:travel_assistant/core/util/constants/colors.dart';
 
 import 'custom_theme/appbar_theme.dart';
 import 'custom_theme/elevated_button_theme.dart';
@@ -15,7 +16,7 @@ class AppTheme {
     brightness: Brightness.light,
     appBarTheme: CustomAppBarTheme.lightAppBarTheme,
     textTheme: CustomTextTheme.lightTextTheme,
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: CustomColors.whiteSmoke,
     elevatedButtonTheme: CustomElevatedButtonTheme.lightElevatedButtonTheme,
     outlinedButtonTheme: CustomOutlinedButtonTheme.lightOutlinedButtonTheme,
     checkboxTheme: CustomCheckboxTheme.lightCheckboxTheme,

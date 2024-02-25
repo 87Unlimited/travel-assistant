@@ -4,6 +4,7 @@ import 'package:travel_assistant/features/auth/presentation/views/login/login_vi
 
 import 'config/theme/theme.dart';
 import 'features/auth/presentation/views/register/register_view.dart';
+import 'navigation_menu.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -14,7 +15,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      home: const RegisterView(),
+      home: const NavigationMenu(),
     );
   }
 }

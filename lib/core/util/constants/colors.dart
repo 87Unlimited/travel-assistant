@@ -26,4 +26,9 @@ class CustomColors{
   // Background
   static const Color lightBackground = Color(0xfff6f6f6);
   static const Color darkBackground = Color(0xff272727);
+
+  static const Color grey = Color(0xff999999);
+  static const Color lightGrey = Color(0xffDDDDDD);
+  static const Color darkGrey = Color(0xff222222);
+  static const Color whiteSmoke = Color(0xffF5F5F5);
 }

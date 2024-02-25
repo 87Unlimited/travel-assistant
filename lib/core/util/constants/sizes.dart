@@ -28,4 +28,9 @@ class CustomSizes {
   static const double defaultSpace = 24.0;
   static const double spaceBtwItems = 16.0;
   static const double spaceBtwSections = 32.0;
+
+  // Card sizes
+  static const double cardRadiusLg = 16.0;
+  static const double cardRadiusMd = 16.0;
+  static const double cardRadiusSm = 16.0;
 }

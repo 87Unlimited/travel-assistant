@@ -6,6 +6,8 @@ import 'package:travel_assistant/core/util/constants/colors.dart';
 import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/home_view.dart';
 
+import 'features/auth/presentation/views/profile/profile_view.dart';
+
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({super.key});
 
@@ -29,7 +31,7 @@ class NavigationMenu extends StatelessWidget {
             NavigationDestination(
               icon: Icon(Iconsax.home),
               selectedIcon: Icon(
-                Iconsax.home1,
+                Iconsax.home,
                 color: CustomColors.secondary,
               ),
               label: "Home",
@@ -73,7 +75,7 @@ class NavigationController extends GetxController{
     const HomeView(),
     Container(color: Colors.blue),
     Container(color: Colors.yellow),
-    Container(color: Colors.red),
+    const ProfileView(),
     Container(color: Colors.orange),
   ];
 }

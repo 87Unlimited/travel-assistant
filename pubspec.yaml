@@ -64,6 +64,7 @@ dependencies:
   google_fonts: ^6.1.0
   flutter_native_splash: ^2.3.7
   iconsax: ^0.0.8
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
@@ -82,10 +83,8 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - assets/logos/logo.png
-    - assets/logos/dark_logo.png
-    - assets/logos/facebook.svg
-    - assets/logos/google.svg
+    - assets/logos/
+    - assets/images/location/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

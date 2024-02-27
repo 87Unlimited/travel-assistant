@@ -33,4 +33,7 @@ class CustomSizes {
   static const double cardRadiusLg = 16.0;
   static const double cardRadiusMd = 16.0;
   static const double cardRadiusSm = 16.0;
+
+  // Text with Icon
+  static const double textWithIconWidth = 5.0;
 }

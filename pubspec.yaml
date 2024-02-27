@@ -65,6 +65,7 @@ dependencies:
   flutter_native_splash: ^2.3.7
   iconsax: ^0.0.8
   carousel_slider: ^4.2.1
+  calendar_date_picker2: ^0.5.3
 
 dev_dependencies:
   flutter_test:

@@ -9,11 +9,11 @@ class HomeAppBar extends StatelessWidget {
   const HomeAppBar({
     super.key,
     required this.dark,
-    required this.userName,
+    this.userName,
   });
 
   final bool dark;
-  final String userName;
+  final String? userName;
 
   @override
   Widget build(BuildContext context) {

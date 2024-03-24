@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:travel_assistant/core/util/constants/colors.dart';
 import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:travel_assistant/features/auth/presentation/views/create_trip/widgets/create_trip_form.dart';
 
 import '../../../../../core/util/constants/sizes.dart';
 import '../../../../../core/util/constants/spacing_styles.dart';
@@ -11,6 +12,8 @@ import '../../../../../navigation_menu.dart';
 import '../../widgets/appbar.dart';
 import '../../widgets/section_heading.dart';
 import '../home/widgets/home_appbar.dart';
+import 'calendar_config.dart';
+import 'create_trip_detail/create_trip_detail.dart';
 
 class CreateTripView extends StatefulWidget {
   const CreateTripView({super.key});
@@ -25,33 +28,7 @@ class _CreateTripViewState extends State<CreateTripView> {
 
   final today = DateUtils.dateOnly(DateTime.now());
   List<DateTime?> _rangeDatePickerValueWithDefaultValue = [];
-
-  final _config = CalendarDatePicker2Config(
-    calendarType: CalendarDatePicker2Type.range,
-    selectedDayHighlightColor: CustomColors.secondary,
-    weekdayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    weekdayLabelTextStyle: const TextStyle(
-      color: Colors.black87,
-      fontWeight: FontWeight.bold,
-    ),
-    firstDayOfWeek: 1,
-    controlsHeight: 50,
-    controlsTextStyle: const TextStyle(
-      color: Colors.black,
-      fontSize: 15,
-      fontWeight: FontWeight.bold,
-    ),
-    dayTextStyle: const TextStyle(
-      color: CustomColors.primary,
-      fontWeight: FontWeight.bold,
-    ),
-    disabledDayTextStyle: const TextStyle(
-      color: Colors.grey,
-    ),
-    selectableDayPredicate: (day) => !day
-        .difference(DateTime.now().subtract(const Duration(days: 3)))
-        .isNegative,
-  );
+  final _config = CalendarConfig.getConfig();
 
   @override
   void initState() {
@@ -73,6 +50,7 @@ class _CreateTripViewState extends State<CreateTripView> {
   Widget build(BuildContext context) {
     final controller = Get.find<NavigationController>();
     final dark = HelperFunctions.isDarkMode(context);
+    final config = CalendarConfig.getConfig();
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -87,32 +65,27 @@ class _CreateTripViewState extends State<CreateTripView> {
           padding: SpacingStyle.paddingWithAppBarHeight,
           child: Column(
             children: [
+              _buildDefaultRangeDatePickerWithValue(config),
+              const SizedBox(height: CustomSizes.spaceBtwSections),
+
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('Selection(s):  '),
+                  const SizedBox(width: 10),
+                  Text(
+                    _getValueText(
+                      config.calendarType,
+                      _rangeDatePickerValueWithDefaultValue,
+                    ),
+                  ),
+                ],
+              ),
+              // Create Trip Form
               Form(
-                child: Column(
-                  children: [
-                    _buildDefaultRangeDatePickerWithValue(),
-
-                    const SectionHeading(title: "Trip Name", showActionButton: false,),
-                    const SizedBox(height: CustomSizes.spaceBtwItems),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Iconsax.location),
-                        labelText: "Trip Name",
-                      ),
-                      controller: _tripName,
-                    ),
-                    const SizedBox(height: CustomSizes.spaceBtwItems),
-
-                    const SectionHeading(title: "Trip Name", showActionButton: false,),
-                    const SizedBox(height: CustomSizes.spaceBtwItems),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Iconsax.location),
-                        labelText: "Location",
-                      ),
-                      controller: _tripName,
-                    ),
-                  ],
+                child: CreateTripForm(
+                  tripNameController: _tripName,
+                  locationController: _location,
                 ),
               ),
               const SizedBox(height: CustomSizes.spaceBtwSections),
@@ -122,7 +95,9 @@ class _CreateTripViewState extends State<CreateTripView> {
                   width: CustomSizes.buttonWidth,
                   height: CustomSizes.buttonHeight,
                   child: ElevatedButton(
-                    onPressed: () async {},
+                    onPressed: () async {
+                      Get.to(const CreateTripDetailView(), arguments: _rangeDatePickerValueWithDefaultValue);
+                    },
                     child: const Center(
                       child: Text('Create Trip'),
                     ),
@@ -167,7 +142,7 @@ class _CreateTripViewState extends State<CreateTripView> {
     return valueText;
   }
 
-  Widget _buildDefaultRangeDatePickerWithValue() {
+  Widget _buildDefaultRangeDatePickerWithValue(CalendarDatePicker2Config config) {
     final config = _config;
 
     return Column(
@@ -179,21 +154,6 @@ class _CreateTripViewState extends State<CreateTripView> {
           onValueChanged: (dates) =>
               setState(() => _rangeDatePickerValueWithDefaultValue = dates),
         ),
-        const SizedBox(height: 10),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('Selection(s):  '),
-            const SizedBox(width: 10),
-            Text(
-              _getValueText(
-                config.calendarType,
-                _rangeDatePickerValueWithDefaultValue,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 25),
       ],
     );
   }

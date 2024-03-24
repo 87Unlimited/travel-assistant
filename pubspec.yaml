@@ -41,7 +41,7 @@ dependencies:
   flutter_local_notifications: ^16.3.2
   flutter_datetime_picker_plus: ^2.1.0
   timezone: ^0.9.2
-  intl: ^0.18.1
+  intl: ^0.19.0
   flutter_svg: ^2.0.9
 
   # style
@@ -66,6 +66,9 @@ dependencies:
   iconsax: ^0.0.8
   carousel_slider: ^4.2.1
   calendar_date_picker2: ^0.5.3
+  easy_date_timeline: ^1.0.3
+  simple_horizontal_calendar: ^0.0.2
+  unicons: ^2.1.1
 
 dev_dependencies:
   flutter_test:

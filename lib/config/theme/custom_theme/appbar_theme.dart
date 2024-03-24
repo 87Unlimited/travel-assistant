@@ -8,7 +8,7 @@ class CustomAppBarTheme {
   // Light Appbar theme
   static const lightAppBarTheme = AppBarTheme(
       elevation: 0,
-      centerTitle: false,
+      centerTitle: true,
       scrolledUnderElevation: 0,
       backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
@@ -21,7 +21,7 @@ class CustomAppBarTheme {
   // Dark Appbar theme
   static const darkAppBarTheme = AppBarTheme(
     elevation: 0,
-    centerTitle: false,
+    centerTitle: true,
     scrolledUnderElevation: 0,
     backgroundColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,

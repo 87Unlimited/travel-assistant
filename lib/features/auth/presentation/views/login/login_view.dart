@@ -54,7 +54,7 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-            padding: SpacingStyle.paddingWithAppBarHeight,
+            padding: SpacingStyle.loginPadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -176,16 +176,16 @@ class _LoginViewState extends State<LoginView> {
                 // Sign in with google of facebook
                 SocialButton(dark: dark),
 
-                Center(
-                  child: SizedBox(
-                    width: CustomSizes.buttonWidth,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          CustomSnackbar.show(context, "Test Snack bar", false);
-                        },
-                        child: const Text('Test button')),
-                  ),
-                ),
+                // Center(
+                //   child: SizedBox(
+                //     width: CustomSizes.buttonWidth,
+                //     child: ElevatedButton(
+                //         onPressed: () {
+                //           CustomSnackbar.show(context, "Test Snack bar", false);
+                //         },
+                //         child: const Text('Test button')),
+                //   ),
+                // ),
               ],
             )),
       ),

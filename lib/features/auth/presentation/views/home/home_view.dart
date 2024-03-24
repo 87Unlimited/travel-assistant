@@ -12,9 +12,11 @@ import 'package:travel_assistant/features/auth/presentation/widgets/trip/trip_ca
 
 import '../../../../../core/util/constants/shadows.dart';
 import '../../../../../core/util/constants/sizes.dart';
+import '../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../core/util/helpers/helper_functions.dart';
 import '../../widgets/custom_shapes/search_container.dart';
 import '../../widgets/images/rounded_image.dart';
+import '../../widgets/notification_icon.dart';
 import '../../widgets/section_heading.dart';
 import '../../widgets/trip/trip_cards/trip_card_vertical.dart';
 
@@ -30,47 +32,60 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     final dark = HelperFunctions.isDarkMode(context);
     const bool isTripExist = false;
+    const String userName = "Chun";
 
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Column(
-              children: [
-                // Appbar
-                HomeAppBar(dark: dark, userName: "Chun",),
-                const SizedBox(height: CustomSizes.spaceBtwSections,),
-
-                // Search Bar
-                const SearchContainer(
-                  text: 'Search Destination',
-                  showBackground: false,
-                  showBorder: true,
-                ),
-                const SizedBox(height: CustomSizes.spaceBtwSections,),
-
-                // Category
-                const Padding(
-                  padding: EdgeInsets.only(left: CustomSizes.defaultSpace),
-                  child: Column(
+        child: Padding(
+          padding: SpacingStyle.paddingWithAppBarHeight,
+          child: Column(
+            children: [
+              ListTile(
+                title: Text.rich(
+                  TextSpan(
                     children: [
-                      // Heading
-                      SectionHeading(title: "Category", showActionButton: false,),
-                      SizedBox(height: CustomSizes.spaceBtwItems,),
-
-                      // Categories
-                      HomeCategories(),
+                      TextSpan(
+                        text: "Hi, ",
+                        style: Theme.of(context).textTheme.headlineLarge!.apply(color: dark ? Colors.white : CustomColors.primary),
+                      ),
+                      TextSpan(
+                        text: userName,
+                        style: Theme.of(context).textTheme.headlineLarge!.apply(color: CustomColors.secondary),
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(height: CustomSizes.spaceBtwSections / 2),
-              ],
-            ),
+                subtitle: Text(
+                  "Let's Travel Around The World",
+                  style: Theme.of(context).textTheme.labelMedium!.apply(color: dark ? Colors.white : CustomColors.primary),
+                ),
+                trailing: NotificationStack(onPressed: (){}, dark: dark,),
+              ),
+              const SizedBox(height: CustomSizes.spaceBtwSections,),
 
-            // Body
-            Padding(
-              padding: const EdgeInsets.all(CustomSizes.defaultSpace),
-              child: Column(
+              // Search Bar
+              const SearchContainer(
+                text: 'Search Destination',
+                showBackground: false,
+                showBorder: true,
+              ),
+              const SizedBox(height: CustomSizes.spaceBtwSections,),
+
+              // Category
+              const Column(
+                children: [
+                  // Heading
+                  SectionHeading(title: "Category", showActionButton: false,),
+                  SizedBox(height: CustomSizes.spaceBtwItems,),
+
+                  // Categories
+                  HomeCategories(),
+                ],
+              ),
+              const SizedBox(height: CustomSizes.spaceBtwSections / 2),
+
+              // Body
+              Column(
                 children: [
                   const SectionHeading(title: "Top Activities", showActionButton: false,),
                   const SizedBox(height: CustomSizes.spaceBtwItems,),
@@ -98,8 +113,8 @@ class _HomeViewState extends State<HomeView> {
                         ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

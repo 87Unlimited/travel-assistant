@@ -23,23 +23,20 @@ class SearchContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = HelperFunctions.isDarkMode(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: CustomSizes.defaultSpace),
-      child: Container(
-        width: DeviceUtils.getScreenWidth(context),
-        padding: const EdgeInsets.all(CustomSizes.md),
-        decoration: BoxDecoration(
-          color: showBackground ? dark ? Colors.white : Colors.white : Colors.transparent,
-          borderRadius: BorderRadius.circular(CustomSizes.cardRadiusLg),
-          border: showBorder ? Border.all(color: CustomColors.grey) : null,
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: dark ? CustomColors.grey : CustomColors.darkGrey),
-            const SizedBox(width: CustomSizes.spaceBtwItems,),
-            Text("Search Destination", style: Theme.of(context).textTheme.bodySmall,),
-          ],
-        ),
+    return Container(
+      width: DeviceUtils.getScreenWidth(context),
+      padding: const EdgeInsets.all(CustomSizes.md),
+      decoration: BoxDecoration(
+        color: showBackground ? dark ? Colors.white : Colors.white : Colors.transparent,
+        borderRadius: BorderRadius.circular(CustomSizes.cardRadiusLg),
+        border: showBorder ? Border.all(color: CustomColors.grey) : null,
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: dark ? CustomColors.grey : CustomColors.darkGrey),
+          const SizedBox(width: CustomSizes.spaceBtwItems,),
+          Text("Search Destination", style: Theme.of(context).textTheme.bodySmall,),
+        ],
       ),
     );
   }

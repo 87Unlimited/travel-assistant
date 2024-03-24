@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:travel_assistant/app.dart';
 import 'package:travel_assistant/core/util/constants/sizes.dart';
 import 'package:travel_assistant/core/util/device/device_utility.dart';
 

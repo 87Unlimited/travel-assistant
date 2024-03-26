@@ -68,15 +68,20 @@ class _CreateTripDetailViewState extends State<CreateTripDetailView> {
   @override
   Widget build(BuildContext context) {
     final dark = HelperFunctions.isDarkMode(context);
-    List<DateTime?> dateRange = Get.arguments;
-    DateTime? firstDate = dateRange[0];
+    final arguments = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+    final rangeDatePickerValue = arguments?['rangeDatePickerValue'];
+    final tripName = arguments?['tripName'];
+    final location = arguments?['location'];
+
+    DateTime? firstDate = rangeDatePickerValue[0];
     _selectedDate = firstDate;
 
     return Scaffold(
       appBar: CustomAppBar(
         showBackArrow: true,
         title: Text(
-          "Trip Detail",
+          tripName,
           style: Theme.of(context)
               .textTheme
               .headlineMedium!
@@ -89,6 +94,13 @@ class _CreateTripDetailViewState extends State<CreateTripDetailView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                location,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineMedium!
+                    .apply(color: CustomColors.primary),
+              ),
               // Calendar
               HorizontalCalendar(
                 selectedDate: _selectedDate!,

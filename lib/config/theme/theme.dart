@@ -8,6 +8,7 @@ import 'package:travel_assistant/core/util/constants/colors.dart';
 
 import 'custom_theme/appbar_theme.dart';
 import 'custom_theme/elevated_button_theme.dart';
+import 'custom_theme/search_bar_theme.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
@@ -26,6 +27,7 @@ class AppTheme {
       primary: const Color(0xff002147),
       secondary: const Color(0xff1bc9f4),
     ),
+    searchBarTheme: CustomSearchBarTheme.lightSearchBarTheme,
   );
 
   static ThemeData darkTheme = ThemeData(

@@ -3,6 +3,7 @@ import 'package:travel_assistant/core/util/constants/colors.dart';
 import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
 
 class SectionHeading extends StatelessWidget {
+
   const SectionHeading({
     super.key,
     this.textColor,
@@ -10,12 +11,14 @@ class SectionHeading extends StatelessWidget {
     required this.title,
     this.buttonTitle = "View All",
     this.onPressed,
+    this.icon,
   });
 
   final Color? textColor;
   final bool showActionButton;
   final String title, buttonTitle;
   final void Function()? onPressed;
+  final Icon? icon;
 
   @override
   Widget build(BuildContext context) {

@@ -22,7 +22,7 @@ class TripDetailForm extends StatelessWidget {
     return Form(
       child: Column(
         children: [
-          // Email
+          // Location
           TextFormField(
             decoration: const InputDecoration(
               prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),

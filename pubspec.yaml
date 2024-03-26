@@ -69,6 +69,7 @@ dependencies:
   easy_date_timeline: ^1.0.3
   simple_horizontal_calendar: ^0.0.2
   unicons: ^2.1.1
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:

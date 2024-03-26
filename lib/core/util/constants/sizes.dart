@@ -36,4 +36,7 @@ class CustomSizes {
 
   // Text with Icon
   static const double textWithIconWidth = 5.0;
+
+  // Filed Circular
+  static const double filedCircular = 14.0;
 }

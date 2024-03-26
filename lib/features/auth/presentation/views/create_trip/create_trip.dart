@@ -24,7 +24,7 @@ class CreateTripView extends StatefulWidget {
 
 class _CreateTripViewState extends State<CreateTripView> {
   late final TextEditingController _tripName;
-  late final TextEditingController _location;
+  late final SearchController _location;
 
   final today = DateUtils.dateOnly(DateTime.now());
   List<DateTime?> _rangeDatePickerValueWithDefaultValue = [];
@@ -34,7 +34,7 @@ class _CreateTripViewState extends State<CreateTripView> {
   void initState() {
     // TODO: implement initState
     _tripName = TextEditingController();
-    _location = TextEditingController();
+    _location = SearchController();
     super.initState();
   }
 
@@ -48,7 +48,6 @@ class _CreateTripViewState extends State<CreateTripView> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<NavigationController>();
     final dark = HelperFunctions.isDarkMode(context);
     final config = CalendarConfig.getConfig();
 
@@ -68,24 +67,10 @@ class _CreateTripViewState extends State<CreateTripView> {
               _buildDefaultRangeDatePickerWithValue(config),
               const SizedBox(height: CustomSizes.spaceBtwSections),
 
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('Selection(s):  '),
-                  const SizedBox(width: 10),
-                  Text(
-                    _getValueText(
-                      config.calendarType,
-                      _rangeDatePickerValueWithDefaultValue,
-                    ),
-                  ),
-                ],
-              ),
-              // Create Trip Form
               Form(
                 child: CreateTripForm(
-                  tripNameController: _tripName,
-                  locationController: _location,
+                  tripName: _tripName,
+                  location: _location,
                 ),
               ),
               const SizedBox(height: CustomSizes.spaceBtwSections),
@@ -96,7 +81,18 @@ class _CreateTripViewState extends State<CreateTripView> {
                   height: CustomSizes.buttonHeight,
                   child: ElevatedButton(
                     onPressed: () async {
-                      Get.to(const CreateTripDetailView(), arguments: _rangeDatePickerValueWithDefaultValue);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CreateTripDetailView(),
+                            settings: RouteSettings(
+                              arguments: {
+                                'rangeDatePickerValue': _rangeDatePickerValueWithDefaultValue,
+                                'tripName': _tripName.text,
+                                'location': _location.text,
+                              },
+                            )
+                        ),
+                      );
                     },
                     child: const Center(
                       child: Text('Create Trip'),

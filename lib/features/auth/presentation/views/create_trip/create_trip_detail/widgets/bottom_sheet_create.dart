@@ -22,6 +22,7 @@ class BottomSheetCreate extends StatelessWidget {
           children: [
             SizedBox(
               height: DeviceUtils.getScreenHeight(context) * .60,
+              width: DeviceUtils.getScreenWidth(context),
               child: ListView(
                 children: <Widget>[
                   // Title and exit button
@@ -63,6 +64,9 @@ class BottomSheetCreate extends StatelessWidget {
                               style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
                               overflow: TextOverflow.ellipsis,
                             ),
+                            onTap: () {
+
+                            },
                           ),
                           // Title
                           ListTile(

@@ -8,6 +8,7 @@ import 'package:travel_assistant/features/auth/presentation/views/create_trip/cr
 import 'package:travel_assistant/features/auth/presentation/views/home/home_view.dart';
 
 import 'features/auth/presentation/views/create_trip/create_trip_detail/create_trip_detail.dart';
+import 'features/auth/presentation/views/location/location_view.dart';
 import 'features/auth/presentation/views/profile/profile_view.dart';
 
 class NavigationMenu extends StatelessWidget {
@@ -75,7 +76,7 @@ class NavigationController extends GetxController{
 
   final screens = [
     const HomeView(),
-    Container(color: Colors.blue),
+    const MapSample(),
     const CreateTripView(),
     const ProfileView(),
   ];

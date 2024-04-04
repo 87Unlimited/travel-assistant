@@ -8,7 +8,7 @@ class CustomSearchBarTheme {
   // Light button theme
   static final lightSearchBarTheme = SearchBarThemeData(
     elevation: MaterialStateProperty.all<double>(0.0),
-    backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+    backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
     hintStyle: MaterialStateProperty.all<TextStyle>(
       const TextStyle(
         color: CustomColors.grey,
@@ -24,7 +24,6 @@ class CustomSearchBarTheme {
     shape: MaterialStateProperty.all<OutlinedBorder>(
       RoundedRectangleBorder( borderRadius: BorderRadius.circular(CustomSizes.filedCircular)),
     ),
-
   );
 
   // Dark button theme

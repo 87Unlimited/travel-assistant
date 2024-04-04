@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:travel_assistant/constant/api_constant.dart';
+import 'package:travel_assistant/auth/secrets.dart';
 import 'package:travel_assistant/core/network/network_utility.dart';
 import 'package:travel_assistant/core/util/constants/colors.dart';
 
@@ -48,7 +48,7 @@ class _CreateTripFormState extends State<CreateTripForm> {
           'maps/api/place/autocomplete/json',
           {
             "input": query!,
-            "key": apiKey,
+            "key": placesApiKey,
             "types": "country",
           });
 
@@ -60,6 +60,7 @@ class _CreateTripFormState extends State<CreateTripForm> {
             setState(() {
               placePredictions = result.predictions!;
             });
+            print(response);
           }
         }
       });
@@ -80,7 +81,7 @@ class _CreateTripFormState extends State<CreateTripForm> {
           leadingIcon: const Icon(Iconsax.location),
           trailingIcon: [
             IconButton(
-              onPressed: () {print("FUCK");},
+              onPressed: () {print(widget.location.text);},
               icon: const Center(
                 child: Icon(
                   CupertinoIcons.paperplane,
@@ -105,6 +106,8 @@ class _CreateTripFormState extends State<CreateTripForm> {
                 press: () {
                   setState(() {
                     location.closeView(placePredictions[index].description!);
+                    widget.location.text = placePredictions[index].description!;
+                    print(widget.location.text);
                   });
                 },
               );

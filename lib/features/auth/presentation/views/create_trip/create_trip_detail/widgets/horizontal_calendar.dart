@@ -43,10 +43,12 @@ class _HorizontalCalendarState extends State<HorizontalCalendar> {
         _selectDate(selectedDate);
       },
       activeColor: CustomColors.secondary,
-      headerProps: const EasyHeaderProps(
-        dateFormatter: DateFormatter.monthOnly(),
+      headerProps: EasyHeaderProps(
+        dateFormatter: const DateFormatter.fullDateDayAsStrMY(),
         monthPickerType: MonthPickerType.switcher,
         showSelectedDate: true,
+        monthStyle: Theme.of(context).textTheme.headlineSmall!.apply(color: CustomColors.primary),
+        selectedDateStyle: Theme.of(context).textTheme.labelLarge!.apply(color: CustomColors.primary),
       ),
       dayProps: const EasyDayProps(
         height: 56.0,

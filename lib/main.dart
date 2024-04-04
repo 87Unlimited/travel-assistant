@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:travel_assistant/config/theme/theme.dart';
 import 'package:travel_assistant/firebase_options.dart';
 import 'dart:developer' as devtools show log;
@@ -10,15 +13,17 @@ import 'features/auth/presentation/views/login/login_view.dart';
 import 'features/auth/presentation/views/register/register_view.dart';
 import 'features/auth/presentation/views/verify_email_view.dart';
 
-void main() {
+void main() async {
   // Todo: Add Widgets Binding
   // Todo: Init Local Storage
   // Todo: Await Native Splash
   // Todo: Initialize Firebase
   // Todo: Initialize Authentication
 
-
+  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables();
+
   runApp(const App());
 }
 

@@ -3,9 +3,10 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import '../../../../auth/secrets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class LocationServices {
-  final String key = placesApiKey;
+  final String? key = placesApiKey;
 
   Future<String> getPlaceId(String input) async {
     final String url = ""

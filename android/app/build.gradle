@@ -50,6 +50,8 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+        manifestPlaceholders = [MAP_KEY: "$System.env.MAP_KEY",
+                                applicationName: "android.app.Application"]
     }
 
     task wrapper(type: Wrapper){

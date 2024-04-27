@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:travel_assistant/features/auth/presentation/widgets/images/rounded_image.dart';
 
 import '../../../../../../core/util/constants/colors.dart';
 import '../../../../../../core/util/constants/image_strings.dart';
@@ -10,6 +9,7 @@ import '../../../../../../core/util/helpers/helper_functions.dart';
 import '../../custom_shapes/rounded_container.dart';
 import '../../icons/circular_icon.dart';
 import '../../icons/text_with_icon.dart';
+import '../../images/rounded_image.dart';
 
 class TripCard extends StatelessWidget {
   const TripCard({

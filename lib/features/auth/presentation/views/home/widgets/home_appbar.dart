@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:travel_assistant/core/util/constants/colors.dart';
 import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
 
-import '../../../widgets/appbar.dart';
-import '../../../widgets/notification_icon.dart';
+import '../../../../../../common/widgets/appbar.dart';
+import '../../../../../../common/widgets/notification_icon.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({

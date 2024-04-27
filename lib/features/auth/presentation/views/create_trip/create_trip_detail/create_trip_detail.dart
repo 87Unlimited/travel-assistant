@@ -12,13 +12,13 @@ import 'package:intl/intl.dart';
 import 'package:travel_assistant/core/util/constants/colors.dart';
 import 'package:travel_assistant/features/auth/presentation/views/create_trip/create_trip_detail/widgets/horizontal_calendar.dart';
 
+import '../../../../../../common/widgets/appbar.dart';
+import '../../../../../../common/widgets/button/text_icon_button.dart';
 import '../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../../core/util/device/device_utility.dart';
 import '../../../../../../core/util/formatters/formatter.dart';
 import '../../../../../../core/util/helpers/helper_functions.dart';
-import '../../../widgets/appbar.dart';
-import '../../../widgets/button/text_icon_button.dart';
 
 class CreateTripDetailView extends StatefulWidget {
   const CreateTripDetailView({super.key});

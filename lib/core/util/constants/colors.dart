@@ -7,6 +7,9 @@ class CustomColors{
   static const Color primary = Color(0xff002147);
   static const Color secondary = Color(0xff3bcce5);
 
+  static const Color dark = Color(0xff222222);
+  static const Color white = Color(0xffffffff);
+
   // Gradient Colors
   static const Gradient linerGradient = LinearGradient(
     begin: Alignment(0.0, 0.0),

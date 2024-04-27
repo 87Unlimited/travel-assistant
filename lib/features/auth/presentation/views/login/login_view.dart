@@ -1,20 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import 'package:local_auth/local_auth.dart';
 import 'package:travel_assistant/core/util/constants/sizes.dart';
 import 'package:travel_assistant/core/util/constants/spacing_styles.dart';
 import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
+import 'package:travel_assistant/features/auth/presentation/controllers/login_controller.dart';
+import 'package:travel_assistant/features/auth/presentation/views/login/widgets/login_form.dart';
 import 'package:travel_assistant/features/auth/presentation/views/login/widgets/login_header.dart';
-import 'package:travel_assistant/features/auth/presentation/views/register/register_view.dart';
-import 'package:travel_assistant/features/auth/presentation/widgets/snackbar.dart';
 import 'package:travel_assistant/navigation_menu.dart';
 
-import '../../../../../core/util/constants/colors.dart';
-import '../../widgets/social_button.dart';
+import '../../../../../common/widgets/social_button.dart';
+import '../../../../../common/widgets/text/signup_signin_text_switch.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -48,6 +46,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(LoginController());
     final dark = HelperFunctions.isDarkMode(context);
     bool obscure = true;
 
@@ -62,64 +61,8 @@ class _LoginViewState extends State<LoginView> {
                 const LoginHeader(title: "Sign In To Continue",),
                 const SizedBox(height: CustomSizes.spaceBtwSections),
 
-                // // Email and password
-                Form(
-                  child: Column(
-                    children: [
-                      // Email
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(FontAwesomeIcons.solidEnvelope),
-                          labelText: "Email",
-                        ),
-                        controller: _email,
-                      ),
-                      const SizedBox(height: CustomSizes.spaceBtwItems),
-                      // Password
-                      TextFormField(
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(FontAwesomeIcons.lock),
-                          labelText: "Password",
-                          suffixIcon: IconButton(
-                            icon: const Icon(FontAwesomeIcons.solidEyeSlash),
-                            onPressed: () {
-                              setState(() {
-                                obscure = !obscure;
-                              });
-                            },
-                          ),
-                        ),
-                        obscureText: obscure,
-                        controller: _password,
-                      ),
-
-                      // Remember Me & Forget Password
-                      Row(
-                        children: [
-                          // Remember Me
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Checkbox(value: true, onChanged: (value) {}),
-                                const Text("Remember Me"),
-                              ],
-                            ),
-                          ),
-
-                          // Forget Password
-                          TextButton(
-                              onPressed: () {
-                                // Get.to();
-                              },
-                              child: Text(
-                                "Forget password?",
-                                style: Theme.of(context).textTheme.labelMedium,
-                              )),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                // Login form
+                LoginForm(),
                 const SizedBox(height: CustomSizes.spaceBtwSections),
 
                 // Login Button
@@ -137,40 +80,10 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
                 ),
+                const SizedBox(height: CustomSizes.spaceBtwSections),
 
                 // Register Button
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      Get.to(const RegisterView());
-                    },
-                    child: Text(
-                      'Not registered yet? Register here!',
-                      style: Theme.of(context).textTheme.labelLarge,
-                    ),
-                  ),
-                ),
-                Center(
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "Not registered yet? ",
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        TextSpan(
-                          text: "Register here! ",
-                          style: Theme.of(context).textTheme.bodyMedium!.apply(
-                            color: CustomColors.secondary,
-                          ),
-                          recognizer: TapGestureRecognizer()..onTap = () {
-                            Get.to(const RegisterView());
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                SignupSignInTextSwitch(registered: false,),
                 const SizedBox(height: CustomSizes.spaceBtwItems),
 
                 // Sign in with google of facebook

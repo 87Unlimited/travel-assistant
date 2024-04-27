@@ -7,7 +7,6 @@ import '../../../../../../core/util/constants/colors.dart';
 import '../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../core/util/helpers/helper_functions.dart';
 import '../../../../../../navigation_menu.dart';
-import '../../../views/create_trip/create_trip.dart';
 import '../../custom_shapes/rounded_container.dart';
 
 class TripCardCreate extends StatelessWidget {

@@ -8,12 +8,12 @@ import 'package:travel_assistant/auth/secrets.dart';
 import 'package:travel_assistant/core/network/network_utility.dart';
 import 'package:travel_assistant/core/util/constants/colors.dart';
 
+import '../../../../../../common/widgets/search_bar/location_search_bar.dart';
+import '../../../../../../common/widgets/section_heading.dart';
 import '../../../../../../core/util/constants/sizes.dart';
 import '../../../../data/models/autocomplete_prediction.dart';
 import '../../../../data/models/place_auto_complete_response.dart';
 import '../../../../utilities/debounce.dart';
-import '../../../widgets/section_heading.dart';
-import '../../../widgets/search_bar/location_search_bar.dart';
 import 'location_list_tile.dart';
 
 class CreateTripForm extends StatefulWidget {

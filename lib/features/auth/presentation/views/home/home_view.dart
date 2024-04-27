@@ -10,9 +10,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/widgets/image_slider.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/widgets/trips.dart';
 import 'package:travel_assistant/features/auth/presentation/views/login/login_view.dart';
-import 'package:travel_assistant/features/auth/presentation/widgets/trip/trip_cards/trip_card_create.dart';
 
 import '../../../../../auth/secrets.dart';
+import '../../../../../common/widgets/notification_icon.dart';
+import '../../../../../common/widgets/search_bar/location_search_bar.dart';
+import '../../../../../common/widgets/section_heading.dart';
+import '../../../../../common/widgets/trip/trip_cards/trip_card_create.dart';
 import '../../../../../core/network/network_utility.dart';
 import '../../../../../core/util/constants/shadows.dart';
 import '../../../../../core/util/constants/sizes.dart';
@@ -21,12 +24,6 @@ import '../../../../../core/util/helpers/helper_functions.dart';
 import '../../../data/models/autocomplete_prediction.dart';
 import '../../../data/models/place_auto_complete_response.dart';
 import '../../../utilities/debounce.dart';
-import '../../widgets/custom_shapes/search_container.dart';
-import '../../widgets/images/rounded_image.dart';
-import '../../widgets/notification_icon.dart';
-import '../../widgets/search_bar/location_search_bar.dart';
-import '../../widgets/section_heading.dart';
-import '../../widgets/trip/trip_cards/trip_card_vertical.dart';
 import '../create_trip/widgets/location_list_tile.dart';
 
 class HomeView extends StatefulWidget {

@@ -12,4 +12,8 @@ class CustomImages {
   static const String japan = "assets/images/location/japan.jpg";
   static const String korea = "assets/images/location/korea.jpg";
   static const String thailand = "assets/images/location/thailand.jpg";
+
+  // Animation
+  static const String deliveredEmailIllustration = "assets/animations/sammy-line-man-receives-a-mail.png";
+  static const String staticSuccessIllustration = "assets/animations/sammy-line-success.png";
 }

@@ -3,16 +3,35 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
-import 'package:travel_assistant/features/auth/presentation/widgets/snackbar.dart';
+import 'package:travel_assistant/core/util/exceptions/format_exceptions.dart';
+import 'package:travel_assistant/core/util/exceptions/platform_exceptions.dart';
 
-import '../../domain/entities/user_model.dart';
+import '../../../../../common/widgets/snackbar.dart';
+import '../../../../../core/util/exceptions/firebase_exceptions.dart';
+import '../../../domain/entities/user_model.dart';
 
 class UserRepository extends GetxController {
   static UserRepository get instance => Get.find();
 
-  final _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  /// Function to save user data to Firestore
+  Future<void> saveUserRecord(UserModel user) async {
+    try {
+      await _db.collection("Users").doc(user.id).set(user.toJson());
+    } on FirebaseException catch (e) {
+      throw CustomFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const CustomFormatException();
+    } on PlatformException catch (e) {
+      throw CustomPlatformException(e.code).message;
+    } catch (e) {
+      throw "Something went wrong. PLease try again";
+    }
+  }
 
   Future createUser(UserModel user) async {
     await _db.collection("Users").add(user.toJson()).whenComplete(() {

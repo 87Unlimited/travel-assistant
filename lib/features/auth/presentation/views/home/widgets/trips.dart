@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_assistant/features/auth/presentation/views/login/login_view.dart';
 
+import '../../../../../../common/widgets/trip/trip_cards/trip_card_vertical.dart';
 import '../../../../../../core/util/constants/image_strings.dart';
-import '../../../widgets/image_text_widgets/vertical_image.dart';
-import '../../../widgets/trip/trip_cards/trip_card_vertical.dart';
 
 class Trips extends StatelessWidget {
   const Trips({

@@ -6,11 +6,10 @@ import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:travel_assistant/features/auth/presentation/views/create_trip/widgets/create_trip_form.dart';
 
+import '../../../../../common/widgets/appbar.dart';
 import '../../../../../core/util/constants/sizes.dart';
 import '../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../navigation_menu.dart';
-import '../../widgets/appbar.dart';
-import '../../widgets/section_heading.dart';
 import '../home/widgets/home_appbar.dart';
 import 'calendar_config.dart';
 import 'create_trip_detail/create_trip_detail.dart';

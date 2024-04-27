@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_assistant/features/auth/presentation/controllers/home_controller.dart';
 
+import '../../../../../../common/widgets/custom_shapes/circular_container.dart';
+import '../../../../../../common/widgets/images/rounded_image.dart';
 import '../../../../../../core/util/constants/colors.dart';
-import '../../../../../../core/util/constants/image_strings.dart';
 import '../../../../../../core/util/constants/sizes.dart';
-import '../../../widgets/custom_shapes/circular_container.dart';
-import '../../../widgets/images/rounded_image.dart';
 
 class ImageSlider extends StatelessWidget {
   const ImageSlider({

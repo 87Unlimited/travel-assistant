@@ -48,6 +48,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^10.7.0
   animated_text_kit: ^4.2.2
+  lottie: ^3.1.0
+  iconsax: ^0.0.8
+  unicons: ^2.1.1
+  google_fonts: ^6.1.0
 
   # authentication
   firebase_auth: ^4.14.1
@@ -61,19 +65,18 @@ dependencies:
 
   # bloc
   flutter_bloc: ^8.1.4
-  google_fonts: ^6.1.0
   flutter_native_splash: ^2.3.7
-  iconsax: ^0.0.8
   carousel_slider: ^4.2.1
   calendar_date_picker2: ^0.5.3
   easy_date_timeline: ^1.0.3
   simple_horizontal_calendar: ^0.0.2
-  unicons: ^2.1.1
   http: ^1.2.1
   google_maps_flutter: ^2.6.0
   flutter_polyline_points: ^2.0.0
   flutter_dotenv: ^5.1.0
   flutter_config: ^2.0.2
+  get_storage: ^2.1.1
+  connectivity_plus: ^6.0.3
 
 dev_dependencies:
   flutter_test:
@@ -94,6 +97,7 @@ flutter:
   assets:
     - assets/logos/
     - assets/images/location/
+    - assets/animations/
     - .env
 
   # The following line ensures that the Material Icons font is

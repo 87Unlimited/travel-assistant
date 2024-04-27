@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:travel_assistant/bindings/general_bindings.dart';
 import 'package:travel_assistant/features/auth/presentation/views/login/login_view.dart';
 
 import 'config/theme/theme.dart';
@@ -15,6 +16,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
+      initialBinding: GeneralBindings(),
       home: const LoginView(),
     );
   }

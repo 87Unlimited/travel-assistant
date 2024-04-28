@@ -65,40 +65,12 @@ class _LoginViewState extends State<LoginView> {
                 LoginForm(),
                 const SizedBox(height: CustomSizes.spaceBtwSections),
 
-                // Login Button
-                Center(
-                  child: SizedBox(
-                    width: CustomSizes.buttonWidth,
-                    height: CustomSizes.buttonHeight,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        Get.to(const NavigationMenu());
-                      },
-                      child: const Center(
-                        child: Text('Login'),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: CustomSizes.spaceBtwSections),
-
                 // Register Button
                 SignupSignInTextSwitch(registered: false,),
                 const SizedBox(height: CustomSizes.spaceBtwItems),
 
                 // Sign in with google of facebook
                 SocialButton(dark: dark),
-
-                // Center(
-                //   child: SizedBox(
-                //     width: CustomSizes.buttonWidth,
-                //     child: ElevatedButton(
-                //         onPressed: () {
-                //           CustomSnackbar.show(context, "Test Snack bar", false);
-                //         },
-                //         child: const Text('Test button')),
-                //   ),
-                // ),
               ],
             )),
       ),

@@ -7,11 +7,8 @@ import 'package:travel_assistant/core/util/constants/image_strings.dart';
 import 'package:travel_assistant/core/util/constants/sizes.dart';
 import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
 import 'package:travel_assistant/features/auth/data/repositories/authentication/authentication_repository.dart';
-import 'package:travel_assistant/features/auth/domain/controllers/verify_email_controller.dart';
-import 'package:travel_assistant/features/auth/presentation/views/login/login_view.dart';
-import 'package:travel_assistant/features/auth/presentation/views/register/verify_email/success_view.dart';
 
-import 'package:travel_assistant/features/auth/presentation/views/register/widgets/signup_form.dart';
+import '../../../controllers/verify_email_controller.dart';
 
 class VerifyEmailView extends StatelessWidget {
   const VerifyEmailView({super.key, this.email});

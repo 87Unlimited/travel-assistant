@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:travel_assistant/features/auth/presentation/controllers/authentication/login_controller.dart';
 
 import '../../../../core/util/constants/colors.dart';
 import '../../../../core/util/constants/image_strings.dart';
@@ -15,6 +17,7 @@ class SocialButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(LoginController());
     return Column(
       children: [
         Row(
@@ -49,7 +52,7 @@ class SocialButton extends StatelessWidget {
               width: CustomSizes.buttonWidth,
               height: CustomSizes.buttonHeight,
               child: OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: () => controller.googleSignIn(),
                 icon: SvgPicture.asset(
                   CustomImages.google,
                   width: CustomSizes.iconLg,

@@ -1,29 +1,26 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:travel_assistant/core/util/constants/colors.dart';
-import 'package:travel_assistant/core/util/constants/image_strings.dart';
-import 'package:travel_assistant/core/util/constants/sizes.dart';
-import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
-import 'package:travel_assistant/features/auth/data/repositories/authentication/authentication_repository.dart';
 import 'package:travel_assistant/features/auth/presentation/views/login/login_view.dart';
 
-import '../../../controllers/authentication/verify_email_controller.dart';
+import '../../../../../core/util/constants/image_strings.dart';
+import '../../../../../core/util/constants/sizes.dart';
+import '../../../../../core/util/helpers/helper_functions.dart';
+import '../../controllers/authentication/forget_password_controller.dart';
 
-class VerifyEmailView extends StatelessWidget {
-  const VerifyEmailView({super.key, this.email});
+class ResetPasswordView extends StatelessWidget {
+  const ResetPasswordView({super.key, required this.email});
 
-  final String? email;
+  final String email;
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(VerifyEmailController());
+    final controller = Get.put(ForgetPasswordController());
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        actions: [IconButton(onPressed: () => AuthenticationRepository.instance.logout(), icon: const Icon(CupertinoIcons.clear))],
+        actions: [IconButton(onPressed: () => Get.back(), icon: const Icon(CupertinoIcons.clear))],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -36,21 +33,23 @@ class VerifyEmailView extends StatelessWidget {
               ),
               const SizedBox(height: CustomSizes.spaceBtwSections),
 
-              // Title and subtitle
+              // Email, Title and subtitle
               Text(
-                "Verify your email address!",
+                email,
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: CustomSizes.spaceBtwItems),
+
+              Text(
+                "Reset Password Email Sent",
                 style: Theme.of(context).textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: CustomSizes.spaceBtwItems),
+
               Text(
-                email ?? '',
-                style: Theme.of(context).textTheme.labelLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: CustomSizes.spaceBtwItems),
-              Text(
-                "Congratulations! Your Account Awaits: Verify Your Email to Start Shopping and Experience a World of Unrivaled Deals and Personalized Offers.",
+                "Check Your Email To Reset Password.",
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),
@@ -60,12 +59,19 @@ class VerifyEmailView extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => Get.to(() => LoginView()),
-                  child: const Text("Continue"),
+                  onPressed: () => Get.offAll(() => const LoginView()),
+                  child: const Text("Done"),
                 ),
               ),
               const SizedBox(height: CustomSizes.spaceBtwItems),
-              SizedBox(width: double.infinity, child: TextButton(onPressed: () => controller.sendEmailVerification, child: Text("Resend Email"),),),
+
+              // Resend email
+              SizedBox(
+                width: double.infinity,
+                child: TextButton(onPressed: () => ForgetPasswordController.instance.resendPasswordResetEmail(email),
+                  child: Text("Resend Email"),
+                ),
+              ),
             ],
           ),
         ),
@@ -73,8 +79,3 @@ class VerifyEmailView extends StatelessWidget {
     );
   }
 }
-
-
-
-
-

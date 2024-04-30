@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../../../../core/util/constants/colors.dart';
 import '../../../../../../core/util/constants/sizes.dart';
-import '../../../controllers/signup_controller.dart';
+import '../../../controllers/authentication/signup_controller.dart';
 
 class PolicyCheckbox extends StatelessWidget {
   const PolicyCheckbox({

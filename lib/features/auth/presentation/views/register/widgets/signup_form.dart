@@ -5,11 +5,11 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:travel_assistant/features/auth/presentation/controllers/signup_controller.dart';
 import 'package:travel_assistant/features/auth/presentation/views/register/widgets/policy_checkbox.dart';
 
 import '../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../core/util/validators/validation.dart';
+import '../../../controllers/authentication/signup_controller.dart';
 
 class SignupForm extends StatelessWidget {
   const SignupForm({
@@ -60,7 +60,8 @@ class SignupForm extends StatelessWidget {
                     prefixIcon: Icon(Iconsax.user),
                     labelText: "Last Name",
                   ),
-                ),)
+                ),
+              ),
             ],
           ),
           const SizedBox(height: CustomSizes.spaceBtwItems),

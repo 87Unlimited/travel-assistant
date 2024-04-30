@@ -10,7 +10,7 @@ import '../../../../../common/widgets/appbar.dart';
 import '../../../../../core/util/constants/sizes.dart';
 import '../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../navigation_menu.dart';
-import '../home/widgets/home_appbar.dart';
+import '../home/widgets/home_header.dart';
 import 'calendar_config.dart';
 import 'create_trip_detail/create_trip_detail.dart';
 
@@ -52,7 +52,6 @@ class _CreateTripViewState extends State<CreateTripView> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        showBackArrow: true,
         title: Text(
           "Create Itinerary",
           style: Theme.of(context).textTheme.headlineMedium!.apply(color: CustomColors.primary),

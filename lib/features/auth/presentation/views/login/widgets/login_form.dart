@@ -4,9 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:travel_assistant/core/util/validators/validation.dart';
+import 'package:travel_assistant/features/auth/presentation/views/password_config/forget_password.dart';
 
 import '../../../../../../core/util/constants/sizes.dart';
-import '../../../controllers/login_controller.dart';
+import '../../../controllers/authentication/login_controller.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -73,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
               // Forget Password
               TextButton(
                   onPressed: () {
-                    // Get.to();
+                    Get.to(() => const ForgetPasswordView());
                   },
                   child: Text(
                     "Forget password?",
@@ -91,8 +92,11 @@ class _LoginFormState extends State<LoginForm> {
               height: CustomSizes.buttonHeight,
               child: ElevatedButton(
                 onPressed: () => controller.emailAndPasswordSignIn(),
-                child: const Center(
-                  child: Text('Login'),
+                child: Center(
+                  child: Text(
+                    'Login',
+                    style: Theme.of(context).textTheme.headlineSmall?.apply(color: Colors.white),
+                  ),
                 ),
               ),
             ),

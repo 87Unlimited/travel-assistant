@@ -6,8 +6,9 @@ import 'package:travel_assistant/features/auth/data/repositories/authentication/
 import 'package:travel_assistant/features/auth/data/repositories/user/user_repository.dart';
 import 'package:travel_assistant/features/auth/domain/entities/user_model.dart';
 
-import '../../../../core/network/network_manager.dart';
-import '../views/register/verify_email/verify_email_view.dart';
+import '../../../../../core/network/network_manager.dart';
+import '../../views/register/verify_email/verify_email_view.dart';
+
 
 class SignupController extends GetxController {
   static SignupController get instance => Get.find();

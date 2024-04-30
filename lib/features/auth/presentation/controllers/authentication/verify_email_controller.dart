@@ -10,8 +10,6 @@ import 'package:travel_assistant/features/auth/data/repositories/user/user_repos
 import 'package:travel_assistant/features/auth/domain/entities/user_model.dart';
 import 'package:travel_assistant/features/auth/presentation/views/register/verify_email/success_view.dart';
 
-import '../../../../core/network/network_manager.dart';
-
 class VerifyEmailController extends GetxController {
   static VerifyEmailController get instance => Get.find();
 

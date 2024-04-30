@@ -77,6 +77,8 @@ dependencies:
   flutter_config: ^2.0.2
   get_storage: ^2.1.1
   connectivity_plus: ^6.0.3
+  google_sign_in: ^6.2.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -98,6 +100,7 @@ flutter:
     - assets/logos/
     - assets/images/location/
     - assets/animations/
+    - assets/user/
     - .env
 
   # The following line ensures that the Material Icons font is

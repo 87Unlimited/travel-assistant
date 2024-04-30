@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:travel_assistant/core/util/constants/colors.dart';
 import 'package:travel_assistant/core/util/constants/image_strings.dart';
-import 'package:travel_assistant/features/auth/presentation/views/home/widgets/home_appbar.dart';
+import 'package:travel_assistant/features/auth/presentation/controllers/personalization/user_controller.dart';
+import 'package:travel_assistant/features/auth/presentation/views/home/widgets/home_header.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/widgets/home_categories.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/widgets/image_slider.dart';
@@ -88,27 +89,7 @@ class _HomeViewState extends State<HomeView> {
           padding: SpacingStyle.paddingWithAppBarHeight,
           child: Column(
             children: [
-              ListTile(
-                title: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "Hi, ",
-                        style: Theme.of(context).textTheme.headlineLarge!.apply(color: dark ? Colors.white : CustomColors.primary),
-                      ),
-                      TextSpan(
-                        text: userName,
-                        style: Theme.of(context).textTheme.headlineLarge!.apply(color: CustomColors.secondary),
-                      ),
-                    ],
-                  ),
-                ),
-                subtitle: Text(
-                  "Let's Travel Around The World",
-                  style: Theme.of(context).textTheme.labelMedium!.apply(color: dark ? Colors.white : CustomColors.primary),
-                ),
-                trailing: NotificationStack(onPressed: (){}, dark: dark,),
-              ),
+              HomeHeader(dark: dark,),
               const SizedBox(height: CustomSizes.spaceBtwSections,),
 
               // Search Bar

@@ -4,13 +4,13 @@ import 'package:iconsax/iconsax.dart';
 import 'package:travel_assistant/core/util/constants/colors.dart';
 import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
-import 'package:travel_assistant/features/auth/presentation/views/create_trip/widgets/create_trip_form.dart';
+import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/widgets/create_trip_form.dart';
+import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/widgets/range_date_picker.dart';
 
-import '../../../../../common/widgets/appbar.dart';
-import '../../../../../core/util/constants/sizes.dart';
-import '../../../../../core/util/constants/spacing_styles.dart';
-import '../../../../../navigation_menu.dart';
-import '../home/widgets/home_header.dart';
+import '../../../../../../common/widgets/appbar.dart';
+import '../../../../../../core/util/constants/sizes.dart';
+import '../../../../../../core/util/constants/spacing_styles.dart';
+import '../../../../../../navigation_menu.dart';
 import 'calendar_config.dart';
 import 'create_trip_detail/create_trip_detail.dart';
 
@@ -49,9 +49,13 @@ class _CreateTripViewState extends State<CreateTripView> {
   Widget build(BuildContext context) {
     final dark = HelperFunctions.isDarkMode(context);
     final config = CalendarConfig.getConfig();
+    final navController = Get.put(NavigationController());
 
     return Scaffold(
       appBar: CustomAppBar(
+        showBackArrow: false,
+        leadingIcon: Iconsax.arrow_left,
+        leadingOnPressed: () => navController.screens[2],
         title: Text(
           "Create Itinerary",
           style: Theme.of(context).textTheme.headlineMedium!.apply(color: CustomColors.primary),
@@ -62,42 +66,8 @@ class _CreateTripViewState extends State<CreateTripView> {
           padding: SpacingStyle.paddingWithAppBarHeight,
           child: Column(
             children: [
-              _buildDefaultRangeDatePickerWithValue(config),
+              CreateTripForm(),
               const SizedBox(height: CustomSizes.spaceBtwSections),
-
-              Form(
-                child: CreateTripForm(
-                  tripName: _tripName,
-                  location: _location,
-                ),
-              ),
-              const SizedBox(height: CustomSizes.spaceBtwSections),
-
-              Center(
-                child: SizedBox(
-                  width: CustomSizes.buttonWidth,
-                  height: CustomSizes.buttonHeight,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const CreateTripDetailView(),
-                            settings: RouteSettings(
-                              arguments: {
-                                'rangeDatePickerValue': _rangeDatePickerValueWithDefaultValue,
-                                'tripName': _tripName.text,
-                                'location': _location.text,
-                              },
-                            )
-                        ),
-                      );
-                    },
-                    child: const Center(
-                      child: Text('Create Trip'),
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -134,21 +104,5 @@ class _CreateTripViewState extends State<CreateTripView> {
     }
 
     return valueText;
-  }
-
-  Widget _buildDefaultRangeDatePickerWithValue(CalendarDatePicker2Config config) {
-    final config = _config;
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CalendarDatePicker2(
-          config: config,
-          value: _rangeDatePickerValueWithDefaultValue,
-          onValueChanged: (dates) =>
-              setState(() => _rangeDatePickerValueWithDefaultValue = dates),
-        ),
-      ],
-    );
   }
 }

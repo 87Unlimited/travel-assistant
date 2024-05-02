@@ -71,7 +71,7 @@ dependencies:
   easy_date_timeline: ^1.0.3
   simple_horizontal_calendar: ^0.0.2
   http: ^1.2.1
-  google_maps_flutter: ^2.6.0
+  google_maps_flutter: ^2.6.1
   flutter_polyline_points: ^2.0.0
   flutter_dotenv: ^5.1.0
   flutter_config: ^2.0.2

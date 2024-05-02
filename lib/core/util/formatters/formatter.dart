@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class CustomFormatters {
@@ -10,12 +11,21 @@ class CustomFormatters {
     return NumberFormat.currency(locale: 'en_US', symbol: '\S').format(amount);
   }
 
-  // static String formatPhoneNumber(String phoneNumber) {
-  //   if (phoneNumber.length == 8) {
-  //     return '(${phoneNumber.substring(0, 3)}) ${phoneNumber}'
-  //   }
-  // }
+  static List<Timestamp?> convertDateTimeListToTimestamps(List<DateTime?> dateTimeList) {
+    List<Timestamp?> timestampList = [];
+
+    for (DateTime? dateTime in dateTimeList) {
+      if (dateTime != null) {
+        Timestamp timestamp = Timestamp.fromDate(dateTime);
+        timestampList.add(timestamp);
+      } else {
+        timestampList.add(null);
+      }
+    }
+    return timestampList;
+  }
 
   static final dayAndWeek = DateFormat('d, EEE');
   static final yearMonthDay = DateFormat('yMd');
+  static final yearAbbrMonthDay = DateFormat('MMMd');
 }

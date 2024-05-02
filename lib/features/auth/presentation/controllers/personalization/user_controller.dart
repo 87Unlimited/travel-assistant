@@ -11,7 +11,7 @@ import '../../../../../common/widgets/loaders/loaders.dart';
 import '../../../../../core/network/network_manager.dart';
 import '../../../../../core/util/popups/full_screen_loader.dart';
 import '../../../data/repositories/authentication/authentication_repository.dart';
-import '../../../domain/entities/user_model.dart';
+import '../../../data/models/user_model.dart';
 import '../../views/profile/re_auth_user_form/re_auth_user_form.dart';
 
 class UserController extends GetxController {

@@ -1,7 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
-
 import 'autocomplete_prediction.dart';
 
 class PlaceAutoCompleteResponse {

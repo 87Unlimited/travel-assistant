@@ -8,28 +8,26 @@ import '../../../../../../common/widgets/loaders/loaders.dart';
 import '../../../../../../core/network/network_manager.dart';
 import '../../../../../../core/util/popups/full_screen_loader.dart';
 
-class UpdateNameController extends GetxController {
-  static UpdateNameController get instance => Get.find();
+class UpdateUserNameController extends GetxController {
+  static UpdateUserNameController get instance => Get.find();
 
-  final firstName = TextEditingController();
-  final lastName = TextEditingController();
+  final userName = TextEditingController();
   final userController = UserController.instance;
   final userRepository = Get.put(UserRepository());
-  GlobalKey<FormState> updateNameFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> updateUserNameFormKey = GlobalKey<FormState>();
 
   @override
   void onInit() {
-    initializedNames();
+    initializedUserName();
     super.onInit();
   }
 
   // Fetch user record
-  Future<void> initializedNames() async {
-    firstName.text = userController.user.value.firstName;
-    lastName.text = userController.user.value.lastName;
+  Future<void> initializedUserName() async {
+    userName.text = userController.user.value.userName;
   }
 
-  Future<void> updateName() async {
+  Future<void> updateUserName() async {
     try {
       // Start Loading
       FullScreenLoader.openLoadingDialog(
@@ -43,34 +41,31 @@ class UpdateNameController extends GetxController {
       }
 
       // Form Validation
-      if (!updateNameFormKey.currentState!.validate()) {
+      if (!updateUserNameFormKey.currentState!.validate()) {
         // Remove Loader
         FullScreenLoader.stopLoading();
         return;
       }
 
       // Update user first and last name in Firebase
-      Map<String, dynamic> name = {'FirstName': firstName.text.trim(), 'LastName': lastName.text.trim()};
-      await userRepository.updateSingleField(name);
+      Map<String, dynamic> userNameJson = {'UserName': userName.text.trim()};
+      await userRepository.updateSingleField(userNameJson);
 
       // Update the Rx user value
-      userController.user.value.firstName = firstName.text.trim();
-      userController.user.value.lastName = lastName.text.trim();
+      userController.user.value.userName = userName.text.trim();
 
       // Remove Loader
       FullScreenLoader.stopLoading();
 
       // Show Success Message
-      CustomLoaders.successSnackBar(title: "Congratulations", message: "Your name has been updated.");
+      CustomLoaders.successSnackBar(title: "Congratulations", message: "Your user name has been updated.");
 
-      // Back to profile Screen
-      Get.back();
+      // Move to Verify Email Screen
+      Navigator.pop(Get.overlayContext!);
+
     } catch (e) {
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
-    } finally {
-      // Remove Loader
-      FullScreenLoader.stopLoading();
     }
   }
 }

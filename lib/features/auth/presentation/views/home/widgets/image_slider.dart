@@ -10,7 +10,7 @@ import '../../../../../../core/util/constants/sizes.dart';
 
 class ImageSlider extends StatelessWidget {
   const ImageSlider({
-    super.key, required this.banners,
+    Key? key, required this.banners,
   });
 
   final List<String> banners;
@@ -29,20 +29,22 @@ class ImageSlider extends StatelessWidget {
           items: banners.map((url) => RoundedImage(imageUrl: url)).toList(),
         ),
         const SizedBox(height: CustomSizes.spaceBtwItems,),
-        Obx(
-          () => Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for(int i = 0; i < banners.length; i++)
-                CircularContainer(
-                  width: 20,
-                  height: 4,
-                  margin: const EdgeInsets.only(right: 10),
-                  backgroundColor: controller.carousalCurrentIndex.value == i ? CustomColors.secondary : CustomColors.grey,
-                ),
-            ],
+        Center(
+          child: Obx(
+            () => Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for(int i = 0; i < banners.length; i++)
+                  CircularContainer(
+                    width: 20,
+                    height: 4,
+                    margin: const EdgeInsets.only(right: 10),
+                    backgroundColor: controller.carousalCurrentIndex.value == i ? CustomColors.secondary : CustomColors.grey,
+                  ),
+              ],
+            ),
           ),
-        )
+        ),
       ],
     );
   }

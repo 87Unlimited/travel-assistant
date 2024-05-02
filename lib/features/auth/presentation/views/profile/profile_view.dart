@@ -7,11 +7,13 @@ import 'package:travel_assistant/common/widgets/section_heading.dart';
 import 'package:travel_assistant/core/util/constants/colors.dart';
 import 'package:travel_assistant/features/auth/presentation/controllers/personalization/user_controller.dart';
 import 'package:travel_assistant/features/auth/presentation/views/profile/change_details/change_name.dart';
+import 'package:travel_assistant/features/auth/presentation/views/profile/change_details/change_phone_number.dart';
 import 'package:travel_assistant/features/auth/presentation/views/profile/widgets/profile_text_button.dart';
 
 import '../../../../../common/widgets/images/circular_image.dart';
 import '../../../../../core/util/constants/sizes.dart';
 import '../../../data/repositories/authentication/authentication_repository.dart';
+import 'change_details/change_user_name.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -63,7 +65,7 @@ class ProfileView extends StatelessWidget {
                   icon: Iconsax.arrow_right_34,
                   title: 'User Name',
                   value: controller.user.value.userName,
-                  onPressed: () {}),
+                  onPressed: () => Get.to(() => ChangeUserNameView())),
               const SizedBox(height: CustomSizes.spaceBtwItems),
 
               // Divider
@@ -85,7 +87,7 @@ class ProfileView extends StatelessWidget {
                 icon: Iconsax.arrow_right_34,
                 title: 'Phone Number',
                 value: controller.user.value.phoneNumber,
-                onPressed: () => Get.to(() => ChangeNameView()),
+                onPressed: () => Get.to(() => ChangePhoneNumberView()),
               ),
               const SizedBox(height: CustomSizes.spaceBtwItems),
 

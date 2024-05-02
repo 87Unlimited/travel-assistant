@@ -6,19 +6,18 @@ import '../../../../../../common/widgets/appbar.dart';
 import '../../../../../../core/util/constants/colors.dart';
 import '../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../core/util/validators/validation.dart';
-import '../../../controllers/personalization/change_details_controllers/update_name_controller.dart';
+import '../../../controllers/personalization/change_details_controllers/update_user_name_controller.dart';
 
-
-class ChangeNameView extends StatelessWidget {
-  const ChangeNameView({super.key});
+class ChangeUserNameView extends StatelessWidget {
+  const ChangeUserNameView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UpdateNameController());
+    final controller = Get.put(UpdateUserNameController());
     return Scaffold(
       appBar: CustomAppBar(
         title: Text(
-          "Change Name",
+          "Change User Name",
           style: Theme.of(context).textTheme.headlineMedium!.apply(color: CustomColors.primary),
         ),
         showBackArrow: true,
@@ -29,33 +28,22 @@ class ChangeNameView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Change your first name and last name.",
+              "Enter your new user name here.",
               style: Theme.of(context).textTheme.bodyMedium!.apply(color: CustomColors.primary),
             ),
             const SizedBox(height: CustomSizes.spaceBtwItems),
 
             Form(
-              key: controller.updateNameFormKey,
+              key: controller.updateUserNameFormKey,
               child: Column(
                 children: [
                   TextFormField(
-                    controller: controller.firstName,
-                    validator: (value) => Validator.validateEmptyText("First name", value),
+                    controller: controller.userName,
+                    validator: (value) => Validator.validateEmptyText("User Name", value),
                     expands: false,
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Iconsax.user),
-                      labelText: "First Name",
-                    ),
-                  ),
-                  const SizedBox(height: CustomSizes.spaceBtwItems),
-
-                  TextFormField(
-                    controller: controller.lastName,
-                    validator: (value) => Validator.validateEmptyText("Last name", value),
-                    expands: false,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Iconsax.user),
-                      labelText: "Last Name",
+                      labelText: "User Name",
                     ),
                   ),
                   const SizedBox(height: CustomSizes.spaceBtwSections),
@@ -65,7 +53,7 @@ class ChangeNameView extends StatelessWidget {
                       width: CustomSizes.buttonWidth,
                       height: CustomSizes.buttonHeight,
                       child: ElevatedButton(
-                        onPressed: () => controller.updateName(),
+                        onPressed: () => controller.updateUserName(),
                         child: Center(
                           child: Text(
                             'Save',

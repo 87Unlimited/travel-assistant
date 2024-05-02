@@ -2,7 +2,7 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../../../core/util/constants/colors.dart';
+import '../../../../../../../../core/util/constants/colors.dart';
 
 class HorizontalCalendar extends StatefulWidget {
   final Function(DateTime) onDateChange;

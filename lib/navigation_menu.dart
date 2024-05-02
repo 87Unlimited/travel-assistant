@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:travel_assistant/core/util/constants/colors.dart';
 import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
-import 'package:travel_assistant/features/auth/presentation/views/create_trip/create_trip.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/home_view.dart';
 
-import 'features/auth/presentation/views/create_trip/create_trip_detail/create_trip_detail.dart';
 import 'features/auth/presentation/views/location/location_view.dart';
 import 'features/auth/presentation/views/profile/profile_view.dart';
+import 'features/auth/presentation/views/trips/create_trip/create_trip.dart';
+import 'features/auth/presentation/views/trips/trips_view.dart';
 
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({super.key});
@@ -75,9 +75,9 @@ class NavigationController extends GetxController{
   final Rx<int> selectedIndex = 0.obs;
 
   final screens = [
-    const HomeView(),
+    HomeView(),
     const MapSample(),
-    const CreateTripView(),
+    const TripView(),
     const ProfileView(),
   ];
 }

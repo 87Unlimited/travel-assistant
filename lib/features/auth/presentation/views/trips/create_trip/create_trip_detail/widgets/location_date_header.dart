@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../../../../../../common/widgets/icons/text_with_icon.dart';
-import '../../../../../../../core/util/constants/colors.dart';
-import '../../../../../../../core/util/constants/sizes.dart';
+import '../../../../../../../../common/widgets/icons/text_with_icon.dart';
+import '../../../../../../../../core/util/constants/colors.dart';
+import '../../../../../../../../core/util/constants/sizes.dart';
 
 
 class LocationAndDateHeader extends StatelessWidget {

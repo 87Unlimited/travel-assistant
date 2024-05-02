@@ -12,17 +12,18 @@ import 'package:travel_assistant/features/auth/data/repositories/authentication/
 
 import '../../../../../common/widgets/snackbar.dart';
 import '../../../../../core/util/exceptions/firebase_exceptions.dart';
+import '../../models/trip_model.dart';
 import '../../models/user_model.dart';
 
-class UserRepository extends GetxController {
-  static UserRepository get instance => Get.find();
+class TripRepository extends GetxController {
+  static TripRepository get instance => Get.find();
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  /// Function to save user data to Firestore
-  Future<void> saveUserRecord(UserModel user) async {
+  /// Function to save trip data to Firestore
+  Future<void> saveTripRecord(TripModel trip) async {
     try {
-      await _db.collection("Users").doc(user.id).set(user.toJson());
+      await _db.collection("Trips").doc().set(trip.toJson());
     } on FirebaseException catch (e) {
       throw CustomFirebaseException(e.code).message;
     } on FormatException catch (_) {
@@ -34,15 +35,11 @@ class UserRepository extends GetxController {
     }
   }
 
-  // Function to fetch user details based on user ID.
-  Future<UserModel> fetchUserDetails() async {
+  /// Function to fetch trip details based on user ID.
+  Future<List<TripModel>> getHomeViewTrips() async {
     try {
-      final documentSnapshot = await _db.collection("Users").doc(AuthenticationRepository.instance.authUser?.uid).get();
-      if (documentSnapshot.exists) {
-        return UserModel.fromSnapshot(documentSnapshot);
-      } else {
-        return UserModel.empty();
-      }
+      final snapshot = await _db.collection("Trips").where('UserId', isEqualTo: AuthenticationRepository.instance.authUser?.uid).get();
+      return snapshot.docs.map((e) => TripModel.fromSnapshot(e)).toList();
     } on FirebaseException catch (e) {
       throw CustomFirebaseException(e.code).message;
     } on FormatException catch (_) {

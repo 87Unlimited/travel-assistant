@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:travel_assistant/features/auth/data/models/trip_model.dart';
+import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/create_trip_detail/create_trip_detail_new.dart';
 
 import '../../../../../../core/util/constants/colors.dart';
 import '../../../../../../core/util/constants/image_strings.dart';
@@ -14,25 +17,17 @@ import '../../images/rounded_image.dart';
 class TripCard extends StatelessWidget {
   const TripCard({
     super.key,
-    required this.title,
-    required this.location,
-    this.tag,
-    this.isFavIconShow = true,
-    this.onTap,
+    required this.trip,
   });
 
-  final String title;
-  final String location;
-  final String? tag;
-  final bool isFavIconShow;
-  final void Function()? onTap;
+  final TripModel trip;
 
   @override
   Widget build(BuildContext context) {
     final dark = HelperFunctions.isDarkMode(context);
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: () => Get.to(() => CreateTripDetailView(trip: trip,)),
       child: Padding(
         padding: const EdgeInsets.only(right: CustomSizes.spaceBtwItems),
         child: Container(
@@ -62,7 +57,7 @@ class TripCard extends StatelessWidget {
                             height: CustomSizes.lg,
                             padding: const EdgeInsets.symmetric(horizontal: CustomSizes.sm, vertical: CustomSizes.xs),
                             backgroundColor: Colors.transparent,
-                            child: tag != null ? Text(tag!, style: Theme.of(context).textTheme.labelLarge!.apply(color: Colors.white)) : null,
+                            //child: tag != null ? Text(tag!, style: Theme.of(context).textTheme.labelLarge!.apply(color: Colors.white)) : null,
                           ),
                         ),
 
@@ -77,13 +72,13 @@ class TripCard extends StatelessWidget {
                     const SizedBox(height: CustomSizes.spaceBtwItems / 2,),
                     // Trip title
                     Text(
-                      title,
+                      trip.tripName,
                       style: Theme.of(context).textTheme.headlineSmall!.apply(color: CustomColors.primary),
                     ),
                     // Location with icon
                     TextWithIcon(
                       icon: Iconsax.location5,
-                      title: location,
+                      title: trip.location,
                       color: CustomColors.secondary,
                       textStyle: Theme.of(context).textTheme.labelLarge!.apply(color: CustomColors.primary),
                     ),

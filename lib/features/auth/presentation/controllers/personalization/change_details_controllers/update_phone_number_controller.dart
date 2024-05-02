@@ -8,26 +8,26 @@ import '../../../../../../common/widgets/loaders/loaders.dart';
 import '../../../../../../core/network/network_manager.dart';
 import '../../../../../../core/util/popups/full_screen_loader.dart';
 
-class UpdateEmailController extends GetxController {
-  static UpdateEmailController get instance => Get.find();
+class UpdatePhoneNumberController extends GetxController {
+  static UpdatePhoneNumberController get instance => Get.find();
 
-  final email = TextEditingController();
+  final phoneNumber = TextEditingController();
   final userController = UserController.instance;
   final userRepository = Get.put(UserRepository());
-  GlobalKey<FormState> updateUserNameFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> updatePhoneNumberFormKey = GlobalKey<FormState>();
 
   @override
   void onInit() {
-    initializedEmail();
+    initializedPhoneNumber();
     super.onInit();
   }
 
   // Fetch user record
-  Future<void> initializedEmail() async {
-    email.text = userController.user.value.firstName;
+  Future<void> initializedPhoneNumber() async {
+    phoneNumber.text = userController.user.value.phoneNumber;
   }
 
-  Future<void> updateUserEmail() async {
+  Future<void> updatePhoneNumber() async {
     try {
       // Start Loading
       FullScreenLoader.openLoadingDialog(
@@ -41,34 +41,31 @@ class UpdateEmailController extends GetxController {
       }
 
       // Form Validation
-      if (!updateUserNameFormKey.currentState!.validate()) {
+      if (!updatePhoneNumberFormKey.currentState!.validate()) {
         // Remove Loader
         FullScreenLoader.stopLoading();
         return;
       }
 
       // Update user first and last name in Firebase
-      // Map<String, dynamic> name = {'Email': email.text.trim(), 'LastName': lastName.text.trim()};
-      // await userRepository.updateSingleField(name);
+      Map<String, dynamic> phoneNumberJson = {'PhoneNumber': phoneNumber.text.trim()};
+      await userRepository.updateSingleField(phoneNumberJson);
 
       // Update the Rx user value
-      // userController.user.value.firstName = firstName.text.trim();
+      userController.user.value.phoneNumber = phoneNumber.text.trim();
 
       // Remove Loader
       FullScreenLoader.stopLoading();
 
       // Show Success Message
-      CustomLoaders.successSnackBar(title: "Congratulations", message: "Your name has been updated.");
+      CustomLoaders.successSnackBar(title: "Congratulations", message: "Your phone number has been updated.");
 
       // Move to Verify Email Screen
-      Get.to(() => const ProfileView());
+      Get.back();
 
     } catch (e) {
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
-    } finally {
-      // Remove Loader
-
     }
   }
 }

@@ -4,151 +4,59 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:travel_assistant/features/auth/data/models/trip_model.dart';
 import 'package:travel_assistant/features/auth/domain/services/location_services.dart';
-import 'package:travel_assistant/features/auth/presentation/views/create_trip/create_trip_detail/widgets/bottom_sheet_create.dart';
-import 'package:travel_assistant/features/auth/presentation/views/create_trip/create_trip_detail/widgets/location_date_header.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_assistant/core/util/constants/colors.dart';
-import 'package:travel_assistant/features/auth/presentation/views/create_trip/create_trip_detail/widgets/horizontal_calendar.dart';
+import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/create_trip_detail/widgets/bottom_sheet_create.dart';
+import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/create_trip_detail/widgets/horizontal_calendar.dart';
+import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/create_trip_detail/widgets/location_date_header.dart';
 
-import '../../../../../../common/widgets/appbar.dart';
-import '../../../../../../common/widgets/button/text_icon_button.dart';
-import '../../../../../../core/util/constants/sizes.dart';
-import '../../../../../../core/util/constants/spacing_styles.dart';
-import '../../../../../../core/util/device/device_utility.dart';
-import '../../../../../../core/util/formatters/formatter.dart';
-import '../../../../../../core/util/helpers/helper_functions.dart';
+import '../../../../../../../common/widgets/appbar.dart';
+import '../../../../../../../common/widgets/button/text_icon_button.dart';
+import '../../../../../../../core/util/constants/sizes.dart';
+import '../../../../../../../core/util/constants/spacing_styles.dart';
+import '../../../../../../../core/util/device/device_utility.dart';
+import '../../../../../../../core/util/formatters/formatter.dart';
+import '../../../../../../../core/util/helpers/helper_functions.dart';
+import '../../../../../../../navigation_menu.dart';
+import '../../../../controllers/trips/create_trip_detail_controller.dart';
 
-class CreateTripDetailView extends StatefulWidget {
-  const CreateTripDetailView({super.key});
 
-  @override
-  State<CreateTripDetailView> createState() => _CreateTripDetailViewState();
-}
+class CreateTripDetailView extends StatelessWidget {
+  const CreateTripDetailView({
+    super.key,
+    required this.trip,
+  });
 
-class _CreateTripDetailViewState extends State<CreateTripDetailView> {
-  DateTime? _selectedDate;
-  String formattedDate = "";
-  bool circular = false;
-
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
-  TextEditingController _originController = TextEditingController();
-  TextEditingController _destinationController = TextEditingController();
-
-  Set<Marker> _markers = Set<Marker>();
-  Set<Polygon> _polygons = Set<Polygon>();
-  Set<Polyline> _polylines = Set<Polyline>();
-  List<LatLng> polygonLatLngs = <LatLng>[];
-
-  int _polygonIdCounter = 1;
-  int _polylineIdCounter = 1;
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  @override
-  void initState() {
-    super.initState();
-
-    _setMarker(LatLng(37.42796133580664, -122.085749655962));
-  }
-
-  void _setMarker(LatLng point) {
-    setState(() {
-      _markers.add(
-        Marker(
-          markerId: MarkerId('marker'),
-          position: point,
-        ),
-      );
-    });
-  }
-
-  void _setPolygon() {
-    final String polygonIdVal = 'polygon_$_polygonIdCounter';
-    _polygonIdCounter++;
-
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId(polygonIdVal),
-        points: polygonLatLngs,
-        strokeWidth: 2,
-        fillColor: Colors.transparent,
-      ),
-    );
-  }
-
-  void _setPolyline(List<PointLatLng> points) {
-    final String polylineIdVal = 'polyline_$_polylineIdCounter';
-    _polylineIdCounter++;
-
-    _polylines.add(
-      Polyline(
-        polylineId: PolylineId(polylineIdVal),
-        width: 2,
-        color: Colors.blue,
-        points: points
-            .map(
-              (point) => LatLng(point.latitude, point.longitude),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  void _handleDateChange(DateTime selectedDate) {
-    setState(() {
-      _selectedDate = selectedDate;
-      formattedDate = DateFormat('d, EEE').format(_selectedDate!);
-    });
-  }
-
-  Future<void> _goToPlace(double lat, double lng) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(lat, lng),
-          zoom: 12,
-        ),
-      ),
-    );
-
-    _setMarker(LatLng(lat, lng));
-  }
+  final TripModel trip;
 
   @override
   Widget build(BuildContext context) {
-    final dark = HelperFunctions.isDarkMode(context);
-    final arguments =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final controller = Get.put(CreateTripDetailController());
+    final Completer<GoogleMapController> googleMapController = Completer<GoogleMapController>();
+    final navController = Get.put(NavigationController());
 
-    final rangeDatePickerValue = arguments?['rangeDatePickerValue'];
-    final tripName = arguments?['tripName'];
-    final location = arguments?['location'];
-
-    DateTime? firstDate = rangeDatePickerValue[0];
-    DateTime? lastDate = rangeDatePickerValue[1];
+    DateTime? firstDate = trip.startDate!.toDate();
+    DateTime? lastDate = trip.endDate!.toDate();
     String dateTitle =
         "${CustomFormatters.yearMonthDay.format(firstDate!)} - ${CustomFormatters.yearMonthDay.format(lastDate!)}";
-    _selectedDate = firstDate;
+    controller.selectedDate = firstDate;
 
     return Scaffold(
       appBar: CustomAppBar(
-        showBackArrow: true,
+        showBackArrow: false,
+        leadingIcon: Iconsax.arrow_left,
+        leadingOnPressed: () {
+          navController.selectedIndex.value = 2;
+          Get.to(NavigationMenu());
+        },
         // Trip Name
         title: Text(
-          tripName,
+          trip.tripName,
           style: Theme.of(context)
               .textTheme
               .headlineMedium!
@@ -165,7 +73,7 @@ class _CreateTripDetailViewState extends State<CreateTripDetailView> {
                     child: Column(
                       children: [
                         TextFormField(
-                          controller: _originController,
+                          controller: controller.origin,
                           textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(hintText: "Origin"),
                           onChanged: (value) {
@@ -173,7 +81,7 @@ class _CreateTripDetailViewState extends State<CreateTripDetailView> {
                           },
                         ),
                         TextFormField(
-                          controller: _destinationController,
+                          controller: controller.destination,
                           textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(hintText: "Search by City"),
                           onChanged: (value) {
@@ -186,12 +94,12 @@ class _CreateTripDetailViewState extends State<CreateTripDetailView> {
                   IconButton(
                     onPressed: () async {
                       var directions = await LocationServices().getDirections(
-                        _originController.text,
-                        _destinationController.text,
+                        controller.origin.text.trim(),
+                        controller.destination.text.trim(),
                       );
-                      _goToPlace(directions['start_location']['lat'], directions['start_location']['lng'],);
+                      controller.goToPlace(directions['start_location']['lat'], directions['start_location']['lng'],);
 
-                      _setPolyline(directions['polyline_decoded']);
+                      controller.setPolyline(directions['polyline_decoded']);
                     },
                     icon: Icon(Icons.search),
                   ),
@@ -200,18 +108,16 @@ class _CreateTripDetailViewState extends State<CreateTripDetailView> {
               Expanded(
                 child: GoogleMap(
                   mapType: MapType.normal,
-                  markers: _markers,
-                  polylines: _polylines,
-                  polygons: _polygons,
-                  initialCameraPosition: _kGooglePlex,
+                  markers: controller.markers,
+                  polylines: controller.polylines,
+                  polygons: controller.polygons,
+                  initialCameraPosition: controller.kGooglePlex,
                   onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
+                    googleMapController.complete(controller);
                   },
                   onTap: (point) {
-                    setState(() {
-                      polygonLatLngs.add(point);
-                      _setPolygon();
-                    });
+                    controller.polygonLatLngs.add(point);
+                    controller.setPolygon();
                   },
                 ),
               ),
@@ -225,7 +131,7 @@ class _CreateTripDetailViewState extends State<CreateTripDetailView> {
             builder: (BuildContext context, ScrollController scrollController) {
               return ClipRRect(
                 borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(30.0)),
+                const BorderRadius.vertical(top: Radius.circular(30.0)),
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
@@ -246,14 +152,14 @@ class _CreateTripDetailViewState extends State<CreateTripDetailView> {
                             ),
                             // Location And Date
                             LocationAndDateHeader(
-                                location: location, dateTitle: dateTitle),
+                                location: trip.location, dateTitle: dateTitle),
                             const SizedBox(
                                 height: CustomSizes.spaceBtwSections),
 
                             // Calendar
                             HorizontalCalendar(
-                              selectedDate: _selectedDate!,
-                              onDateChange: _handleDateChange,
+                              selectedDate: controller.selectedDate!,
+                              onDateChange: controller.handleDateChange,
                               initialDate: firstDate,
                             ),
                             const SizedBox(

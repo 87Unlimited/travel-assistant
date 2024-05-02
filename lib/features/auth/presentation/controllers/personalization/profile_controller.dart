@@ -6,12 +6,10 @@ import 'package:travel_assistant/features/auth/data/repositories/user/user_repos
 import '../../../../../common/widgets/loaders/loaders.dart';
 import '../../../../../core/util/popups/full_screen_loader.dart';
 import '../../../data/repositories/authentication/authentication_repository.dart';
-import '../../../domain/entities/user_model.dart';
+import '../../../data/models/user_model.dart';
 
 class ProfileController extends GetxController {
   static ProfileController get instance => Get.find();
-
-  final userRepository = Get.put(UserRepository());
 
   Future<void> logoutUser(UserCredential? userCredentials) async {
     try {

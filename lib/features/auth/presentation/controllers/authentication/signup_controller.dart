@@ -4,7 +4,7 @@ import 'package:travel_assistant/common/widgets/loaders/loaders.dart';
 import 'package:travel_assistant/core/util/popups/full_screen_loader.dart';
 import 'package:travel_assistant/features/auth/data/repositories/authentication/authentication_repository.dart';
 import 'package:travel_assistant/features/auth/data/repositories/user/user_repository.dart';
-import 'package:travel_assistant/features/auth/domain/entities/user_model.dart';
+import 'package:travel_assistant/features/auth/data/models/user_model.dart';
 
 import '../../../../../core/network/network_manager.dart';
 import '../../views/register/verify_email/verify_email_view.dart';
@@ -86,9 +86,6 @@ class SignupController extends GetxController {
     } catch (e) {
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
-    } finally {
-      // Remove Loader
-
     }
   }
 }

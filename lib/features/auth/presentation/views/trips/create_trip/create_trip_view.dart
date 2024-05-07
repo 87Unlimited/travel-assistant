@@ -12,7 +12,7 @@ import '../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../../navigation_menu.dart';
 import 'calendar_config.dart';
-import 'create_trip_detail/create_trip_detail.dart';
+import 'create_trip_detail/create_trip_detail_view.dart';
 
 class CreateTripView extends StatefulWidget {
   const CreateTripView({super.key});
@@ -55,7 +55,10 @@ class _CreateTripViewState extends State<CreateTripView> {
       appBar: CustomAppBar(
         showBackArrow: false,
         leadingIcon: Iconsax.arrow_left,
-        leadingOnPressed: () => navController.screens[2],
+        leadingOnPressed: () {
+          navController.selectedIndex.value = 2;
+          Get.to(NavigationMenu());
+        },
         title: Text(
           "Create Itinerary",
           style: Theme.of(context).textTheme.headlineMedium!.apply(color: CustomColors.primary),
@@ -73,36 +76,5 @@ class _CreateTripViewState extends State<CreateTripView> {
         ),
       ),
     );
-  }
-
-  String _getValueText(
-    CalendarDatePicker2Type datePickerType,
-    List<DateTime?> values,
-  ) {
-    values =
-        values.map((e) => e != null ? DateUtils.dateOnly(e) : null).toList();
-    var valueText = (values.isNotEmpty ? values[0] : null)
-        .toString()
-        .replaceAll('00:00:00.000', '');
-
-    if (datePickerType == CalendarDatePicker2Type.multi) {
-      valueText = values.isNotEmpty
-          ? values
-              .map((v) => v.toString().replaceAll('00:00:00.000', ''))
-              .join(', ')
-          : 'null';
-    } else if (datePickerType == CalendarDatePicker2Type.range) {
-      if (values.isNotEmpty) {
-        final startDate = values[0].toString().replaceAll('00:00:00.000', '');
-        final endDate = values.length > 1
-            ? values[1].toString().replaceAll('00:00:00.000', '')
-            : 'null';
-        valueText = '$startDate to $endDate';
-      } else {
-        return 'null';
-      }
-    }
-
-    return valueText;
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_assistant/core/util/constants/sizes.dart';
+import 'package:travel_assistant/features/auth/data/models/attraction_model.dart';
 import 'package:travel_assistant/features/auth/presentation/views/login/login_view.dart';
 
 import '../../../../../common/widgets/loaders/loaders.dart';
@@ -11,34 +12,35 @@ import '../../../../../core/network/network_manager.dart';
 import '../../../../../core/util/popups/full_screen_loader.dart';
 import '../../../data/models/trip_model.dart';
 import '../../../data/repositories/authentication/authentication_repository.dart';
+import '../../../data/repositories/trip/attraction_repository.dart';
 import '../../../data/repositories/trip/trip_repository.dart';
 import '../../views/profile/re_auth_user_form/re_auth_user_form.dart';
 
-class TripController extends GetxController {
-  static TripController get instance => Get.find();
+class AttractionController extends GetxController {
+  static AttractionController get instance => Get.find();
 
   final isLoading = false.obs;
-  final tripRepository = Get.put(TripRepository());
-  RxList<TripModel> homeViewTrips = <TripModel>[].obs;
-  Rx<TripModel> trip = TripModel.empty().obs;
+  final attractionRepository = Get.put(AttractionRepository());
+  RxList<AttractionModel> attractionsOfSingleDay = <AttractionModel>[].obs;
+  Rx<AttractionModel> attraction = AttractionModel.empty().obs;
 
   @override
   void onInit() {
-    fetchHomeViewTrips();
+    fetchAttractionsOfSingleDay("Vv8RBz4ja1Ox7nAfWxVJ");
     super.onInit();
   }
 
-  /// Fetch all trips of the user
-  void fetchHomeViewTrips() async {
+  /// Fetch all attractions of the user
+  void fetchAttractionsOfSingleDay(String tripId) async {
     try {
       // Show loader when loading trips
       isLoading.value = true;
 
       // Fetch trips
-      final trips = await tripRepository.getHomeViewTrips();
+      final attractions = await attractionRepository.fetchAttractionsByDayId(tripId);
 
-      // Assign trips
-      homeViewTrips.assignAll(trips);
+      // Assign attractions
+      attractionsOfSingleDay.assignAll(attractions);
     } catch (e) {
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());

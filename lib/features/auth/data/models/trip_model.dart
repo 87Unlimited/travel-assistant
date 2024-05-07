@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 
+import 'location_model.dart';
+
 class TripModel {
   final String userId;
   String? tripId;
   String tripName;
-  String location;
+  LocationModel? location;
   String description;
   String? image;
   Timestamp? startDate;
@@ -26,7 +28,7 @@ class TripModel {
   static TripModel empty() => TripModel(
       userId: "",
       tripName: "",
-      location: '',
+      location: null,
       description: '',
       image: '',
       startDate: null,
@@ -37,7 +39,7 @@ class TripModel {
     return {
       'UserId': userId,
       'TripName': tripName,
-      'Location': location,
+      'Location': location!.toJson(),
       'Description': description,
       'Image': image,
       'StartDate': startDate,
@@ -52,7 +54,7 @@ class TripModel {
         tripId: document.id,
         userId: data['UserId'] ?? '',
         tripName: data['TripName'] ?? '',
-        location: data['Location'] ?? '',
+        location: LocationModel.fromJson(data['Location']),
         description: data['Description'] ?? '',
         image: data['Image'] ?? '',
         startDate: data['StartDate'] ?? '',

@@ -8,7 +8,7 @@ import 'package:travel_assistant/features/auth/presentation/views/home/home_view
 
 import 'features/auth/presentation/views/location/location_view.dart';
 import 'features/auth/presentation/views/profile/profile_view.dart';
-import 'features/auth/presentation/views/trips/create_trip/create_trip.dart';
+import 'features/auth/presentation/views/trips/create_trip/create_trip_view.dart';
 import 'features/auth/presentation/views/trips/trips_view.dart';
 
 class NavigationMenu extends StatelessWidget {

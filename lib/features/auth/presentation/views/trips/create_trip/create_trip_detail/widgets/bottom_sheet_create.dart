@@ -1,19 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:get/get.dart';
+import 'package:travel_assistant/features/auth/data/models/trip_model.dart';
 
 import '../../../../../../../../core/util/constants/colors.dart';
 import '../../../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../../../../core/util/device/device_utility.dart';
+import '../../../../../controllers/trips/create_trip_detail_controller.dart';
+import '../../../add_attractions/add_attractions_view.dart';
+import 'bottom_sheet_add_attraction.dart';
 
 class BottomSheetCreate extends StatelessWidget {
   const BottomSheetCreate({
     super.key,
+    required this.trip,
   });
+
+  final TripModel trip;
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CreateTripDetailController());
+
     return SingleChildScrollView(
       child: Padding(
         padding: SpacingStyle.paddingWithNormalHeight,
@@ -76,6 +86,10 @@ class BottomSheetCreate extends StatelessWidget {
                               style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
                               overflow: TextOverflow.ellipsis,
                             ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Get.to(AddAttractionView(trip: trip,));
+                            },
                           ),
                         ],
                       ).toList(),

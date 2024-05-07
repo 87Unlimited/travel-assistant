@@ -13,7 +13,7 @@ import 'package:travel_assistant/features/auth/presentation/views/trips/widgets/
 import '../../../../../../../common/widgets/icons/text_with_icon.dart';
 import '../../../../../../../core/util/formatters/formatter.dart';
 import '../../../../../data/models/trip_model.dart';
-import '../../create_trip/create_trip_detail/create_trip_detail_new.dart';
+import '../../create_trip/create_trip_detail/create_trip_detail_view.dart';
 
 class TripCardLong extends StatelessWidget {
   const TripCardLong({
@@ -73,7 +73,7 @@ class TripCardLong extends StatelessWidget {
 
                           TextWithIcon(
                             icon: Iconsax.location5,
-                            title: trip.location,
+                            title: trip.location!.locationName,
                             color: CustomColors.grey,
                             textStyle: Theme.of(context).textTheme.labelLarge!.apply(color: CustomColors.grey),
                           ),

@@ -28,6 +28,7 @@ import '../../../../../core/util/helpers/helper_functions.dart';
 import '../../../../../navigation_menu.dart';
 import '../../../data/models/autocomplete_prediction.dart';
 import '../../../data/models/place_auto_complete_response.dart';
+import '../../../domain/services/location_services.dart';
 import '../../../utilities/debounce.dart';
 import '../../controllers/trips/create_trip_controller.dart';
 import '../trips/create_trip/widgets/location_list_tile.dart';
@@ -47,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
     final dark = HelperFunctions.isDarkMode(context);
     const bool isTripExist = true;
     final tripController = Get.put(TripController());
-    final searchController = Get.put(CreateTripController());
+    final locationServices = Get.put(LocationServices());
     final navController = Get.put(NavigationController());
 
     return Scaffold(
@@ -60,39 +61,39 @@ class _HomeViewState extends State<HomeView> {
               const SizedBox(height: CustomSizes.spaceBtwSections,),
 
               // Search Bar
-              LocationSearchBar(
-                controller: searchController.location,
-                leadingIcon: const Icon(Iconsax.location),
-                trailingIcon: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: Center(
-                      child: Icon(
-                        Icons.camera_alt,
-                      ),
-                    ),
-                  )
-                ],
-                hintText: "Search Country/Region",
-                viewOnChanged: (value) {
-                  if (value != "") {
-                    searchController.placeAutoComplete(value);
-                  } else {
-                    searchController.placePredictions.clear();
-                  }
-                },
-                suggestionsBuilder: (BuildContext context, SearchController location) {
-                  return Iterable<Widget>.generate(
-                      placePredictions.length, (int index) {
-                    return LocationListTile(
-                      location: placePredictions[index].description,
-                      onPressed: () {
-
-                      },
-                    );
-                  });
-                },
-              ),
+              // LocationSearchBar(
+              //   controller: locationServices.location,
+              //   leadingIcon: const Icon(Iconsax.location),
+              //   trailingIcon: [
+              //     IconButton(
+              //       onPressed: () {},
+              //       icon: Center(
+              //         child: Icon(
+              //           Icons.camera_alt,
+              //         ),
+              //       ),
+              //     )
+              //   ],
+              //   hintText: "Search Country/Region",
+              //   viewOnChanged: (value) {
+              //     if (value != "") {
+              //       locationServices.placeAutoComplete(value, "country");
+              //     } else {
+              //       locationServices.placePredictions.clear();
+              //     }
+              //   },
+              //   suggestionsBuilder: (BuildContext context, SearchController location) {
+              //     return Iterable<Widget>.generate(
+              //         placePredictions.length, (int index) {
+              //       return LocationListTile(
+              //         location: placePredictions[index].description,
+              //         onPressed: () {
+              //
+              //         },
+              //       );
+              //     });
+              //   },
+              // ),
               const SizedBox(height: CustomSizes.spaceBtwSections,),
 
               // Category

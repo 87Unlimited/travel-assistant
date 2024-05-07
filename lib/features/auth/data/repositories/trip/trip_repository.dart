@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
@@ -10,8 +9,8 @@ import 'package:travel_assistant/core/util/exceptions/format_exceptions.dart';
 import 'package:travel_assistant/core/util/exceptions/platform_exceptions.dart';
 import 'package:travel_assistant/features/auth/data/repositories/authentication/authentication_repository.dart';
 
-import '../../../../../common/widgets/snackbar.dart';
 import '../../../../../core/util/exceptions/firebase_exceptions.dart';
+import '../../models/day_model.dart';
 import '../../models/trip_model.dart';
 import '../../models/user_model.dart';
 
@@ -21,9 +20,26 @@ class TripRepository extends GetxController {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   /// Function to save trip data to Firestore
-  Future<void> saveTripRecord(TripModel trip) async {
+  Future<String> saveTripRecordAndReturnId(TripModel trip) async {
     try {
-      await _db.collection("Trips").doc().set(trip.toJson());
+      DocumentReference docRef = await _db.collection("Trips").add(trip.toJson());
+      String documentId = docRef.id;
+      return documentId;
+    } on FirebaseException catch (e) {
+      throw CustomFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const CustomFormatException();
+    } on PlatformException catch (e) {
+      throw CustomPlatformException(e.code).message;
+    } catch (e) {
+      throw "Something went wrong. PLease try again";
+    }
+  }
+
+  /// Function to save trip data to Firestore
+  Future<void> saveDaysRecord(DayModel day) async {
+    try {
+      await _db.collection("Trips").doc(day.tripId).collection("Days").add(day.toJson());
     } on FirebaseException catch (e) {
       throw CustomFirebaseException(e.code).message;
     } on FormatException catch (_) {

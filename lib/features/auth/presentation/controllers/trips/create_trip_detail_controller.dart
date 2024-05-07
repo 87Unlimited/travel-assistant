@@ -1,102 +1,159 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:travel_assistant/features/auth/data/models/trip_model.dart';
+
+import '../../../../../common/widgets/loaders/loaders.dart';
+import '../../../../../core/network/network_manager.dart';
+import '../../../../../core/util/device/device_utility.dart';
+import '../../../../../core/util/formatters/formatter.dart';
+import '../../../../../core/util/popups/full_screen_loader.dart';
+import '../../../data/models/attraction_model.dart';
+import '../../../data/models/day_model.dart';
+import '../../../data/models/location_model.dart';
+import '../../../data/repositories/trip/attraction_repository.dart';
+import '../../../domain/services/location_services.dart';
+import '../../views/trips/create_trip/create_trip_detail/widgets/bottom_sheet_create.dart';
 
 class CreateTripDetailController extends GetxController {
   static CreateTripDetailController get instance => Get.find();
 
   // Variables
-  final origin = SearchController();
-  final destination = TextEditingController();
-  final Completer<GoogleMapController> googleMapController = Completer<GoogleMapController>();
-
   DateTime? selectedDate;
   String formattedDate = "";
-  Set<Marker> markers = Set<Marker>();
-  Set<Polygon> polygons = Set<Polygon>();
-  Set<Polyline> polylines = Set<Polyline>();
-  List<LatLng> polygonLatLngs = <LatLng>[];
 
-  int polygonIdCounter = 1;
-  int polylineIdCounter = 1;
+  bool isFirst = true;
 
-  @override
-  void onInit() {
-    super.onInit();
-    setMarker(LatLng(37.42796133580664, -122.085749655962));
+  final location = SearchController();
+  final attractionName = TextEditingController();
+  final description = TextEditingController();
+
+  // Time picker variables
+  final startTime = TextEditingController();
+  final endTime = TextEditingController();
+  ValueNotifier<TimeOfDay> startTimeNotifier = ValueNotifier<TimeOfDay>(TimeOfDay(hour: 8, minute: 0));
+  ValueNotifier<TimeOfDay> endTimeNotifier = ValueNotifier<TimeOfDay>(TimeOfDay(hour: 8, minute: 0));
+
+  String locationId = "";
+  String locationName = "";
+  GlobalKey<FormState> addAttractionFormKey = GlobalKey<FormState>();
+
+  final locationServices = Get.put(LocationServices());
+
+  void updateStartTime(TimeOfDay pickedTime) {
+    startTimeNotifier.value = pickedTime;
+    startTime.text = pickedTime.format(Get.overlayContext!);
   }
 
-  CameraPosition kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  void setMarker(LatLng point) {
-    markers.add(
-      Marker(
-        markerId: MarkerId('marker'),
-        position: point,
-      ),
-    );
+  void updateEndTime(TimeOfDay pickedTime) {
+    endTimeNotifier.value = pickedTime;
+    endTime.text = pickedTime.format(Get.overlayContext!);
   }
 
-  void setPolygon() {
-    final String polygonIdVal = 'polygon_$polygonIdCounter';
-    polygonIdCounter++;
+  // Save Attraction to Firebase
+  Future<void> saveAttractionRecord(String tripId, DateTime selectedDate) async {
+    try {
+      // Start Loading
+      FullScreenLoader.openLoadingDialog(
+          "Creating trip...",
+          "assets/animations/loading.json");
 
-    polygons.add(
-      Polygon(
-        polygonId: PolygonId(polygonIdVal),
-        points: polygonLatLngs,
-        strokeWidth: 2,
-        fillColor: Colors.transparent,
-      ),
-    );
+      // Check Internet Connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        return;
+      }
+
+      // // Destination validation
+      if (locationId == "") {
+        FullScreenLoader.stopLoading();
+        CustomLoaders.errorSnackBar(title: "Oh Snap!", message: "Please enter destination.");
+        return;
+      }
+
+      // Form Validation
+      if (!addAttractionFormKey.currentState!.validate()) {
+        // Remove Loader
+        FullScreenLoader.stopLoading();
+        return;
+      }
+
+      // Transfer startTime to Json value
+      final startTimeJsonValue = {
+        'hour': startTimeNotifier.value.hour,
+        'minute': startTimeNotifier.value.minute,
+      };
+
+      // Transfer endTime to Json value
+      final endTimeJsonValue = {
+        'hour': endTimeNotifier.value.hour,
+        'minute': endTimeNotifier.value.minute,
+      };
+
+      // Transfer selectedDate to Timestamp
+      Timestamp? selectedTimestamp = CustomFormatters.convertDateTimeToTimestamps(selectedDate);
+
+      final attraction = AttractionModel(
+        tripId: tripId,
+        attractionName: attractionName.text.trim(),
+        location: LocationModel(locationId: locationId, locationName: locationName),
+        description: description.text.trim(),
+        image: '',
+        startTime: startTimeJsonValue,
+        endTime: endTimeJsonValue,
+      );
+
+      final attractionRepository = Get.put(AttractionRepository());
+      // Get the day model to fetch dayId
+      List<DayModel> day = await attractionRepository.fetchDay(tripId, selectedTimestamp!);
+      // Save to the Firebase using dayId
+      await attractionRepository.saveAttractionRecord(tripId, day[0].dayId!, attraction);
+
+      // Remove Loader
+      FullScreenLoader.stopLoading();
+
+      // Show Success Message
+      CustomLoaders.successSnackBar(title: "Attraction has been saved!", message: "Add more attraction to have a better experience!");
+
+      // Redirect to create trip view
+      Navigator.pop(Get.overlayContext!);
+    } catch (e) {
+      // Remove Loader
+      FullScreenLoader.stopLoading();
+      // Show error to the user
+      CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    }
   }
 
-  void setPolyline(List<PointLatLng> points) {
-    final String polylineIdVal = 'polyline_$polylineIdCounter';
-    polylineIdCounter++;
+  void tripBottomSheet(context, TripModel trip) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SizedBox(
+            height: DeviceUtils.getScreenHeight(context) * 0.5,
+            width: DeviceUtils.getScreenWidth(context),
+            child: BottomSheetCreate(trip: trip,),
+          );
+        });
+  }
 
-    polylines.add(
-      Polyline(
-        polylineId: PolylineId(polylineIdVal),
-        width: 2,
-        color: Colors.blue,
-        points: points
-            .map(
-              (point) => LatLng(point.latitude, point.longitude),
-        )
-            .toList(),
-      ),
-    );
+  void addAttractionBottomSheet(context, TripModel trip) {
+    // showModalBottomSheet(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return SizedBox(
+    //         height: DeviceUtils.getScreenHeight(context) * 0.5,
+    //         width: DeviceUtils.getScreenWidth(context),
+    //         child: BottomSheetAddAttraction(trip: trip,),
+    //       );
+    //     });
   }
 
   void handleDateChange(DateTime changedDate) {
-    print(selectedDate);
-    print(changedDate);
     selectedDate = changedDate;
     formattedDate = DateFormat('d, EEE').format(selectedDate!);
-    print(" ");
-    print(selectedDate);
-    print(changedDate);
-  }
-
-  Future<void> goToPlace(double lat, double lng) async {
-    final GoogleMapController controller = await googleMapController.future;
-    controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(lat, lng),
-          zoom: 12,
-        ),
-      ),
-    );
-
-    setMarker(LatLng(lat, lng));
   }
 }

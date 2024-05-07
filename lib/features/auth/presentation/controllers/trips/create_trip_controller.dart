@@ -2,24 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/create_trip_detail/create_trip_detail.dart';
-import 'package:travel_assistant/features/auth/presentation/views/trips/trips_view.dart';
+import 'package:travel_assistant/features/auth/data/models/day_model.dart';
 
-import '../../../../../auth/secrets.dart';
 import '../../../../../common/widgets/loaders/loaders.dart';
 import '../../../../../core/network/network_manager.dart';
-import '../../../../../core/network/network_utility.dart';
 import '../../../../../core/util/formatters/formatter.dart';
 import '../../../../../core/util/popups/full_screen_loader.dart';
-import '../../../data/models/autocomplete_prediction.dart';
-import '../../../data/models/place_auto_complete_response.dart';
+import '../../../../../navigation_menu.dart';
+import '../../../data/models/location_model.dart';
 import '../../../data/models/trip_model.dart';
 import '../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../data/repositories/trip/trip_repository.dart';
-import '../../../utilities/debounce.dart';
-import '../../views/password_config/forget_password.dart';
-import '../../views/password_config/reset_password.dart';
-import '../../views/trips/create_trip/create_trip_detail/create_trip_detail_new.dart';
 
 class CreateTripController extends GetxController {
   static CreateTripController get instance => Get.find();
@@ -27,37 +20,29 @@ class CreateTripController extends GetxController {
   // Variables
   final location = SearchController();
   final tripName = TextEditingController();
-  List<AutocompletePrediction> placePredictions = <AutocompletePrediction>[].obs;
+
   List<DateTime?> dates = [];
+  String locationId = "";
+  String locationName = "";
   GlobalKey<FormState> createTripFormKey = GlobalKey<FormState>();
+
   final user = AuthenticationRepository.instance.authUser;
+  final navController = Get.put(NavigationController());
 
-  final Debouncer _debouncer = Debouncer(milliseconds: 500);
+  List<DateTime> getAllDatesInRange(DateTime startDate, DateTime endDate) {
+    List<DateTime> allDates = [];
 
-  void placeAutoComplete(String query) async {
-    _debouncer.run(() {
-      Uri uri = Uri.https("maps.googleapis.com",
-          'maps/api/place/autocomplete/json',
-          {
-            "input": query!,
-            "key": placesApiKey,
-            "types": "country",
-          });
+    DateTime currentDate = startDate;
+    while (currentDate.isBefore(endDate) || currentDate.isAtSameMomentAs(endDate)) {
+      allDates.add(currentDate);
+      currentDate = currentDate.add(Duration(days: 1));
+    }
 
-      NetworkUtility.fetchUrl(uri).then((String? response) {
-        if (response != null) {
-          PlaceAutoCompleteResponse result = PlaceAutoCompleteResponse
-              .parseAutoCompleteResult(response);
-          if (result.predictions != null) {
-            placePredictions = result.predictions!;
-            print(response);
-          }
-        }
-      });
-    });
+    print(allDates);
+    return allDates;
   }
 
-  // Send reset password email
+  // Save trip to Firebase
   Future<void> saveTripRecord() async {
     try {
       // Start Loading
@@ -79,7 +64,7 @@ class CreateTripController extends GetxController {
       }
 
       // Destination validation
-      if (location.text.trim() == "") {
+      if (locationId == "") {
         FullScreenLoader.stopLoading();
         CustomLoaders.errorSnackBar(title: "Oh Snap!", message: "Please enter destination.");
         return;
@@ -97,7 +82,7 @@ class CreateTripController extends GetxController {
       final newTrip = TripModel(
         userId: user!.uid,
         tripName: tripName.text.trim(),
-        location: location.text.trim(),
+        location: LocationModel(locationId: locationId, locationName: locationName),
         description: '',
         image: '',
         startDate: timestampList[0],
@@ -105,7 +90,19 @@ class CreateTripController extends GetxController {
       );
 
       final tripRepository = Get.put(TripRepository());
-      await tripRepository.saveTripRecord(newTrip);
+      String documentId = await tripRepository.saveTripRecordAndReturnId(newTrip);
+
+      List<DateTime> allDates = getAllDatesInRange(dates[0]!, dates[1]!);
+      List<Timestamp?> allDatesTimestampList = CustomFormatters.convertDateTimeListToTimestamps(allDates);
+
+      for (var i = 0; i < allDatesTimestampList.length; i++) {
+        final day = DayModel(
+          tripId: documentId,
+          date: allDatesTimestampList[i],
+        );
+
+        await tripRepository.saveDaysRecord(day);
+      }
 
       // Remove Loader
       FullScreenLoader.stopLoading();
@@ -114,12 +111,14 @@ class CreateTripController extends GetxController {
       CustomLoaders.successSnackBar(title: "Trip created!", message: "You can create your own journey now!");
 
       // Redirect to reset password view
-      Get.to(() => TripView());
+      navController.selectedIndex.value = 2;
+      Get.to(() => NavigationMenu());
     } catch (e) {
       // Remove Loader
       FullScreenLoader.stopLoading();
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+      print(e.toString());
     }
   }
 }

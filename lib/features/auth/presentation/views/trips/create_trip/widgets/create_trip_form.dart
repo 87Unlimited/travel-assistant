@@ -10,6 +10,8 @@ import 'package:travel_assistant/core/util/validators/validation.dart';
 import '../../../../../../../common/widgets/search_bar/location_search_bar.dart';
 import '../../../../../../../common/widgets/section_heading.dart';
 import '../../../../../../../core/util/constants/sizes.dart';
+import '../../../../../data/models/location_model.dart';
+import '../../../../../domain/services/location_services.dart';
 import '../../../../controllers/trips/create_trip_controller.dart';
 import '../calendar_config.dart';
 import 'location_list_tile.dart';
@@ -19,6 +21,7 @@ class CreateTripForm extends StatelessWidget {
 
   Widget build(BuildContext context) {
     final controller = Get.put(CreateTripController());
+    final locationServices = Get.put(LocationServices());
     List<DateTime> _dates = [];
 
     return Form(
@@ -58,21 +61,20 @@ class CreateTripForm extends StatelessWidget {
             hintText: "Search Country/Region",
             viewOnChanged: (value) {
               if (value != "") {
-                controller.placeAutoComplete(value);
+                locationServices.placeAutoComplete(value, "country");
               } else {
-                controller.placePredictions.clear();
+                locationServices.placePredictions.clear();
               }
             },
             suggestionsBuilder: (BuildContext context, SearchController location) {
               return Iterable<Widget>.generate(
-                  controller.placePredictions.length, (int index) {
+                  locationServices.placePredictions.length, (int index) {
                 return LocationListTile(
-                  location: controller.placePredictions[index].description,
-                  onPressed: () {
-                    location.closeView(controller.placePredictions[index].description!);
-                    controller.location.text =
-                    controller.placePredictions[index].description!;
-                    print(controller.location.text);
+                  location: locationServices.placePredictions[index].description,
+                  onPressed: () async {
+                    location.closeView(locationServices.placePredictions[index].description!);
+                    controller.locationId = locationServices.placePredictions[index].placeId!;
+                    controller.locationName = locationServices.placePredictions[index].description!;
                   },
                 );
               });
@@ -93,7 +95,7 @@ class CreateTripForm extends StatelessWidget {
               labelText: "Trip Name",
             ),
             onChanged: (value) {
-              controller.placeAutoComplete(value);
+              locationServices.placeAutoComplete(value, "country");
             },
           ),
           const SizedBox(height: CustomSizes.spaceBtwItems),

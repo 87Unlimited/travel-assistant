@@ -79,6 +79,8 @@ dependencies:
   connectivity_plus: ^6.0.3
   google_sign_in: ^6.2.1
   shimmer: ^3.0.0
+  enhance_stepper: ^1.0.1
+  tuple: ^2.0.2
 
 dev_dependencies:
   flutter_test:

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:travel_assistant/features/auth/data/models/trip_model.dart';
-import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/create_trip_detail/create_trip_detail_new.dart';
+import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/create_trip_detail/create_trip_detail_view.dart';
 
 import '../../../../../../core/util/constants/colors.dart';
 import '../../../../../../core/util/constants/image_strings.dart';
@@ -78,7 +78,7 @@ class TripCard extends StatelessWidget {
                     // Location with icon
                     TextWithIcon(
                       icon: Iconsax.location5,
-                      title: trip.location,
+                      title: trip.location!.locationName,
                       color: CustomColors.secondary,
                       textStyle: Theme.of(context).textTheme.labelLarge!.apply(color: CustomColors.primary),
                     ),

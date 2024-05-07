@@ -11,6 +11,16 @@ class CustomFormatters {
     return NumberFormat.currency(locale: 'en_US', symbol: '\S').format(amount);
   }
 
+  static Timestamp? convertDateTimeToTimestamps(DateTime? dateTime) {
+    if (dateTime != null) {
+      int milliseconds = dateTime.millisecondsSinceEpoch;
+      Timestamp timestamp = Timestamp.fromMillisecondsSinceEpoch(milliseconds);
+      return timestamp;
+    } else {
+      return null;
+    }
+  }
+
   static List<Timestamp?> convertDateTimeListToTimestamps(List<DateTime?> dateTimeList) {
     List<Timestamp?> timestampList = [];
 

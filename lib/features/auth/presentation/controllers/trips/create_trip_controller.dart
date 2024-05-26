@@ -13,6 +13,7 @@ import '../../../data/models/location_model.dart';
 import '../../../data/models/trip_model.dart';
 import '../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../data/repositories/trip/trip_repository.dart';
+import '../../views/trips/create_trip/create_trip_detail/create_trip_detail_view.dart';
 
 class CreateTripController extends GetxController {
   static CreateTripController get instance => Get.find();
@@ -111,8 +112,8 @@ class CreateTripController extends GetxController {
       CustomLoaders.successSnackBar(title: "Trip created!", message: "You can create your own journey now!");
 
       // Redirect to reset password view
-      navController.selectedIndex.value = 2;
-      Get.to(() => NavigationMenu());
+      // navController.selectedIndex.value = 2;
+      Get.to(() => CreateTripDetailView(trip: newTrip,));
     } catch (e) {
       // Remove Loader
       FullScreenLoader.stopLoading();

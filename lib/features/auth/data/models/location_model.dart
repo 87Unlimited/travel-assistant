@@ -26,4 +26,8 @@ class LocationModel {
       locationName: data['LocationName'] ?? '',
     );
   }
+
+  String getLocationId() {
+    return locationId;
+  }
 }

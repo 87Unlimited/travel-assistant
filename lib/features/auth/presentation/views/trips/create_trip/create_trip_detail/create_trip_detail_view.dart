@@ -48,7 +48,7 @@ class CreateTripDetailView extends StatelessWidget {
           Column(
             children: [
               SearchDirection(),
-              GoogleMapWidget(),
+              GoogleMapWidget(placeId: trip.location!.getLocationId()),
             ],
           ),
           // Draggable Sheet

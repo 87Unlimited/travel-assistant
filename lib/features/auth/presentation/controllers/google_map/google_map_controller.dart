@@ -5,11 +5,14 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../domain/services/location_services.dart';
+
 class CustomGoogleMapController extends GetxController {
   static CustomGoogleMapController get instance => Get.find();
 
   final origin = SearchController();
   final destination = TextEditingController();
+  final locationServices = Get.put(LocationServices());
   final Completer<GoogleMapController> googleMapController = Completer<GoogleMapController>();
 
   Set<Marker> markers = Set<Marker>();
@@ -26,10 +29,13 @@ class CustomGoogleMapController extends GetxController {
     setMarker(LatLng(37.42796133580664, -122.085749655962));
   }
 
-  CameraPosition kGooglePlex = CameraPosition(
-    target: LatLng(23.69781, 120.960515),
-    zoom: 14,
-  );
+  Future<LatLng> setLatLng(placeId) async {
+    Map<String, double> location = await locationServices.getPlaceLatLng(placeId);
+    double? latitude = location['latitude'];
+    double? longitude = location['longitude'];
+
+    return LatLng(latitude!, longitude!);
+  }
 
   void setMarker(LatLng point) {
     markers.add(

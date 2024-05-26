@@ -102,6 +102,26 @@ class LocationServices extends GetxController{
     return formatted_address;
   }
 
+  Future<Map<String, double>> getPlaceLatLng(String placeId) async {
+    final String url =
+        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key";
+
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = convert.jsonDecode(response.body);
+
+      final lat = data['result']['geometry']['location']['lat'];
+      final lng = data['result']['geometry']['location']['lng'];
+
+      return {
+        'latitude': double.parse(lat.toString()),
+        'longitude': double.parse(lng.toString()),
+      };
+    } else {
+      throw Exception('Failed to fetch location details');
+    }
+  }
+
   Future<String> getCountryAbbreviationByPlaceId(String placeId) async {
     final String url =
         "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key";

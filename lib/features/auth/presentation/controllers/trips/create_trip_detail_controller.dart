@@ -70,6 +70,13 @@ class CreateTripDetailController extends GetxController {
     endTime.text = pickedTime.format(Get.overlayContext!);
   }
 
+  // void checkAttractionsAndSetCameraPosition() {
+  //   if (allAttractions.isEmpty) {
+  //     final LatLng locationLatLng = LatLng(trip.location.latitude, trip.location.longitude);
+  //     googleMapController.setCameraPosition(CameraPosition(target: locationLatLng, zoom: 12));
+  //   }
+  // }
+
   Future<void> getMarker() async {
     try {
       // Show loader when loading trips

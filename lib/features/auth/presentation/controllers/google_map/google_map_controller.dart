@@ -46,8 +46,9 @@ class CustomGoogleMapController extends GetxController {
       Marker(
         markerId: MarkerId(locationId),
         position: point,
-      ),
+      )
     );
+    goToPlace(point);
   }
 
   void setPolygon() {
@@ -82,12 +83,12 @@ class CustomGoogleMapController extends GetxController {
     );
   }
 
-  Future<void> goToPlace(double lat, double lng) async {
+  Future<void> goToPlace(LatLng latlng) async {
     final GoogleMapController controller = await googleMapController.future;
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          target: LatLng(lat, lng),
+          target: latlng,
           zoom: 12,
         ),
       ),

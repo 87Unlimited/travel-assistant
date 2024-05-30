@@ -88,17 +88,6 @@ class AddAttractionView extends StatelessWidget {
                           ),
                           const SizedBox(height: CustomSizes.spaceBtwItems),
 
-                          // TextFormField(
-                          //   // controller: controller.tripName,
-                          //   validator: (value) => Validator.validateEmptyText("Location Address", value),
-                          //   decoration: const InputDecoration(
-                          //     prefixIcon: Icon(Iconsax.location),
-                          //     labelText: "Location Address",
-                          //   ),
-                          //   onChanged: (value) {
-                          //     // controller.placeAutoComplete(value);
-                          //   },
-                          // ),
                           // Searcher for address, result restricted by the country
                           LocationSearchBar(
                             controller: controller.location,

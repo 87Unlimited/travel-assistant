@@ -12,6 +12,7 @@ class AttractionModel {
   String? image;
   Map<String, dynamic> startTime;
   Map<String, dynamic> endTime;
+  int? order;
 
   AttractionModel({
     this.attractionId,
@@ -22,18 +23,20 @@ class AttractionModel {
     required this.image,
     required this.startTime,
     required this.endTime,
+    this.order,
   });
 
   /// Static function to create an empty trip model.
   static AttractionModel empty() => AttractionModel(
-      tripId: "",
-      attractionName: "",
-      location: null,
-      description: '',
-      image: '',
-      startTime: {},
-      endTime: {}
-  );
+        tripId: "",
+        attractionName: "",
+        location: null,
+        description: '',
+        image: '',
+        startTime: {},
+        endTime: {},
+        order: 0,
+      );
 
   Map<String, dynamic> toJson() {
     return {
@@ -44,6 +47,7 @@ class AttractionModel {
       'Image': image,
       'StartTime': startTime,
       'EndTime': endTime,
+      'order': order,
     };
   }
 
@@ -59,6 +63,7 @@ class AttractionModel {
         image: data['Image'] ?? '',
         startTime: _parseDateTime(data['StartDate']),
         endTime: _parseDateTime(data['endTime']),
+        order: data['order'] ?? 0,
       );
     }
     return AttractionModel.empty();

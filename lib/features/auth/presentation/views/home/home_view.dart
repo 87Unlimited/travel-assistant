@@ -1,37 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:travel_assistant/core/util/constants/colors.dart';
 import 'package:travel_assistant/core/util/constants/image_strings.dart';
-import 'package:travel_assistant/features/auth/presentation/controllers/personalization/user_controller.dart';
 import 'package:travel_assistant/features/auth/presentation/controllers/trips/trip_controller.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/widgets/home_header.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/widgets/home_categories.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/widgets/image_slider.dart';
-import 'package:travel_assistant/features/auth/presentation/views/home/widgets/trips.dart';
-import 'package:travel_assistant/features/auth/presentation/views/login/login_view.dart';
-import 'package:travel_assistant/features/auth/presentation/views/trips/trips_view.dart';
 
-import '../../../../../auth/secrets.dart';
-import '../../../../../common/widgets/notification_icon.dart';
-import '../../../../../common/widgets/search_bar/location_search_bar.dart';
 import '../../../../../common/widgets/section_heading.dart';
 import '../../../../../common/widgets/trip/trip_cards/trip_card_create.dart';
 import '../../../../../common/widgets/trip/trip_cards/trip_card_vertical.dart';
-import '../../../../../core/network/network_utility.dart';
-import '../../../../../core/util/constants/shadows.dart';
 import '../../../../../core/util/constants/sizes.dart';
 import '../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../core/util/helpers/helper_functions.dart';
 import '../../../../../navigation_menu.dart';
 import '../../../data/models/autocomplete_prediction.dart';
 import '../../../data/models/place_auto_complete_response.dart';
+import '../../../domain/services/flight_services.dart';
 import '../../../domain/services/location_services.dart';
-import '../../../utilities/debounce.dart';
-import '../../controllers/trips/create_trip_controller.dart';
-import '../trips/create_trip/widgets/location_list_tile.dart';
+import '../flight/flight_view.dart';
+import '../trips/create_trip/create_trip_view.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({super.key});
@@ -50,6 +39,7 @@ class _HomeViewState extends State<HomeView> {
     final tripController = Get.put(TripController());
     final locationServices = Get.put(LocationServices());
     final navController = Get.put(NavigationController());
+    final flightServices = Get.put(FlightServices());
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -94,6 +84,16 @@ class _HomeViewState extends State<HomeView> {
               //     });
               //   },
               // ),
+              SizedBox(
+                width: CustomSizes.buttonWidth,
+                height: CustomSizes.buttonHeight,
+                child: ElevatedButton(
+                  onPressed: () => Get.to(FlightView()),
+                  child: const Center(
+                    child: Text('Create Trip'),
+                  ),
+                ),
+              ),
               const SizedBox(height: CustomSizes.spaceBtwSections,),
 
               // Category

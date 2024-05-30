@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:get/get.dart';
 import 'package:travel_assistant/features/auth/data/models/trip_model.dart';
@@ -8,21 +9,15 @@ import '../../../../../../../../core/util/constants/colors.dart';
 import '../../../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../../../../core/util/device/device_utility.dart';
-import '../../../../../controllers/trips/create_trip_detail_controller.dart';
-import '../../../add_attractions/add_attractions_view.dart';
-import 'bottom_sheet_add_attraction.dart';
 
-class BottomSheetCreate extends StatelessWidget {
-  const BottomSheetCreate({
+class PassengerSelectionSheet extends StatelessWidget {
+  const PassengerSelectionSheet({
     super.key,
-    required this.trip,
   });
-
-  final TripModel trip;
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CreateTripDetailController());
+    // final controller = Get.put(CreateTripDetailController());
 
     return SingleChildScrollView(
       child: Padding(
@@ -41,7 +36,7 @@ class BottomSheetCreate extends StatelessWidget {
                       Expanded(
                         // Title
                         child: Text(
-                          "Add Location",
+                          "Passenger",
                           style: Theme.of(context).textTheme.headlineSmall!.apply(color: CustomColors.primary),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -60,36 +55,38 @@ class BottomSheetCreate extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: CustomColors.whiteSmoke,
+                      color: CustomColors.white,
                     ),
                     child: Wrap(
                       children: ListTile.divideTiles(
                         context: context,
                         tiles: [
-                          // Title
+                          // Adult
                           ListTile(
-                            leading: const Icon(Iconsax.search_normal, color: CustomColors.primary,),
+                            leading: const Icon(FontAwesomeIcons.person, color: CustomColors.primary,),
                             title: Text(
-                              'Search Attractions',
+                              'Adult',
                               style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
                               overflow: TextOverflow.ellipsis,
                             ),
-                            onTap: () {
-
-                            },
                           ),
-                          // Title
+                          // Child
                           ListTile(
-                            leading: const Icon(Icons.add, color: CustomColors.primary,),
+                            leading: const Icon(FontAwesomeIcons.child, color: CustomColors.primary,),
                             title: Text(
-                              'Add Custom Attractions',
+                              'Child',
                               style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
                               overflow: TextOverflow.ellipsis,
                             ),
-                            onTap: () {
-                              Navigator.pop(context);
-                              Get.to(AddAttractionView(trip: trip,));
-                            },
+                          ),
+                          // Adult
+                          ListTile(
+                            leading: const Icon(FontAwesomeIcons.baby, color: CustomColors.primary,),
+                            title: Text(
+                              'Baby',
+                              style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ).toList(),
@@ -97,47 +94,19 @@ class BottomSheetCreate extends StatelessWidget {
                   ),
                   const SizedBox(height: CustomSizes.spaceBtwSections),
 
-                  // Add Flight and hotel
-                  Text(
-                    "Add Flight and hotel",
-                    style: Theme.of(context).textTheme.headlineSmall!.apply(color: CustomColors.primary),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: CustomSizes.spaceBtwItems),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: CustomColors.whiteSmoke,
-                    ),
-                    child: Wrap(
-                      children: ListTile.divideTiles(
-                        context: context,
-                        tiles: [
-                          // Title
-                          ListTile(
-                            leading: const Icon(Iconsax.building, color: CustomColors.primary,),
-                            title: Text(
-                              'Add Hotel',
-                              style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          // Title
-                          ListTile(
-                            leading: const Icon(CupertinoIcons.airplane, color: CustomColors.primary,),
-                            title: Text(
-                              'Add Flight',
-                              style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ).toList(),
+                  SizedBox(
+                    width: CustomSizes.buttonWidth,
+                    height: CustomSizes.buttonHeight,
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Center(
+                        child: Text('Confirm'),
+                      ),
                     ),
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

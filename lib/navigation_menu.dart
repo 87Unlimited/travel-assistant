@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:travel_assistant/core/util/constants/colors.dart';
 import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
+import 'package:travel_assistant/features/auth/presentation/views/flight/flight_view.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/home_view.dart';
 
 import 'features/auth/presentation/views/location/location_view.dart';
@@ -56,6 +57,14 @@ class NavigationMenu extends StatelessWidget {
               label: "My Trip",
             ),
             NavigationDestination(
+              icon: Icon(Iconsax.airplane),
+              selectedIcon: Icon(
+                Iconsax.airplane5,
+                color: CustomColors.secondary,
+              ),
+              label: "Flight",
+            ),
+            NavigationDestination(
               icon: Icon(Iconsax.profile_circle),
               selectedIcon: Icon(
                 Iconsax.profile_circle,
@@ -78,6 +87,7 @@ class NavigationController extends GetxController{
     HomeView(),
     const MapSample(),
     const TripView(),
+    const FlightView(),
     const ProfileView(),
   ];
 }

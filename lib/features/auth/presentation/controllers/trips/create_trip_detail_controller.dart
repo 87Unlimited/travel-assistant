@@ -17,7 +17,7 @@ import '../../../data/models/day_model.dart';
 import '../../../data/models/location_model.dart';
 import '../../../data/repositories/trip/attraction_repository.dart';
 import '../../../domain/services/location_services.dart';
-import '../../views/trips/create_trip/create_trip_detail/widgets/bottom_sheet_create.dart';
+import '../../views/trips/create_trip/create_trip_detail/widgets/create_attraction_selection_sheet.dart';
 import '../google_map/google_map_controller.dart';
 
 class CreateTripDetailController extends GetxController {
@@ -204,7 +204,7 @@ class CreateTripDetailController extends GetxController {
           return SizedBox(
             height: DeviceUtils.getScreenHeight(context) * 0.5,
             width: DeviceUtils.getScreenWidth(context),
-            child: BottomSheetCreate(trip: trip,),
+            child: CreateAttractionSelectionSheet(trip: trip,),
           );
         });
   }

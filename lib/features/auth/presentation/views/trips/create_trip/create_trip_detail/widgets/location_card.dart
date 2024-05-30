@@ -18,15 +18,17 @@ class LocationCard extends StatelessWidget {
   const LocationCard({
     super.key,
     required this.attraction,
+    required this.delete,
   });
 
   final AttractionModel attraction;
+  final VoidCallback delete;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 400,
-      height: 140,
+      height: 200,
       padding: const EdgeInsets.all(1),
       decoration: BoxDecoration(
         boxShadow: [ShadowStyle.horizontalCardShadow],
@@ -54,7 +56,7 @@ class LocationCard extends StatelessWidget {
 
                       Flexible(
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: delete,
                           icon: Icon(Icons.delete, color: Colors.red,),
                         ),
                       )
@@ -63,7 +65,7 @@ class LocationCard extends StatelessWidget {
 
                   TextWithIcon(
                     icon: Iconsax.clock,
-                    title: "${attraction.startTime} - ${attraction.endTime}",
+                    title: "${attraction.startTime.values} - ${attraction.endTime.values}",
                     color: CustomColors.grey,
                     textStyle: Theme.of(context).textTheme.labelLarge!.apply(color: CustomColors.grey),
                   ),
@@ -71,7 +73,7 @@ class LocationCard extends StatelessWidget {
 
                   TextWithIcon(
                     icon: Iconsax.location,
-                    title: attraction.location.toString(),
+                    title: attraction.location!.locationName,
                     color: CustomColors.grey,
                     textStyle: Theme.of(context).textTheme.labelLarge!.apply(color: CustomColors.grey),
                   ),

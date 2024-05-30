@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_assistant/features/auth/data/models/trip_model.dart';
 
@@ -17,14 +18,21 @@ import '../../../data/models/location_model.dart';
 import '../../../data/repositories/trip/attraction_repository.dart';
 import '../../../domain/services/location_services.dart';
 import '../../views/trips/create_trip/create_trip_detail/widgets/bottom_sheet_create.dart';
+import '../google_map/google_map_controller.dart';
 
 class CreateTripDetailController extends GetxController {
   static CreateTripDetailController get instance => Get.find();
+  final locationServices = Get.put(LocationServices());
+  final attractionRepository = Get.put(AttractionRepository());
+  final googleMapController = Get.put(CustomGoogleMapController());
 
   // Variables
   DateTime? selectedDate;
   String formattedDate = "";
+  String tripId = "";
+  TripModel trip = TripModel.empty();
 
+  final isLoading = false.obs;
   bool isFirst = true;
 
   final location = SearchController();
@@ -41,7 +49,16 @@ class CreateTripDetailController extends GetxController {
   String locationName = "";
   GlobalKey<FormState> addAttractionFormKey = GlobalKey<FormState>();
 
-  final locationServices = Get.put(LocationServices());
+  RxList<AttractionModel> attractionsOfSingleDay = <AttractionModel>[].obs;
+  RxList<AttractionModel> allAttractions = <AttractionModel>[].obs;
+  Rx<AttractionModel> attraction = AttractionModel.empty().obs;
+
+  @override
+  void onInit() {
+    fetchAttractionsOfSingleDay(tripId);
+    getMarker();
+    super.onInit();
+  }
 
   void updateStartTime(TimeOfDay pickedTime) {
     startTimeNotifier.value = pickedTime;
@@ -51,6 +68,49 @@ class CreateTripDetailController extends GetxController {
   void updateEndTime(TimeOfDay pickedTime) {
     endTimeNotifier.value = pickedTime;
     endTime.text = pickedTime.format(Get.overlayContext!);
+  }
+
+  Future<void> getMarker() async {
+    try {
+      // Show loader when loading trips
+      isLoading.value = true;
+
+      await getAllAttractions();
+
+      for (var attraction in allAttractions) {
+        LatLng locationLatLng = await googleMapController.setLatLng(attraction.location!.locationId);
+        googleMapController.setMarker(attraction.location!.locationId, locationLatLng);
+        // googleMapController.goToPlace(locationLatLng.longitude, locationLatLng.latitude);
+      }
+
+    } catch (e) {
+      // Show error to the user
+      CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    }
+  }
+
+  Future<void> getAllAttractions() async {
+    allAttractions.clear();
+    
+    List<DateTime?> dateRange = CustomFormatters.convertTimestampListToDateTime([trip.startDate, trip.endDate]);
+
+    dateRange = getAllDatesInRange(dateRange[0]!, dateRange[1]!);
+
+    for (var date in dateRange) {
+      // Transfer selectedDate to Timestamp
+      Timestamp? dateTimestamp = CustomFormatters.convertDateTimeToTimestamps(date);
+
+      // Get the day model to fetch dayId
+      List<DayModel> day = await attractionRepository.fetchDay(trip.tripId!, dateTimestamp!);
+
+      // Fetch trips
+      final attractions = await attractionRepository.fetchAttractionsByDayId(tripId, day[0].dayId!);
+
+      // Assign attractions
+      for (var attraction in attractions) {
+        allAttractions.add(attraction);
+      }
+    }
   }
 
   // Save Attraction to Firebase
@@ -112,6 +172,8 @@ class CreateTripDetailController extends GetxController {
       // Save to the Firebase using dayId
       await attractionRepository.saveAttractionRecord(tripId, day[0].dayId!, attraction);
 
+      fetchAttractionsOfSingleDay(tripId);
+
       // Remove Loader
       FullScreenLoader.stopLoading();
 
@@ -155,5 +217,71 @@ class CreateTripDetailController extends GetxController {
   void handleDateChange(DateTime changedDate) {
     selectedDate = changedDate;
     formattedDate = DateFormat('d, EEE').format(selectedDate!);
+    fetchAttractionsOfSingleDay(tripId);
+  }
+
+  /// Fetch all attractions of the user
+  void fetchAttractionsOfSingleDay(String tripId) async {
+    try {
+      // Show loader when loading trips
+      isLoading.value = true;
+
+      // Transfer selectedDate to Timestamp
+      Timestamp? selectedTimestamp = CustomFormatters.convertDateTimeToTimestamps(selectedDate);
+
+      // Get the day model to fetch dayId
+      List<DayModel> day = await attractionRepository.fetchDay(tripId, selectedTimestamp!);
+
+      // Fetch trips
+      final attractions = await attractionRepository.fetchAttractionsByDayId(tripId, day[0].dayId!);
+
+      // Assign attractions
+      attractionsOfSingleDay.assignAll(attractions);
+    } catch (e) {
+      // Show error to the user
+      CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void deleteAttraction(attractionId) async {
+    try {
+      // Show loader when loading trips
+      isLoading.value = true;
+
+      // Transfer selectedDate to Timestamp
+      Timestamp? selectedTimestamp = CustomFormatters.convertDateTimeToTimestamps(selectedDate);
+
+      // Get the day model to fetch dayId
+      List<DayModel> day = await attractionRepository.fetchDay(tripId, selectedTimestamp!);
+
+      await attractionRepository.deleteAttraction(tripId, day[0].dayId!, attractionId);
+
+      // Fetch trips
+      final attractions = await attractionRepository.fetchAttractionsByDayId(tripId, day[0].dayId!);
+
+      // Assign attractions
+      attractionsOfSingleDay.assignAll(attractions);
+    } catch (e) {
+      // Show error to the user
+      CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  List<DateTime> getAllDatesInRange(DateTime startDate, DateTime endDate) {
+    List<DateTime> allDates = [];
+
+    DateTime currentDate = startDate;
+    while (currentDate.isBefore(endDate) ||
+        currentDate.isAtSameMomentAs(endDate)) {
+      allDates.add(currentDate);
+      currentDate = currentDate.add(Duration(days: 1));
+    }
+
+    print(allDates);
+    return allDates;
   }
 }

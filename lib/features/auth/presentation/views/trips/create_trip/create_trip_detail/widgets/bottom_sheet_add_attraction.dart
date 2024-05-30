@@ -24,6 +24,7 @@ class BottomSheetAddAttraction extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(CreateTripDetailController());
 
+
     return SingleChildScrollView(
       child: Padding(
         padding: SpacingStyle.paddingWithNormalHeight,
@@ -140,6 +141,7 @@ class BottomSheetAddAttraction extends StatelessWidget {
                           buttonText: 'Save Location To Trip',
                           onPressed: () async {
                             controller.saveAttractionRecord(trip.tripId!, controller.selectedDate!);
+
                           },
                         ),
                       ],

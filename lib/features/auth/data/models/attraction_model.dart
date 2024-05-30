@@ -57,10 +57,24 @@ class AttractionModel {
         location: LocationModel.fromJson(data['Location']),
         description: data['Description'] ?? '',
         image: data['Image'] ?? '',
-        startTime: data['StartDate'] ?? '',
-        endTime: data['EndDate'] ?? '',
+        startTime: _parseDateTime(data['StartDate']),
+        endTime: _parseDateTime(data['endTime']),
       );
     }
     return AttractionModel.empty();
+  }
+
+  static Map<String, dynamic> _parseDateTime(String? dateTimeString) {
+    if (dateTimeString != null && dateTimeString.isNotEmpty) {
+      final dateTime = DateTime.parse(dateTimeString);
+      return {
+        'year': dateTime.year,
+        'month': dateTime.month,
+        'day': dateTime.day,
+        'hour': dateTime.hour,
+        'minute': dateTime.minute,
+      };
+    }
+    return {};
   }
 }

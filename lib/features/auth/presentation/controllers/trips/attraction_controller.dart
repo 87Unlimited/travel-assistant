@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_assistant/core/util/constants/sizes.dart';
@@ -8,25 +6,27 @@ import 'package:travel_assistant/features/auth/data/models/attraction_model.dart
 import 'package:travel_assistant/features/auth/presentation/views/login/login_view.dart';
 
 import '../../../../../common/widgets/loaders/loaders.dart';
-import '../../../../../core/network/network_manager.dart';
+import '../../../../../core/util/formatters/formatter.dart';
 import '../../../../../core/util/popups/full_screen_loader.dart';
-import '../../../data/models/trip_model.dart';
+import '../../../data/models/day_model.dart';
 import '../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../data/repositories/trip/attraction_repository.dart';
-import '../../../data/repositories/trip/trip_repository.dart';
 import '../../views/profile/re_auth_user_form/re_auth_user_form.dart';
+import 'create_trip_detail_controller.dart';
 
 class AttractionController extends GetxController {
   static AttractionController get instance => Get.find();
 
   final isLoading = false.obs;
   final attractionRepository = Get.put(AttractionRepository());
+  final createTripDetailController = Get.put(CreateTripDetailController());
+
   RxList<AttractionModel> attractionsOfSingleDay = <AttractionModel>[].obs;
   Rx<AttractionModel> attraction = AttractionModel.empty().obs;
 
   @override
   void onInit() {
-    fetchAttractionsOfSingleDay("Vv8RBz4ja1Ox7nAfWxVJ");
+    fetchAttractionsOfSingleDay(createTripDetailController.tripId);
     super.onInit();
   }
 
@@ -36,8 +36,14 @@ class AttractionController extends GetxController {
       // Show loader when loading trips
       isLoading.value = true;
 
+      // Transfer selectedDate to Timestamp
+      Timestamp? selectedTimestamp = CustomFormatters.convertDateTimeToTimestamps(createTripDetailController.selectedDate);
+
+      // Get the day model to fetch dayId
+      List<DayModel> day = await attractionRepository.fetchDay(tripId, selectedTimestamp!);
+
       // Fetch trips
-      final attractions = await attractionRepository.fetchAttractionsByDayId(tripId);
+      final attractions = await attractionRepository.fetchAttractionsByDayId(tripId, day[0].dayId!);
 
       // Assign attractions
       attractionsOfSingleDay.assignAll(attractions);

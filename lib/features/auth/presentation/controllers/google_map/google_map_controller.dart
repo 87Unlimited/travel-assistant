@@ -26,7 +26,11 @@ class CustomGoogleMapController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    setMarker(LatLng(37.42796133580664, -122.085749655962));
+  }
+
+  Future<void> setLatLngAndMarker(placeId) async {
+    LatLng latLng = await setLatLng(placeId);
+    setMarker(placeId, latLng);
   }
 
   Future<LatLng> setLatLng(placeId) async {
@@ -37,10 +41,10 @@ class CustomGoogleMapController extends GetxController {
     return LatLng(latitude!, longitude!);
   }
 
-  void setMarker(LatLng point) {
+  void setMarker(String locationId, LatLng point) {
     markers.add(
       Marker(
-        markerId: MarkerId('marker'),
+        markerId: MarkerId(locationId),
         position: point,
       ),
     );
@@ -89,6 +93,6 @@ class CustomGoogleMapController extends GetxController {
       ),
     );
 
-    setMarker(LatLng(lat, lng));
+    // setMarker(LatLng(lat, lng));
   }
 }

@@ -21,9 +21,19 @@ class TextWithIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, color: color,),
-        const SizedBox(width: CustomSizes.textWithIconWidth,),
-        Text(title, style: textStyle,),
+        Icon(
+          icon,
+          color: color,
+        ),
+        const SizedBox(
+          width: CustomSizes.textWithIconWidth,
+        ),
+        Expanded(
+            child: Text(
+          title,
+          style: textStyle,
+          overflow: TextOverflow.ellipsis,
+        )),
       ],
     );
   }

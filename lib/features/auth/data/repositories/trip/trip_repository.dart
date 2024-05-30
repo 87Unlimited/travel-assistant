@@ -36,10 +36,46 @@ class TripRepository extends GetxController {
     }
   }
 
-  /// Function to save trip data to Firestore
+  /// Function to save days data to Firestore
   Future<void> saveDaysRecord(DayModel day) async {
     try {
       await _db.collection("Trips").doc(day.tripId).collection("Days").add(day.toJson());
+    } on FirebaseException catch (e) {
+      throw CustomFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const CustomFormatException();
+    } on PlatformException catch (e) {
+      throw CustomPlatformException(e.code).message;
+    } catch (e) {
+      throw "Something went wrong. PLease try again";
+    }
+  }
+
+  /// Function to delete days data to Firestore
+  Future<void> deleteDaysRecord(DayModel day) async {
+    try {
+      Query query = await _db.collection('Trips').doc(day.tripId).collection('Days').where('Date', isEqualTo: day.date);
+
+      query.get().then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          doc.reference.delete();
+        });
+      });
+    } on FirebaseException catch (e) {
+      throw CustomFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const CustomFormatException();
+    } on PlatformException catch (e) {
+      throw CustomPlatformException(e.code).message;
+    } catch (e) {
+      throw "Something went wrong. PLease try again";
+    }
+  }
+
+  Future<List<DayModel>> getDaysRecord(DayModel day) async {
+    try {
+      final snapshot = await _db.collection("Trips").doc(day.tripId).collection("Days").get();
+      return snapshot.docs.map((e) => DayModel.fromSnapshot(e)).toList();
     } on FirebaseException catch (e) {
       throw CustomFirebaseException(e.code).message;
     } on FormatException catch (_) {
@@ -68,9 +104,24 @@ class TripRepository extends GetxController {
   }
 
   // Function to update data in Firestore.
-  Future<void> updateUserDetails(UserModel updatedUser) async {
+  Future<void> updateTripDetails(TripModel trip) async {
     try {
-      await _db.collection("Users").doc(updatedUser.id).update(updatedUser.toJson());
+      await _db.collection("Trips").doc(trip.tripId).update(trip.toJson());
+    } on FirebaseException catch (e) {
+      throw CustomFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const CustomFormatException();
+    } on PlatformException catch (e) {
+      throw CustomPlatformException(e.code).message;
+    } catch (e) {
+      throw "Something went wrong. PLease try again";
+    }
+  }
+
+  // Function to update data in Firestore.
+  Future<void> deleteTrip(TripModel trip) async {
+    try {
+      await _db.collection("Trips").doc(trip.tripId).delete();
     } on FirebaseException catch (e) {
       throw CustomFirebaseException(e.code).message;
     } on FormatException catch (_) {
@@ -95,41 +146,5 @@ class TripRepository extends GetxController {
     } catch (e) {
       throw "Something went wrong. PLease try again";
     }
-  }
-
-  // Function to remove user data from Firestore.
-  Future<void> removeUserRecord(String userId) async {
-    try {
-      await _db.collection("Users").doc(userId).delete();
-    } on FirebaseException catch (e) {
-      throw CustomFirebaseException(e.code).message;
-    } on FormatException catch (_) {
-      throw const CustomFormatException();
-    } on PlatformException catch (e) {
-      throw CustomPlatformException(e.code).message;
-    } catch (e) {
-      throw "Something went wrong. PLease try again";
-    }
-  }
-
-  // Upload any Image
-  Future<String?> uploadImage(XFile image) async {
-    const path = "assets/images";
-    final ref = FirebaseStorage.instance.ref(path).child(image.name);
-    try {
-      await ref.putFile(File(image.path));
-      final url = await ref.getDownloadURL();
-      return url;
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
-
-  Future<List<UserModel>> allUsers() async {
-    final snapshot = await _db.collection("Users").get();
-    final userData = snapshot.docs.map((e) => UserModel.fromSnapshot(e))
-        .toList();
-    return userData;
   }
 }

@@ -19,6 +19,7 @@ class TripView extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = HelperFunctions.isDarkMode(context);
     final tripController = Get.put(TripController());
+    tripController.fetchHomeViewTrips();
 
     return Scaffold(
       appBar: CustomAppBar(

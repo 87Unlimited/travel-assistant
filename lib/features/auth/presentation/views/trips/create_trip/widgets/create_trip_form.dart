@@ -11,21 +11,27 @@ import '../../../../../../../common/widgets/search_bar/location_search_bar.dart'
 import '../../../../../../../common/widgets/section_heading.dart';
 import '../../../../../../../core/util/constants/sizes.dart';
 import '../../../../../data/models/location_model.dart';
+import '../../../../../data/models/trip_model.dart';
 import '../../../../../domain/services/location_services.dart';
 import '../../../../controllers/trips/create_trip_controller.dart';
 import '../calendar_config.dart';
 import 'location_list_tile.dart';
 
 class CreateTripForm extends StatelessWidget {
-  const CreateTripForm({Key? key}) : super(key: key);
+  const CreateTripForm({Key? key, this.trip}) : super(key: key);
+
+  final TripModel? trip;
 
   Widget build(BuildContext context) {
     final controller = Get.put(CreateTripController());
     final locationServices = Get.put(LocationServices());
-    List<DateTime> _dates = [];
+
+    if (trip != null) {
+      controller.setTrip(trip!);
+      controller.isTripExisted = true;
+    }
 
     return Form(
-      key: controller.createTripFormKey,
       child: Column(
         children: [
           Column(
@@ -33,8 +39,8 @@ class CreateTripForm extends StatelessWidget {
             children: [
               CalendarDatePicker2(
                 config: CalendarConfig.getConfig(),
-                value: _dates,
-                onValueChanged: (dates) => controller.dates = dates,
+                value: controller.defaultDates,
+                onValueChanged: (dates) => controller.defaultDates = dates,
               ),
             ],
           ),
@@ -58,7 +64,7 @@ class CreateTripForm extends StatelessWidget {
                 ),
               )
             ],
-            hintText: "Search Country/Region",
+            hintText: controller.isTripExisted ? controller.location.text.toString() : "Search Country/Region",
             viewOnChanged: (value) {
               if (value != "") {
                 locationServices.placeAutoComplete(value, "country");
@@ -105,9 +111,9 @@ class CreateTripForm extends StatelessWidget {
               width: CustomSizes.buttonWidth,
               height: CustomSizes.buttonHeight,
               child: ElevatedButton(
-                onPressed: () => controller.saveTripRecord(),
-                child: const Center(
-                  child: Text('Create Trip'),
+                onPressed: () => controller.isTripExisted ? controller.updateTripRecord() : controller.saveTripRecord(),
+                child: Center(
+                  child: Text(controller.isTripExisted ? 'Update Trip' : 'Create Trip'),
                 ),
               ),
             ),

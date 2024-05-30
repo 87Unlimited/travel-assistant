@@ -46,9 +46,15 @@ class AttractionRepository extends GetxController {
   }
 
   /// Function to fetch all attractions based on day ID.
-  Future<List<AttractionModel>> fetchAttractionsByDayId(String tripId) async {
+  Future<List<AttractionModel>> fetchAttractionsByDayId(String tripId, String dayId) async {
     try {
-      final snapshot = await _db.collection("Trips").doc(tripId).collection("Days").doc("8qO0PniLTT1AzQOp6i56").collection("Attractions").get();
+      final snapshot = await _db
+          .collection("Trips")
+          .doc(tripId)
+          .collection("Days")
+          .doc(dayId)
+          .collection("Attractions")
+          .get();
       return snapshot.docs.map((e) => AttractionModel.fromSnapshot(e)).toList();
     } on FirebaseException catch (e) {
       throw CustomFirebaseException(e.code).message;
@@ -58,6 +64,48 @@ class AttractionRepository extends GetxController {
       throw CustomPlatformException(e.code).message;
     } catch (e) {
       throw "Something went wrong. PLease try again";
+    }
+  }
+
+  /// Function to fetch all attractions based on day ID.
+  Future<List<AttractionModel>> fetchAllAttractions(String tripId, String dayId) async {
+    try {
+      final snapshot = await _db
+          .collection("Trips")
+          .doc(tripId)
+          .collection("Days")
+          .doc(dayId)
+          .collection("Attractions")
+          .get();
+      return snapshot.docs.map((e) => AttractionModel.fromSnapshot(e)).toList();
+    } on FirebaseException catch (e) {
+      throw CustomFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const CustomFormatException();
+    } on PlatformException catch (e) {
+      throw CustomPlatformException(e.code).message;
+    } catch (e) {
+      throw "Something went wrong. PLease try again";
+    }
+  }
+
+  /// Function to delete specific attraction.
+  Future<void> deleteAttraction(String tripId, String dayId, String attractionId) async {
+    try {
+      await _db
+          .collection("Trips")
+          .doc(tripId)
+          .collection("Days")
+          .doc(dayId)
+          .collection("Attractions")
+          .doc(attractionId)
+          .delete();
+    } on FirebaseException catch (e) {
+      throw CustomFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      throw CustomPlatformException(e.code).message;
+    } catch (e) {
+      throw "Something went wrong. Please try again";
     }
   }
 }

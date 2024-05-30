@@ -26,12 +26,17 @@ class DetailsSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(CreateTripDetailController());
     final attractionsController = Get.put(AttractionController());
+    final createTripDetailController = Get.put(CreateTripDetailController());
+    createTripDetailController.trip = trip;
+    createTripDetailController.getMarker();
 
     DateTime? firstDate = trip.startDate!.toDate();
     DateTime? lastDate = trip.endDate!.toDate();
     String dateTitle =
         "${CustomFormatters.yearMonthDay.format(firstDate)} - ${CustomFormatters.yearMonthDay.format(lastDate)}";
     controller.selectedDate = firstDate;
+
+    createTripDetailController.tripId = trip.tripId!;
 
     StepperType _type = StepperType.vertical;
 
@@ -78,19 +83,28 @@ class DetailsSheet extends StatelessWidget {
                       // TripStepper(),
                       SizedBox(
                         height: 200,
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          itemCount: attractionsController.attractionsOfSingleDay.length,
-                          scrollDirection: Axis.vertical,
-                          separatorBuilder: (context, index) => const SizedBox(height: CustomSizes.spaceBtwItems),
-                          itemBuilder: (context, index) => LocationCard(
-                            attraction: attractionsController.attractionsOfSingleDay[index],
-                          ),
-                        ),
+                        child: Obx(() {
+                          if (createTripDetailController.attractionsOfSingleDay.isEmpty) {
+                            return Text("You have no activities yet.");
+                          } else {
+                            return ListView.separated(
+                                shrinkWrap: true,
+                                itemCount: createTripDetailController
+                                    .attractionsOfSingleDay.length,
+                                scrollDirection: Axis.vertical,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: CustomSizes.spaceBtwItems),
+                                itemBuilder: (context, index) => LocationCard(
+                                  attraction: createTripDetailController.attractionsOfSingleDay[index],
+                                  delete: () => createTripDetailController.deleteAttraction(createTripDetailController.attractionsOfSingleDay[index].attractionId),
+                                ),
+                            );
+                          }
+                        }),
                       ),
                       const SizedBox(height: CustomSizes.spaceBtwSections),
 
-                      // Sign Up Button
+                      // Add Location Button
                       TextIconButton(
                         icon: const Icon(
                           Icons.add,
@@ -114,5 +128,3 @@ class DetailsSheet extends StatelessWidget {
     );
   }
 }
-
-

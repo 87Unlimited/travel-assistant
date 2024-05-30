@@ -11,45 +11,28 @@ import '../../../../../../common/widgets/appbar.dart';
 import '../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../../navigation_menu.dart';
+import '../../../../data/models/trip_model.dart';
+import '../../../controllers/trips/create_trip_controller.dart';
 import 'calendar_config.dart';
 import 'create_trip_detail/create_trip_detail_view.dart';
 
-class CreateTripView extends StatefulWidget {
-  const CreateTripView({super.key});
+class CreateTripView extends StatelessWidget {
+  const CreateTripView({
+    super.key,
+    this.trip
+  });
 
-  @override
-  State<CreateTripView> createState() => _CreateTripViewState();
-}
-
-class _CreateTripViewState extends State<CreateTripView> {
-  late final TextEditingController _tripName;
-  late final SearchController _location;
-
-  final today = DateUtils.dateOnly(DateTime.now());
-  List<DateTime?> _rangeDatePickerValueWithDefaultValue = [];
-  final _config = CalendarConfig.getConfig();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    _tripName = TextEditingController();
-    _location = SearchController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    _tripName.dispose();
-    _location.dispose();
-    super.dispose();
-  }
+  final TripModel? trip;
 
   @override
   Widget build(BuildContext context) {
-    final dark = HelperFunctions.isDarkMode(context);
-    final config = CalendarConfig.getConfig();
     final navController = Get.put(NavigationController());
+    final controller = Get.put(CreateTripController());
+    controller.clearTrip();
+
+    if (trip != null) {
+      controller.isTripExisted = true;
+    }
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -57,19 +40,26 @@ class _CreateTripViewState extends State<CreateTripView> {
         leadingIcon: Iconsax.arrow_left,
         leadingOnPressed: () {
           navController.selectedIndex.value = 2;
-          Get.to(NavigationMenu());
+          Get.off(NavigationMenu());
         },
         title: Text(
-          "Create Itinerary",
+          controller.isTripExisted ? "Update Itinerary" : "Create Itinerary",
           style: Theme.of(context).textTheme.headlineMedium!.apply(color: CustomColors.primary),
         ),
+        actions: [
+          controller.isTripExisted ? IconButton(
+            onPressed: () => controller.deleteTripWarningPopup(),
+            icon: Icon(Icons.delete, color: Colors.red,),
+          ) : SizedBox(),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: SpacingStyle.paddingWithAppBarHeight,
           child: Column(
             children: [
-              CreateTripForm(),
+              controller.isTripExisted ?
+              CreateTripForm(trip: trip) : CreateTripForm(),
               const SizedBox(height: CustomSizes.spaceBtwSections),
             ],
           ),

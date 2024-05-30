@@ -13,6 +13,7 @@ import 'package:travel_assistant/features/auth/presentation/views/trips/create_t
 
 import '../../../../../../../common/widgets/appbar.dart';
 import '../../../../../../../navigation_menu.dart';
+import '../create_trip_view.dart';
 
 class CreateTripDetailView extends StatelessWidget {
   const CreateTripDetailView({
@@ -34,6 +35,13 @@ class CreateTripDetailView extends StatelessWidget {
           navController.selectedIndex.value = 2;
           Get.to(NavigationMenu());
         },
+        actions: [
+          IconButton(
+            onPressed: () => Get.to(CreateTripView(trip: trip)),
+            icon: Icon(Iconsax.edit),
+          ),
+        ],
+
         // Trip Name
         title: Text(
           trip.tripName,

@@ -27,14 +27,12 @@ class GoogleMapWidget extends StatelessWidget {
       future: controller.setLatLng(placeId),
       builder: (BuildContext context, AsyncSnapshot<LatLng> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // 當仍在等待獲取 LatLng 值時，可以顯示一個等待指示器或其他控制項
           return CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          // 如果發生錯誤，可以顯示錯誤訊息
           return Text('Error: ${snapshot.error}');
         } else {
-          // 當成功獲取到 LatLng 值時，使用該值來設置 initialCamaraPosition
           LatLng? initLatLng = snapshot.data;
+          controller.setLatLngAndMarker(placeId);
 
           if (initLatLng != null) {
             CameraPosition initialCamaraPosition = CameraPosition(

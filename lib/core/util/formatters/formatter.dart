@@ -35,6 +35,21 @@ class CustomFormatters {
     return timestampList;
   }
 
+  static List<DateTime?> convertTimestampListToDateTime(List<Timestamp?> timestampList) {
+    List<DateTime?> dateTimeList = [];
+
+    for (Timestamp? timestamp in timestampList) {
+      if (timestamp != null) {
+        DateTime dateTime = timestamp.toDate();
+        dateTimeList.add(dateTime);
+      } else {
+        dateTimeList.add(null);
+      }
+    }
+
+    return dateTimeList;
+  }
+
   static final dayAndWeek = DateFormat('d, EEE');
   static final yearMonthDay = DateFormat('yMd');
   static final yearAbbrMonthDay = DateFormat('MMMd');

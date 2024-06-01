@@ -81,6 +81,8 @@ dependencies:
   shimmer: ^3.0.0
   enhance_stepper: ^1.0.1
   tuple: ^2.0.2
+  google_places_autocomplete_text_field: ^0.1.3
+  rx_notifier: ^2.3.0
 
 dev_dependencies:
   flutter_test:

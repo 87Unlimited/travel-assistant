@@ -9,6 +9,10 @@ import '../../../../../../../../core/util/constants/colors.dart';
 import '../../../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../../../../core/util/device/device_utility.dart';
+import '../../../../../../common/widgets/circular_icon_stack.dart';
+import '../../../../../../common/widgets/notificationIcon.dart';
+import '../../../../../../core/util/helpers/helper_functions.dart';
+import '../../../controllers/flight/flight_controller.dart';
 
 class PassengerSelectionSheet extends StatelessWidget {
   const PassengerSelectionSheet({
@@ -17,7 +21,8 @@ class PassengerSelectionSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final controller = Get.put(CreateTripDetailController());
+    final dark = HelperFunctions.isDarkMode(context);
+    final controller = Get.put(FlightController());
 
     return SingleChildScrollView(
       child: Padding(
@@ -60,6 +65,7 @@ class PassengerSelectionSheet extends StatelessWidget {
                     child: Wrap(
                       children: ListTile.divideTiles(
                         context: context,
+                        color: CustomColors.whiteSmoke,
                         tiles: [
                           // Adult
                           ListTile(
@@ -68,6 +74,31 @@ class PassengerSelectionSheet extends StatelessWidget {
                               'Adult',
                               style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
                               overflow: TextOverflow.ellipsis,
+                            ),
+                            trailing: FittedBox(
+                              child: Row(
+                                children: [
+                                  CircularIconStack(
+                                    dark: false,
+                                    icon: Icons.add,
+                                    text: '',
+                                    onTap: () => controller.adultCountIncrement(),
+                                  ),
+                                  const SizedBox(width: CustomSizes.spaceBtwItems / 2),
+                                  Obx(() => Text(
+                                    controller.adultCount.value.toString(),
+                                    style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
+                                  ),
+                                  ),
+                                  const SizedBox(width: CustomSizes.spaceBtwItems / 2),
+                                  CircularIconStack(
+                                    dark: false,
+                                    icon: Icons.remove,
+                                    text: '',
+                                    onTap: () => controller.adultCountDecrement(),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           // Child
@@ -78,6 +109,31 @@ class PassengerSelectionSheet extends StatelessWidget {
                               style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
                               overflow: TextOverflow.ellipsis,
                             ),
+                            trailing: FittedBox(
+                              child: Row(
+                                children: [
+                                  CircularIconStack(
+                                    dark: false,
+                                    icon: Icons.add,
+                                    text: '',
+                                    onTap: () => controller.childCountIncrement(),
+                                  ),
+                                  const SizedBox(width: CustomSizes.spaceBtwItems / 2),
+                                  Obx(() => Text(
+                                    controller.childCount.value.toString(),
+                                    style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
+                                  ),
+                                  ),
+                                  const SizedBox(width: CustomSizes.spaceBtwItems / 2),
+                                  CircularIconStack(
+                                    dark: false,
+                                    icon: Icons.remove,
+                                    text: '',
+                                    onTap: () => controller.childCountDecrement(),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                           // Adult
                           ListTile(
@@ -86,6 +142,31 @@ class PassengerSelectionSheet extends StatelessWidget {
                               'Baby',
                               style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
                               overflow: TextOverflow.ellipsis,
+                            ),
+                            trailing: FittedBox(
+                              child: Row(
+                                children: [
+                                  CircularIconStack(
+                                    dark: false,
+                                    icon: Icons.add,
+                                    text: '',
+                                    onTap: () => controller.babyCountIncrement(),
+                                  ),
+                                  const SizedBox(width: CustomSizes.spaceBtwItems / 2),
+                                  Obx(() => Text(
+                                    controller.babyCount.value.toString(),
+                                    style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
+                                  ),
+                                  ),
+                                  const SizedBox(width: CustomSizes.spaceBtwItems / 2),
+                                  CircularIconStack(
+                                    dark: false,
+                                    icon: Icons.remove,
+                                    text: '',
+                                    onTap: () => controller.babyCountDecrement(),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -98,7 +179,13 @@ class PassengerSelectionSheet extends StatelessWidget {
                     width: CustomSizes.buttonWidth,
                     height: CustomSizes.buttonHeight,
                     child: ElevatedButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () {
+                        String adultCount = controller.adultCount.value.toString();
+                        String childCount = controller.childCount.value.toString();
+                        String babyCount = controller.babyCount.value.toString();
+                        controller.passengerController.text = "$adultCount Adult, $childCount Child, $babyCount Baby";
+                        Navigator.pop(context);
+                      } ,
                       child: const Center(
                         child: Text('Confirm'),
                       ),

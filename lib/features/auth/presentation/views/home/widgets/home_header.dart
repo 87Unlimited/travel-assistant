@@ -5,7 +5,7 @@ import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
 import 'package:travel_assistant/features/auth/presentation/controllers/personalization/user_controller.dart';
 
 import '../../../../../../common/widgets/appbar.dart';
-import '../../../../../../common/widgets/notification_icon.dart';
+import '../../../../../../common/widgets/notificationIcon.dart';
 import '../../../../../../common/widgets/shimmer_effect/shimmer_effect.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -52,10 +52,11 @@ class HomeHeader extends StatelessWidget {
               .labelMedium!
               .apply(color: dark ? Colors.white : CustomColors.primary),
         ),
-        trailing: NotificationStack(
-          onPressed: () {},
-          dark: dark,
-        ),
+        // trailing: NotificationIcon(
+        //   onPressed: () {},
+        //   dark: dark,
+        //   text: "2",
+        // ),
       );
     });
   }

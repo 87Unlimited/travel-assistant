@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class LocationSearchBar extends StatelessWidget {
   final SearchController controller;
   final Icon leadingIcon;
-  final List<Widget> trailingIcon;
+  final List<Widget>? trailingIcon;
   final String hintText;
   final void Function(String)? viewOnChanged;
   final FutureOr<Iterable<Widget>> Function(BuildContext, SearchController) suggestionsBuilder;
@@ -13,7 +13,7 @@ class LocationSearchBar extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.leadingIcon,
-    required this.trailingIcon,
+    this.trailingIcon,
     required this.hintText,
     required this.viewOnChanged,
     required this.suggestionsBuilder,
@@ -33,10 +33,10 @@ class LocationSearchBar extends StatelessWidget {
           },
           decoration: InputDecoration(
             prefixIcon: leadingIcon,
-            suffixIcon: Row(
+            suffixIcon: trailingIcon != null ? Row(
               mainAxisSize: MainAxisSize.min,
-              children: trailingIcon,
-            ),
+              children: trailingIcon!,
+            ) : SizedBox(),
             hintText: hintText,
           ),
         );

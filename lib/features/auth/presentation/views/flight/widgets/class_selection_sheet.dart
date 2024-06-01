@@ -9,15 +9,16 @@ import '../../../../../../../../core/util/constants/colors.dart';
 import '../../../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../../../../core/util/device/device_utility.dart';
+import '../../../controllers/flight/flight_controller.dart';
 
-class PassengerSelectionSheet extends StatelessWidget {
-  const PassengerSelectionSheet({
+class ClassSelectionSheet extends StatelessWidget {
+  const ClassSelectionSheet({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    // final controller = Get.put(CreateTripDetailController());
+    final controller = Get.put(FlightController());
 
     return SingleChildScrollView(
       child: Padding(
@@ -36,7 +37,7 @@ class PassengerSelectionSheet extends StatelessWidget {
                       Expanded(
                         // Title
                         child: Text(
-                          "Passenger",
+                          "Select Flight Class",
                           style: Theme.of(context).textTheme.headlineSmall!.apply(color: CustomColors.primary),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -60,48 +61,49 @@ class PassengerSelectionSheet extends StatelessWidget {
                     child: Wrap(
                       children: ListTile.divideTiles(
                         context: context,
+                        color: CustomColors.whiteSmoke,
                         tiles: [
                           // Adult
                           ListTile(
-                            leading: const Icon(FontAwesomeIcons.person, color: CustomColors.primary,),
+                            leading: const Icon(Icons.airline_seat_flat, color: CustomColors.primary,),
                             title: Text(
-                              'Adult',
+                              'First Class',
                               style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
                               overflow: TextOverflow.ellipsis,
                             ),
+                            onTap: () {
+                              controller.flightClassController.text = "First Class";
+                              Navigator.pop(context);
+                            },
                           ),
                           // Child
                           ListTile(
-                            leading: const Icon(FontAwesomeIcons.child, color: CustomColors.primary,),
+                            leading: const Icon(Icons.airline_seat_recline_extra_rounded, color: CustomColors.primary,),
                             title: Text(
-                              'Child',
+                              'Business Class',
                               style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
                               overflow: TextOverflow.ellipsis,
                             ),
+                            onTap: () {
+                              controller.flightClassController.text = "Business Class";
+                              Navigator.pop(context);
+                            },
                           ),
                           // Adult
                           ListTile(
-                            leading: const Icon(FontAwesomeIcons.baby, color: CustomColors.primary,),
+                            leading: const Icon(Icons.airline_seat_recline_normal, color: CustomColors.primary,),
                             title: Text(
-                              'Baby',
+                              'Economy Class',
                               style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
                               overflow: TextOverflow.ellipsis,
                             ),
+                            onTap: () {
+                              controller.flightClassController.text = "Economy Class";
+                              Navigator.pop(context);
+                            },
                           ),
                         ],
                       ).toList(),
-                    ),
-                  ),
-                  const SizedBox(height: CustomSizes.spaceBtwSections),
-
-                  SizedBox(
-                    width: CustomSizes.buttonWidth,
-                    height: CustomSizes.buttonHeight,
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Center(
-                        child: Text('Confirm'),
-                      ),
                     ),
                   ),
                 ],

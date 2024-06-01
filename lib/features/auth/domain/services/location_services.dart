@@ -142,6 +142,23 @@ class LocationServices extends GetxController{
     return '';
   }
 
+  Future<String?> getIATACodeFromLocation(String placeId) async {
+    final url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key';
+
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = convert.jsonDecode(response.body);
+
+      if (data['status'] == 'OK') {
+        final iataCode = data['result']['address_components']
+            .firstWhere((component) => component['types'].contains('airport'))
+        ['short_name'];
+        return iataCode;
+      }
+    }
+    return null; // 如果找不到對應的IATA碼，返回null或其他適當值
+  }
+
   Future<Map<String, dynamic>> getDirections(String origin, String destination) async {
     final String url =
         "https://maps.googleapis.com/maps/api/directions/json?origin=$origin&destination=$destination&key=$key";

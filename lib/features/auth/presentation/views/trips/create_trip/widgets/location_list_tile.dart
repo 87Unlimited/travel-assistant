@@ -9,10 +9,12 @@ class LocationListTile extends StatelessWidget {
     Key? key,
     required this.location,
     required this.onPressed,
+    this.icon = Iconsax.location,
   }) : super(key: key);
 
   final String? location;
   final VoidCallback onPressed;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +23,10 @@ class LocationListTile extends StatelessWidget {
         ListTile(
           onTap: onPressed,
           horizontalTitleGap: 0,
-          leading: const Icon(Iconsax.location, color: CustomColors.primary,),
+          leading: Icon(icon, color: CustomColors.primary,),
           minLeadingWidth : CustomSizes.spaceBtwItems,
           title: Align(
-            alignment: const Alignment(-0.9, 0),
+            alignment: const Alignment(-1, 0),
             child: Text(
               location!,
               style: Theme.of(context).textTheme.labelLarge!.apply(color: CustomColors.primary),

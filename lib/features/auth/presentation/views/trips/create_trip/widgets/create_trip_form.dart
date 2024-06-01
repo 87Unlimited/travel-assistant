@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:travel_assistant/core/util/validators/validation.dart';
+import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 
 import '../../../../../../../common/widgets/search_bar/location_search_bar.dart';
 import '../../../../../../../common/widgets/section_heading.dart';
@@ -25,6 +26,7 @@ class CreateTripForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(CreateTripController());
     final locationServices = Get.put(LocationServices());
+    final textController = TextEditingController();
 
     if (trip != null) {
       controller.setTrip(trip!);
@@ -72,15 +74,20 @@ class CreateTripForm extends StatelessWidget {
                 locationServices.placePredictions.clear();
               }
             },
-            suggestionsBuilder: (BuildContext context, SearchController location) {
+            suggestionsBuilder:
+                (BuildContext context, SearchController location) async {
               return Iterable<Widget>.generate(
                   locationServices.placePredictions.length, (int index) {
                 return LocationListTile(
-                  location: locationServices.placePredictions[index].description,
+                  location:
+                      locationServices.placePredictions[index].description,
                   onPressed: () async {
-                    location.closeView(locationServices.placePredictions[index].description!);
-                    controller.locationId = locationServices.placePredictions[index].placeId!;
-                    controller.locationName = locationServices.placePredictions[index].description!;
+                    location.closeView(
+                        locationServices.placePredictions[index].description!);
+                    controller.locationId =
+                        locationServices.placePredictions[index].placeId!;
+                    controller.locationName =
+                        locationServices.placePredictions[index].description!;
                   },
                 );
               });
@@ -91,6 +98,22 @@ class CreateTripForm extends StatelessWidget {
           // Trip Title
           const SectionHeading(title: "Trip Name", showActionButton: false,),
           const SizedBox(height: CustomSizes.spaceBtwItems),
+
+          // GooglePlacesAutoCompleteTextFormField(
+          //     textEditingController: textController,
+          //     googleAPIKey: "AIzaSyAxXKd8jrvNtlfQIV4kpY3y5GRk5fRMczY",
+          //     debounceTime: 400, // defaults to 600 ms
+          //     countries: ["de"], // optional, by default the list is empty (no restrictions)
+          //     isLatLngRequired: true, // if you require the coordinates from the place details
+          //     getPlaceDetailWithLatLng: (prediction) {
+          //       // this method will return latlng with place detail
+          //       print("Coordinates: (${prediction.lat},${prediction.lng})");
+          //     }, // this callback is called when isLatLngRequired is true
+          //     itmClick: (prediction) {
+          //       textController.text = prediction.description!;
+          //       textController.selection = TextSelection.fromPosition(TextPosition(offset: prediction.description!.length));
+          //     }
+          // ),
 
           // Trip Form Field
           TextFormField(

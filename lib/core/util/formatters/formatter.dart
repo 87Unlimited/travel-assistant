@@ -50,7 +50,16 @@ class CustomFormatters {
     return dateTimeList;
   }
 
-  static final dayAndWeek = DateFormat('d, EEE');
-  static final yearMonthDay = DateFormat('yMd');
-  static final yearAbbrMonthDay = DateFormat('MMMd');
+  static String formatDuration(Duration duration) {
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    return '$hours $minutes';
+  }
+
+  static final hourAndMinute = DateFormat.Hm();  //  21:10
+  static final dayAndWeek = DateFormat('d, EEE');  // 2, Sun
+  static final yearMonthDay = DateFormat('yMd');  // 6/2/2024
+  static final yearAbbrMonthDay = DateFormat('MMMd');  // Jun 2
+  static final monthDateYear = DateFormat.yMMMMd('en_US');  //
+  static final yearAbbrMonthDayWithTime = DateFormat('EEE, MMM, d').add_Hm();  // Sun, Jun, 2 21:10
 }

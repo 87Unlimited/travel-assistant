@@ -3,7 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:travel_assistant/features/auth/data/models/airport_model.dart';
 
 import '../../../../../../common/widgets/button/text_icon_button.dart';
 import '../../../../../../common/widgets/circular_icon_stack.dart';
@@ -40,7 +42,7 @@ class FlightSearchForm extends StatelessWidget {
             children: [
               // Start time
               Expanded(
-                child: TextField(
+                child: TextFormField(
                   controller: controller.originController,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(FontAwesomeIcons.planeDeparture),
@@ -71,7 +73,7 @@ class FlightSearchForm extends StatelessWidget {
           //     // Start time
           //     Expanded(
           //       child: LocationSearchBar(
-          //         controller: controller.origin,
+          //         controller: controller.originController,
           //         leadingIcon: const Icon(FontAwesomeIcons.planeDeparture),
           //         hintText: "From",
           //         viewOnChanged: (value) {
@@ -91,8 +93,9 @@ class FlightSearchForm extends StatelessWidget {
           //               onPressed: () async {
           //                 location.closeView(locationServices.placePredictions[index].description!);
           //                 controller.locationId = locationServices.placePredictions[index].placeId!;
-          //                 controller.locationName = locationServices.placePredictions[index].description!;
-          //                 locationServices.getIATACodeFromLocation(controller.locationId);
+          //                 // controller.locationName = locationServices.placePredictions[index].description!;
+          //
+          //                 controller.convertLocationToIATACode(controller.originController);
           //               },
           //               icon: FontAwesomeIcons.plane,
           //             );
@@ -109,7 +112,7 @@ class FlightSearchForm extends StatelessWidget {
           //     // End Time
           //     Expanded(
           //       child: LocationSearchBar(
-          //         controller: controller.destination,
+          //         controller: controller.destinationController,
           //         leadingIcon: const Icon(FontAwesomeIcons.planeArrival),
           //         hintText: "To",
           //         viewOnChanged: (value) {
@@ -129,7 +132,9 @@ class FlightSearchForm extends StatelessWidget {
           //               onPressed: () async {
           //                 location.closeView(locationServices.placePredictions[index].description!);
           //                 controller.locationId = locationServices.placePredictions[index].placeId!;
-          //                 controller.locationName = locationServices.placePredictions[index].description!;
+          //                 // controller.locationName = locationServices.placePredictions[index].description!;
+          //
+          //                 controller.convertLocationToIATACode(controller.originController);
           //               },
           //               icon: FontAwesomeIcons.plane,
           //             );

@@ -2,45 +2,50 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FlightModel {
   String? flightId;
-  String airline;
-  String flightNumber;
-  String departureAirport;
-  String arrivalAirport;
-  DateTime departureTime;
-  DateTime arrivalTime;
-  int order;
+  Map<String, dynamic> flightNumber;
+  Map<String, dynamic> duration;
+  Map<String, dynamic> departureAirport;
+  Map<String, dynamic> arrivalAirport;
+  Map<DateTime, dynamic> departureTime;
+  Map<DateTime, dynamic> arrivalTime;
+  double price;
+  int? order;
 
   FlightModel({
     this.flightId,
-    required this.airline,
     required this.flightNumber,
+    required this.duration,
     required this.departureAirport,
     required this.arrivalAirport,
     required this.departureTime,
     required this.arrivalTime,
-    required this.order,
+    required this.price,
+    this.order,
   });
 
   /// Static function to create an empty flight model.
   static FlightModel empty() => FlightModel(
-    airline: "",
-    flightNumber: "",
-    departureAirport: "",
-    arrivalAirport: "",
-    departureTime: DateTime.now(),
-    arrivalTime: DateTime.now(),
+    flightNumber: {},
+    duration: {},
+    departureAirport: {},
+    arrivalAirport: {},
+    departureTime: {},
+    arrivalTime: {},
+    price: 0.0,
     order: 0,
   );
 
   Map<String, dynamic> toJson() {
     return {
-      'Airline': airline,
-      'FlightNumber': flightNumber,
-      'DepartureAirport': departureAirport,
-      'ArrivalAirport': arrivalAirport,
-      'DepartureTime': departureTime.toIso8601String(),
-      'ArrivalTime': arrivalTime.toIso8601String(),
-      'Order': order,
+      'flightId': flightId,
+      'flightNumber': flightNumber,
+      'duration': duration,
+      'departureAirport': departureAirport,
+      'arrivalAirport': arrivalAirport,
+      'departureTime': {departureTime.keys.first.toIso8601String(), departureTime.keys.last.toIso8601String()},
+      'arrivalTime': {arrivalTime.keys.first.toIso8601String(), arrivalTime.keys.last.toIso8601String()},
+      'price': price,
+      'order': order,
     };
   }
 
@@ -49,13 +54,14 @@ class FlightModel {
       final data = document.data()!;
       return FlightModel(
         flightId: document.id,
-        airline: data['Airline'] ?? '',
-        flightNumber: data['FlightNumber'] ?? '',
-        departureAirport: data['DepartureAirport'] ?? '',
-        arrivalAirport: data['ArrivalAirport'] ?? '',
-        departureTime: DateTime.parse(data['DepartureTime']),
-        arrivalTime: DateTime.parse(data['ArrivalTime']),
-        order: data['Order'] ?? 0,
+        flightNumber: data['flightNumber'] ?? {},
+        duration: {},
+        departureAirport: data['departureAirport'] ?? {},
+        arrivalAirport: data['arrivalAirport'] ?? {},
+        departureTime: {DateTime.parse(data['departureTime']): {}},
+        arrivalTime: {DateTime.parse(data['arrivalTime']): {}},
+        price: data['price'] ?? 0.0,
+        order: data['order'] ?? 0,
       );
     }
     return FlightModel.empty();

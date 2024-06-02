@@ -4,6 +4,7 @@ import 'package:travel_assistant/common/widgets/section_heading.dart';
 import 'package:travel_assistant/core/util/constants/colors.dart';
 import 'package:travel_assistant/core/util/device/device_utility.dart';
 import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
+import 'package:travel_assistant/features/auth/data/models/flight_model.dart';
 import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/create_trip_view.dart';
 import 'package:travel_assistant/features/auth/presentation/views/trips/widgets/trips_card/trip_card.dart';
 
@@ -13,7 +14,9 @@ import '../../../../../core/util/constants/spacing_styles.dart';
 import '../../controllers/trips/trip_controller.dart';
 
 class TripView extends StatelessWidget {
-  const TripView({super.key});
+  const TripView({super.key, this.flight});
+
+  final FlightModel? flight;
 
   @override
   Widget build(BuildContext context) {

@@ -6,6 +6,7 @@ class CustomColors{
   // App Colors
   static const Color primary = Color(0xff002147);
   static const Color secondary = Color(0xff3bcce5);
+  static const Color third = Color(0xff1768AC);
 
   static const Color dark = Color(0xff222222);
   static const Color white = Color(0xffffffff);

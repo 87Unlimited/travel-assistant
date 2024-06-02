@@ -9,6 +9,7 @@ import 'package:travel_assistant/features/auth/presentation/views/login/login_vi
 
 import '../../../../../common/widgets/loaders/loaders.dart';
 import '../../../../../core/util/device/device_utility.dart';
+import '../../../data/models/airport_model.dart';
 import '../../../data/models/trip_model.dart';
 import '../../../data/repositories/trip/trip_repository.dart';
 import '../../../domain/services/flight_services.dart';
@@ -24,6 +25,8 @@ class FlightController extends GetxController {
 
   GlobalKey<FormState> flightFormKey = GlobalKey<FormState>();
   // Controller
+  // final originController = TextEditingController();
+  // final destinationController = TextEditingController();
   final originController = TextEditingController();
   final destinationController = TextEditingController();
   final departureDateController = TextEditingController();
@@ -39,6 +42,7 @@ class FlightController extends GetxController {
 
   String locationId = "";
   String locationName = "";
+  String iatacode = "";
 
   var adultCount = 1.obs;
   var childCount = 0.obs;
@@ -137,8 +141,18 @@ class FlightController extends GetxController {
     }
   }
 
-  Future<String?> convertLocationToIATACode(String location) async {
-    return await locationServices.getIATACodeFromLocation(location);
+  Future<String?> convertLocationToIATACode(SearchController controller) async {
+    // Get lat lng of location
+    Map<String, double> latlng = await locationServices.getPlaceLatLng(locationId);
+    // Get nearby airport by latlng
+    List<AirportModel> airport = await flightServices.fetchAirport(latlng['latitude']!, latlng['longitude']!);
+
+    // Iata code of first result
+    iatacode = airport[0].iataCode;
+    print(iatacode);
+    // Update controller text
+    controller.text = iatacode;
+    update();
   }
 
   void adultCountIncrement() {

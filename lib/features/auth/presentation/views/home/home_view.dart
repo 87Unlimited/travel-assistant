@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_assistant/core/util/constants/image_strings.dart';
 import 'package:travel_assistant/features/auth/presentation/controllers/trips/trip_controller.dart';
-import 'package:travel_assistant/features/auth/presentation/views/flight/widgets/flight_card.dart';
+import 'package:travel_assistant/features/auth/presentation/views/flight/widgets/flight_card_oneway.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/widgets/home_header.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/widgets/home_categories.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -85,17 +85,17 @@ class _HomeViewState extends State<HomeView> {
               //     });
               //   },
               // ),
-              // SizedBox(
-              //   width: CustomSizes.buttonWidth,
-              //   height: CustomSizes.buttonHeight,
-              //   child: ElevatedButton(
-              //     onPressed: () => flightServices.fetchAccessToken(),
-              //     child: const Center(
-              //       child: Text('Testing Button'),
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(height: CustomSizes.spaceBtwSections,),
+              SizedBox(
+                width: CustomSizes.buttonWidth,
+                height: CustomSizes.buttonHeight,
+                child: ElevatedButton(
+                  onPressed: () => flightServices.fetchAirport(-37.84, -46.11),
+                  child: const Center(
+                    child: Text('Testing Button'),
+                  ),
+                ),
+              ),
+              const SizedBox(height: CustomSizes.spaceBtwSections,),
 
               const SectionHeading(title: "Upcoming Trips"),
               const SizedBox(height: CustomSizes.spaceBtwItems,),

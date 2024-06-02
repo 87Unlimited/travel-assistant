@@ -10,18 +10,20 @@ class CircularIconStack extends StatelessWidget {
     this.text,
     required this.dark,
     this.onTap,
+    this.size = 18,
   });
 
   final IconData? icon;
   final String? text;
   final bool dark;
   final VoidCallback? onTap;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 20,
-      height: 20,
+      width: size,
+      height: size,
       child: CircleAvatar(
         backgroundColor: CustomColors.secondary,
         radius: 70,
@@ -29,7 +31,7 @@ class CircularIconStack extends StatelessWidget {
           onTap: onTap,
           child: Icon(
             icon,
-            size: 18,
+            size: size * 0.8,
             color: Colors.white,
           ),
         ),

@@ -7,7 +7,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:travel_assistant/common/widgets/section_heading.dart';
 import 'package:travel_assistant/features/auth/data/models/trip_model.dart';
 import 'package:travel_assistant/features/auth/domain/services/location_services.dart';
-import 'package:travel_assistant/features/auth/presentation/views/flight/widgets/flight_card.dart';
+import 'package:travel_assistant/features/auth/presentation/views/flight/widgets/flight_card_oneway.dart';
+import 'package:travel_assistant/features/auth/presentation/views/flight/widgets/flight_card_roundtrip.dart';
 import 'package:travel_assistant/features/auth/presentation/views/flight/widgets/flight_search_form.dart';
 import 'package:rx_notifier/rx_notifier.dart';
 
@@ -80,7 +81,10 @@ class FlightView extends StatelessWidget {
                             scrollDirection: Axis.vertical,
                             separatorBuilder: (context, index) =>
                             const SizedBox(height: CustomSizes.spaceBtwItems),
-                            itemBuilder: (context, index) => FlightCard(
+                            itemBuilder: (context, index) => controller.flights[index].flightNumber['returnFlightNumber'].isEmpty ?
+                            FlightCard(
+                              flight: controller.flights[index],
+                            ) : FlightCardRoundTrip(
                               flight: controller.flights[index],
                             ),
                           ),

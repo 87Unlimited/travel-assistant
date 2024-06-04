@@ -1,24 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:travel_assistant/core/util/formatters/formatter.dart';
 
 class FlightModel {
-  String? flightId;
-  Map<String, dynamic> flightNumber;
-  Map<String, dynamic> duration;
-  Map<String, dynamic> departureAirport;
-  Map<String, dynamic> arrivalAirport;
-  Map<DateTime, dynamic> departureTime;
-  Map<DateTime, dynamic> arrivalTime;
+  Map<String, dynamic>? flightNumber;
+  Map<String, dynamic>? duration;
+  Map<String, dynamic>? departureAirport;
+  Map<String, dynamic>? arrivalAirport;
+  Timestamp? departureTime;
+  Timestamp? arrivalTime;
+  Timestamp? returnDepartureTime;
+  Timestamp? returnArrivalTime;
   double price;
   int? order;
 
   FlightModel({
-    this.flightId,
     required this.flightNumber,
     required this.duration,
     required this.departureAirport,
     required this.arrivalAirport,
     required this.departureTime,
     required this.arrivalTime,
+    required this.returnDepartureTime,
+    required this.returnArrivalTime,
     required this.price,
     this.order,
   });
@@ -29,41 +32,61 @@ class FlightModel {
     duration: {},
     departureAirport: {},
     arrivalAirport: {},
-    departureTime: {},
-    arrivalTime: {},
+    departureTime: Timestamp.fromDate(DateTime.now()),
+    arrivalTime: Timestamp.fromDate(DateTime.now()),
+    returnDepartureTime: Timestamp.fromDate(DateTime.now()),
+    returnArrivalTime: Timestamp.fromDate(DateTime.now()),
     price: 0.0,
     order: 0,
   );
 
   Map<String, dynamic> toJson() {
     return {
-      'flightId': flightId,
-      'flightNumber': flightNumber,
-      'duration': duration,
-      'departureAirport': departureAirport,
-      'arrivalAirport': arrivalAirport,
-      'departureTime': {departureTime.keys.first.toIso8601String(), departureTime.keys.last.toIso8601String()},
-      'arrivalTime': {arrivalTime.keys.first.toIso8601String(), arrivalTime.keys.last.toIso8601String()},
-      'price': price,
-      'order': order,
+        'FlightNumber': flightNumber,
+        'Duration': duration,
+        'DepartureAirport': departureAirport,
+        'ArrivalAirport': arrivalAirport,
+        'DepartureTime': departureTime,
+        'ArrivalTime': arrivalTime,
+        'ReturnDepartureTime': returnDepartureTime,
+        'ReturnArrivalTime': returnArrivalTime,
+        'Price': price,
+        'Order': order,
     };
   }
 
+  factory FlightModel.fromJson(Map<String, dynamic> document) {
+    final data = document;
+
+    if(data.isEmpty) return FlightModel.empty();
+
+    return FlightModel(
+      price: data['Price'] ?? 0.0,
+      flightNumber: data['FlightNumber'] as Map<String, dynamic>,
+      duration: Map<String, dynamic>.from(data['Duration']),
+      departureAirport: Map<String, dynamic>.from(data['DepartureAirport']),
+      arrivalAirport: Map<String, dynamic>.from(data['ArrivalAirport']),
+      departureTime: data['DepartureTime'] ?? Timestamp.fromDate(DateTime(0)),
+      arrivalTime: data['ArrivalTime'] ?? Timestamp.fromDate(DateTime(0)),
+      returnDepartureTime: data['ReturnDepartureTime'] ?? Timestamp.fromDate(DateTime(0)),
+      returnArrivalTime: data['ReturnArrivalTime'] ?? Timestamp.fromDate(DateTime(0)),
+      order: data['Order'],
+    );
+  }
+
   factory FlightModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
-    if (document.data() != null) {
-      final data = document.data()!;
-      return FlightModel(
-        flightId: document.id,
-        flightNumber: data['flightNumber'] ?? {},
-        duration: {},
-        departureAirport: data['departureAirport'] ?? {},
-        arrivalAirport: data['arrivalAirport'] ?? {},
-        departureTime: {DateTime.parse(data['departureTime']): {}},
-        arrivalTime: {DateTime.parse(data['arrivalTime']): {}},
-        price: data['price'] ?? 0.0,
-        order: data['order'] ?? 0,
-      );
-    }
-    return FlightModel.empty();
+    final data = document.data()!;
+    return FlightModel(
+      flightNumber: Map<String, dynamic>.from(data['FlightNumber']),
+      duration: Map<String, dynamic>.from(data['Duration']),
+      departureAirport: Map<String, dynamic>.from(data['DepartureAirport']),
+      arrivalAirport: Map<String, dynamic>.from(data['ArrivalAirport']),
+      departureTime: data['DepartureTime'] ?? Timestamp.fromDate(DateTime(0)),
+      arrivalTime: data['ArrivalTime'] ?? Timestamp.fromDate(DateTime(0)),
+      returnDepartureTime: data['ReturnDepartureTime'] ?? Timestamp.fromDate(DateTime(0)),
+      returnArrivalTime: data['ReturnArrivalTime'] ?? Timestamp.fromDate(DateTime(0)),
+      price: data['Price'] ?? 0.0,
+      order: data['Order'],
+    );
   }
 }

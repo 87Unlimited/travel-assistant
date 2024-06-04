@@ -81,7 +81,7 @@ class FlightView extends StatelessWidget {
                             scrollDirection: Axis.vertical,
                             separatorBuilder: (context, index) =>
                             const SizedBox(height: CustomSizes.spaceBtwItems),
-                            itemBuilder: (context, index) => controller.flights[index].flightNumber['returnFlightNumber'].isEmpty ?
+                            itemBuilder: (context, index) => controller.flights[index].flightNumber!['returnFlightNumber'].isEmpty ?
                             FlightCard(
                               flight: controller.flights[index],
                             ) : FlightCardRoundTrip(

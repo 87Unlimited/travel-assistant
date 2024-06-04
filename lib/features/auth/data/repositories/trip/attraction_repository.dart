@@ -45,15 +45,12 @@ class AttractionRepository extends GetxController {
       int maxOrder = snapshot.docs[0]['order'];
       int newOrder = maxOrder + 1;
 
-      // 在這裡添加新的 "Attractions" 文檔，並將 'order' 字段設置為 newOrder
       attraction.order = newOrder;
       await _db.collection("Trips").doc(tripId).collection("Days").doc(dayId).collection("Attractions").add(attraction.toJson());
     } else {
-      // 如果 "Attractions" 子集合中還沒有文檔，則將 'order' 字段設置為 0
       int newOrder = 0;
       attraction.order = newOrder;
 
-      // 在這裡添加新的 "Attractions" 文檔，並將 'order' 字段設置為 newOrder
       await _db.collection("Trips").doc(tripId).collection("Days").doc(dayId).collection("Attractions").add(attraction.toJson());
     }
     } on FirebaseException catch (e) {

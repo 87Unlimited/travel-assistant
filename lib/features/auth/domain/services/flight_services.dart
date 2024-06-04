@@ -1,5 +1,6 @@
 import 'dart:convert' as convert;
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travel_assistant/core/util/formatters/formatter.dart';
 import 'package:travel_assistant/features/auth/data/models/flight_model.dart';
 
@@ -58,6 +59,11 @@ class FlightServices extends GetxController {
           final durationString = duration.replaceAll('PT', '');
           final returnDurationString = returnDuration.replaceAll('PT', '');
 
+          Timestamp? departureTimestamp = CustomFormatters.convertDateTimeToTimestamps(departureTime);
+          Timestamp? arrivalTimestamp = CustomFormatters.convertDateTimeToTimestamps(arrivalTime);
+          Timestamp? returnDepartureTimestamp = CustomFormatters.convertDateTimeToTimestamps(returnDepartureTime);
+          Timestamp? returnArrivalTimestamp = CustomFormatters.convertDateTimeToTimestamps(returnArrivalTime);
+
           // End the while loop
           isEnded = true;
 
@@ -78,14 +84,10 @@ class FlightServices extends GetxController {
               'arrivalAirport': arrivalAirport,
               'returnArrivalAirport': returnArrivalAirport
             },
-            departureTime: {
-              departureTime: departureTime,
-              returnDepartureTime: returnDepartureTime
-            },
-            arrivalTime: {
-              arrivalTime: arrivalTime,
-              returnArrivalTime: returnArrivalTime
-            },
+            departureTime: departureTimestamp!,
+            arrivalTime: arrivalTimestamp!,
+            returnDepartureTime: returnDepartureTimestamp!,
+            returnArrivalTime: returnArrivalTimestamp!,
             price: price,
             //order: order,
           );

@@ -69,7 +69,7 @@ class CreateTripForm extends StatelessWidget {
             hintText: controller.isTripExisted ? controller.location.text.toString() : "Search Country/Region",
             viewOnChanged: (value) {
               if (value != "") {
-                locationServices.placeAutoComplete(value, "country");
+                locationServices.placeAutoComplete(value, "locality");
               } else {
                 locationServices.placePredictions.clear();
               }
@@ -88,6 +88,7 @@ class CreateTripForm extends StatelessWidget {
                         locationServices.placePredictions[index].placeId!;
                     controller.locationName =
                         locationServices.placePredictions[index].description!;
+
                   },
                 );
               });

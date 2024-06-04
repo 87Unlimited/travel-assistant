@@ -11,6 +11,7 @@ import 'package:travel_assistant/features/auth/data/repositories/authentication/
 
 import '../../../../../core/util/exceptions/firebase_exceptions.dart';
 import '../../models/day_model.dart';
+import '../../models/flight_model.dart';
 import '../../models/trip_model.dart';
 import '../../models/user_model.dart';
 
@@ -32,7 +33,7 @@ class TripRepository extends GetxController {
     } on PlatformException catch (e) {
       throw CustomPlatformException(e.code).message;
     } catch (e) {
-      throw "Something went wrong. PLease try again";
+      throw "$e. PLease try again";
     }
   }
 
@@ -122,6 +123,36 @@ class TripRepository extends GetxController {
   Future<void> deleteTrip(TripModel trip) async {
     try {
       await _db.collection("Trips").doc(trip.tripId).delete();
+    } on FirebaseException catch (e) {
+      throw CustomFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const CustomFormatException();
+    } on PlatformException catch (e) {
+      throw CustomPlatformException(e.code).message;
+    } catch (e) {
+      throw "Something went wrong. PLease try again";
+    }
+  }
+
+  Future<void> addFlightToTripDocument(String tripId, FlightModel flight) async {
+    try {
+      await _db.collection('Trips').doc(tripId).update(flight.toJson());
+    } on FirebaseException catch (e) {
+      throw CustomFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const CustomFormatException();
+    } on PlatformException catch (e) {
+      throw CustomPlatformException(e.code).message;
+    } catch (e) {
+      throw "Something went wrong. PLease try again";
+    }
+  }
+
+  Future<List<FlightModel>> getTripFlight() async {
+    try {
+      final snapshots = await _db.collection("Trips").where('UserId', isEqualTo: AuthenticationRepository.instance.authUser?.uid).where('Flight', isNull: false).get();
+      final flights = snapshots.docs.map((snapshot) => FlightModel.fromSnapshot(snapshot)).toList();
+      return flights;
     } on FirebaseException catch (e) {
       throw CustomFirebaseException(e.code).message;
     } on FormatException catch (_) {

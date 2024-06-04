@@ -13,15 +13,18 @@ import 'package:travel_assistant/features/auth/presentation/views/trips/create_t
 
 import '../../../../../../../common/widgets/appbar.dart';
 import '../../../../../../../navigation_menu.dart';
+import '../../../../../data/models/flight_model.dart';
 import '../create_trip_view.dart';
 
 class CreateTripDetailView extends StatelessWidget {
   const CreateTripDetailView({
     super.key,
     required this.trip,
+    this.flight,
   });
 
   final TripModel trip;
+  final FlightModel? flight;
 
   @override
   Widget build(BuildContext context) {

@@ -35,6 +35,17 @@ class CustomFormatters {
     return timestampList;
   }
 
+  static Map<Timestamp, dynamic> convertDateTimeMapToTimestamps(Map<DateTime, dynamic> dateTimeMap) {
+    Map<Timestamp, dynamic> timestampMap = {};
+
+    for (DateTime dateTime in dateTimeMap.keys) {
+      Timestamp timestamp = Timestamp.fromDate(dateTime);
+      timestampMap[timestamp] = dateTimeMap[dateTime];
+    }
+
+    return timestampMap;
+  }
+
   static List<DateTime?> convertTimestampListToDateTime(List<Timestamp?> timestampList) {
     List<DateTime?> dateTimeList = [];
 
@@ -48,6 +59,12 @@ class CustomFormatters {
     }
 
     return dateTimeList;
+  }
+
+  static DateTime convertTimestampToDateTime(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+
+    return dateTime;
   }
 
   static String formatDuration(Duration duration) {

@@ -22,29 +22,28 @@ class FlightCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Map<String, String> flightNumber = flight.flightNumber.map((key, value) => MapEntry(key, value!.toString()));
-    String flightNumber = flight.flightNumber['flightNumber'];
-    String duration = flight.duration['duration'];
-    String departureAirport = flight.departureAirport['departureAirport'];
-    String arrivalAirport = flight.arrivalAirport['arrivalAirport'];
-    DateTime departureTime = flight.departureTime.keys.first;
-    DateTime arrivalTime = flight.arrivalTime.keys.first;
+    String flightNumber = flight.flightNumber!['flightNumber'];
+    String duration = flight.duration!['duration'];
+    String departureAirport = flight.departureAirport!['departureAirport'];
+    String arrivalAirport = flight.arrivalAirport!['arrivalAirport'];
 
-    String returnFlightNumber = flight.flightNumber['returnFlightNumber'];
-    String returnDuration = flight.duration['returnDuration'];
-    String returnDepartureAirport = flight.departureAirport['returnDepartureAirport'];
-    String returnArrivalAirport = flight.arrivalAirport['returnArrivalAirport'];
-    DateTime returnDepartureTime = flight.departureTime.keys.last;
-    DateTime returnArrivalTime = flight.arrivalTime.keys.last;
+    String returnFlightNumber = flight.flightNumber!['returnFlightNumber'];
+    String returnDuration = flight.duration!['returnDuration'];
+    String returnDepartureAirport = flight.departureAirport!['returnDepartureAirport'];
+    String returnArrivalAirport = flight.arrivalAirport!['returnArrivalAirport'];
+
+    // Four DateTime
+    List<DateTime?> flightTimeList = CustomFormatters.convertTimestampListToDateTime([flight.departureTime, flight.arrivalTime, flight.returnDepartureTime, flight.returnArrivalTime]);
+
     String price = flight.price.toString();
 
-    final departureTimeInDate = CustomFormatters.monthDateYear.format(departureTime);
-    final departureTimeInTime = CustomFormatters.hourAndMinute.format(departureTime);
-    final arrivalTimeInDate = CustomFormatters.hourAndMinute.format(arrivalTime);
+    final departureTimeInDate = CustomFormatters.monthDateYear.format(flightTimeList[0]!);
+    final departureTimeInTime = CustomFormatters.hourAndMinute.format(flightTimeList[0]!);
+    final arrivalTimeInTime = CustomFormatters.hourAndMinute.format(flightTimeList[1]!);
 
-    final returnDepartureTimeInDate = CustomFormatters.monthDateYear.format(returnDepartureTime);
-    final returnDepartureTimeInTime = CustomFormatters.hourAndMinute.format(departureTime);
-    final returnArrivalTimeInDate = CustomFormatters.hourAndMinute.format(returnArrivalTime);
+    final returnDepartureTimeInDate = CustomFormatters.monthDateYear.format(flightTimeList[2]!);
+    final returnDepartureTimeInTime = CustomFormatters.hourAndMinute.format(flightTimeList[2]!);
+    final returnArrivalTimeInTime = CustomFormatters.hourAndMinute.format(flightTimeList[3]!);
 
     return Container(
       padding: const EdgeInsets.only(right: 20, left: 20, top: 15),
@@ -126,7 +125,7 @@ class FlightCard extends StatelessWidget {
                   children: [
 
                     Text(
-                      arrivalTimeInDate,
+                      arrivalTimeInTime,
                       style: Theme.of(context).textTheme.headlineMedium!.apply(color: CustomColors.secondary),
                     ),
 

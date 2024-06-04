@@ -8,58 +8,65 @@ import 'package:travel_assistant/core/util/constants/shadows.dart';
 import 'package:travel_assistant/core/util/constants/sizes.dart';
 import 'package:travel_assistant/core/util/device/device_utility.dart';
 import 'package:travel_assistant/core/util/helpers/helper_functions.dart';
+import 'package:travel_assistant/features/auth/data/models/flight_model.dart';
 import 'package:travel_assistant/features/auth/presentation/views/trips/widgets/trips_card/trip_card_title_text.dart';
 
 import '../../../../../../../common/widgets/icons/text_with_icon.dart';
 import '../../../../../../../core/util/formatters/formatter.dart';
 import '../../../../../data/models/trip_model.dart';
+import '../../../../controllers/trips/trip_controller.dart';
 import '../../create_trip/create_trip_detail/create_trip_detail_view.dart';
 
 class TripCardLong extends StatelessWidget {
   const TripCardLong({
     super.key,
     required this.trip,
+    this.flight,
+    this.onTap,
   });
 
   final TripModel trip;
+  final FlightModel? flight;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final dark = HelperFunctions.isDarkMode(context);
+    final tripController = Get.put(TripController());
     final formattedStartDate = CustomFormatters.yearAbbrMonthDay.format(trip.startDate!.toDate());
     final formattedEndDate = CustomFormatters.yearAbbrMonthDay.format(trip.endDate!.toDate());
     final dateRange = "${formattedStartDate.toString()} - ${formattedEndDate.toString()}";
 
-    return Container(
-      width: DeviceUtils.getScreenWidth(context),
-      height: 140,
-      padding: const EdgeInsets.all(1),
-      decoration: BoxDecoration(
-        boxShadow: [ShadowStyle.horizontalCardShadow],
-        borderRadius: BorderRadius.circular(CustomSizes.cardRadiusLg),
-        color: dark ? CustomColors.darkGrey : Colors.white,
-      ),
-      child: Row(
-        children: [
-          // Image
-          RoundedContainer(
-            height: 120,
-            padding: const EdgeInsets.all(CustomSizes.sm),
-            backgroundColor: dark ? CustomColors.dark : CustomColors.white,
-            child: const Stack(
-              children: [
-                RoundedImage(imageUrl: "assets/images/location/japan.jpg", applyImageRadius: true,),
-              ],
-            ),
+    return Stack(
+      children: [
+        Container(
+          width: DeviceUtils.getScreenWidth(context),
+          height: 140,
+          padding: const EdgeInsets.all(1),
+          decoration: BoxDecoration(
+            boxShadow: [ShadowStyle.horizontalCardShadow],
+            borderRadius: BorderRadius.circular(CustomSizes.cardRadiusLg),
+            color: dark ? CustomColors.darkGrey : Colors.white,
           ),
+          child: Row(
+            children: [
+              // Image
+              RoundedContainer(
+                height: 120,
+                padding: const EdgeInsets.all(CustomSizes.sm),
+                backgroundColor: dark ? CustomColors.dark : CustomColors.white,
+                child: const Stack(
+                  children: [
+                    RoundedImage(imageUrl: "assets/images/location/japan.jpg", applyImageRadius: true,),
+                  ],
+                ),
+              ),
 
-          // Details
-          Stack(
-            children: <Widget>[
+              // Details
               SizedBox(
                 width: 182,
                 child: Padding(
-                  padding: EdgeInsets.only(top: CustomSizes.sm),
+                  padding: EdgeInsets.all(CustomSizes.sm),
                   child: Column(
                     children: [
                       Column(
@@ -67,14 +74,14 @@ class TripCardLong extends StatelessWidget {
                         children: [
                           TripCardTitleText(
                             title: trip.tripName,
-                            textStyle: Theme.of(context).textTheme.headlineSmall!,
+                            textStyle: Theme.of(context).textTheme.headlineMedium!,
                           ),
-                          SizedBox(height: CustomSizes.spaceBtwItems / 2,),
+                          const SizedBox(height: CustomSizes.spaceBtwItems / 2,),
 
                           TextWithIcon(
                             icon: Iconsax.location5,
                             title: trip.location!.locationName,
-                            color: CustomColors.grey,
+                            color: CustomColors.secondary,
                             textStyle: Theme.of(context).textTheme.labelLarge!.apply(color: CustomColors.grey),
                           ),
                           SizedBox(height: CustomSizes.spaceBtwItems / 2,),
@@ -94,34 +101,45 @@ class TripCardLong extends StatelessWidget {
                               textStyle: Theme.of(context).textTheme.labelLarge!.apply(color: CustomColors.grey),
                             ),
                           ),
-
-                          GestureDetector(
-                            onTap: () => Get.to(() => CreateTripDetailView(trip: trip,)),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: CustomColors.secondary,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(CustomSizes.cardRadiusMd),
-                                  bottomRight: Radius.circular(CustomSizes.cardRadiusLg),
-                                ),
-                              ),
-                              child: const SizedBox(
-                                width: CustomSizes.iconLg * 1.2,
-                                height: CustomSizes.iconLg * 1.2,
-                                child: Center(child: Icon(Iconsax.edit, color: CustomColors.white,),),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
-              ),
+              )
             ],
-          )
-        ],
-      ),
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: GestureDetector(
+            onTap: () {
+              flight != null ? tripController.addFlightToTrip(trip, flight!) :
+              Get.to(() => CreateTripDetailView(trip: trip));
+              },
+            child: Container(
+              decoration: const BoxDecoration(
+                color: CustomColors.secondary,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(CustomSizes.cardRadiusMd),
+                  bottomRight: Radius.circular(CustomSizes.cardRadiusLg),
+                ),
+              ),
+              child: SizedBox(
+                width: CustomSizes.iconLg * 1.2,
+                height: CustomSizes.iconLg * 1.2,
+                child: Center(
+                  child: Icon(
+                    flight == null ? Iconsax.calendar_edit : Iconsax.add_circle,
+                    color: CustomColors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

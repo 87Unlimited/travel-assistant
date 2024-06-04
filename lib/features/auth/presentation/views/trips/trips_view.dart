@@ -20,7 +20,6 @@ class TripView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = HelperFunctions.isDarkMode(context);
     final tripController = Get.put(TripController());
     tripController.fetchHomeViewTrips();
 
@@ -30,12 +29,33 @@ class TripView extends StatelessWidget {
           "My Trips",
           style: Theme.of(context).textTheme.headlineMedium!.apply(color: CustomColors.primary),
         ),
+        showBackArrow: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: SpacingStyle.paddingWithNormalHeight,
           child: Column(
             children: [
+              SectionHeading(title: "Upcoming Trips", showActionButton: false,),
+              const SizedBox(height: CustomSizes.spaceBtwSections / 2),
+
+              tripController.upcomingTrips.length >= 0 ? SizedBox(
+                width: DeviceUtils.getScreenWidth(context),
+                child: Obx(() =>
+                  ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: tripController.upcomingTrips.length,
+                    scrollDirection: Axis.vertical,
+                    separatorBuilder: (context, index) => const SizedBox(height: CustomSizes.spaceBtwItems),
+                    itemBuilder: (context, index) => TripCardLong(
+                      trip: tripController.upcomingTrips[index],
+                      flight: flight,
+                    ),
+                  ),
+                ),
+              ) : Text("You have no upcoming trips yet! Create one now!", style: Theme.of(context).textTheme.titleMedium,),
+              const SizedBox(height: CustomSizes.spaceBtwSections / 2),
+
               SectionHeading(title: "Past Trips", showActionButton: false,),
               const SizedBox(height: CustomSizes.spaceBtwSections / 2),
 
@@ -43,20 +63,21 @@ class TripView extends StatelessWidget {
                 children: <Widget>[
                   SizedBox(
                     width: DeviceUtils.getScreenWidth(context),
-                    height: DeviceUtils.getScreenHeight(context) / 1.7,
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: tripController.homeViewTrips.length,
-                      scrollDirection: Axis.vertical,
-                      separatorBuilder: (context, index) => const SizedBox(height: CustomSizes.spaceBtwItems),
-                      itemBuilder: (context, index) => TripCardLong(
-                          trip: tripController.homeViewTrips[index]
+                    child: Obx(() => ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: tripController.pastTrips.length,
+                        scrollDirection: Axis.vertical,
+                        separatorBuilder: (context, index) => const SizedBox(height: CustomSizes.spaceBtwItems),
+                        itemBuilder: (context, index) => TripCardLong(
+                          trip: tripController.pastTrips[index],
+                          flight: flight,
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(height: CustomSizes.spaceBtwSections),
 
-                  SizedBox(
+                  flight == null ? SizedBox(
                     width: CustomSizes.buttonWidth,
                     height: CustomSizes.buttonHeight,
                     child: ElevatedButton(
@@ -65,7 +86,7 @@ class TripView extends StatelessWidget {
                         child: Text('Create Trip'),
                       ),
                     ),
-                  ),
+                  ) : SizedBox(),
                 ],
               ),
             ],

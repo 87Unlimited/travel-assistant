@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
+import 'package:travel_assistant/features/auth/data/models/flight_model.dart';
 
 import 'location_model.dart';
 
@@ -8,6 +9,7 @@ class TripModel {
   String? tripId;
   String tripName;
   LocationModel? location;
+  FlightModel? flight;
   String description;
   String? image;
   Timestamp? startDate;
@@ -18,6 +20,7 @@ class TripModel {
     required this.userId,
     required this.tripName,
     required this.location,
+    this.flight,
     required this.description,
     required this.image,
     required this.startDate,
@@ -29,6 +32,7 @@ class TripModel {
       userId: "",
       tripName: "",
       location: null,
+      flight: null,
       description: '',
       image: '',
       startDate: null,
@@ -36,10 +40,12 @@ class TripModel {
   );
 
   Map<String, dynamic> toJson() {
+    final flightJson = flight != null ? flight!.toJson() : FlightModel.empty().toJson();
     return {
       'UserId': userId,
       'TripName': tripName,
       'Location': location!.toJson(),
+      'Flight': flightJson,
       'Description': description,
       'Image': image,
       'StartDate': startDate,
@@ -55,6 +61,7 @@ class TripModel {
         userId: data['UserId'] ?? '',
         tripName: data['TripName'] ?? '',
         location: LocationModel.fromJson(data['Location']),
+        flight: FlightModel.fromJson(data['Flight'] as Map<String, dynamic>),
         description: data['Description'] ?? '',
         image: data['Image'] ?? '',
         startDate: data['StartDate'] ?? '',

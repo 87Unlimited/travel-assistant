@@ -122,6 +122,26 @@ class LocationServices extends GetxController{
     }
   }
 
+  Future<String> getPlacePhoto(String placeId) async {
+    final String url =
+        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key";
+
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      try{
+        final data = convert.jsonDecode(response.body);
+        final photoReference = data['result']['photos']['photo_reference'];
+        print("JJ" + photoReference);
+        return photoReference;
+      } catch (e) {
+        print(e.toString());
+        return "";
+      }
+    } else {
+      throw Exception('Failed to fetch location details');
+    }
+  }
+
   Future<String> getCountryAbbreviationByPlaceId(String placeId) async {
     final String url =
         "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key";

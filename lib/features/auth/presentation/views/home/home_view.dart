@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_assistant/core/util/constants/image_strings.dart';
+import 'package:travel_assistant/features/auth/data/models/flight_model.dart';
 import 'package:travel_assistant/features/auth/presentation/controllers/trips/trip_controller.dart';
 import 'package:travel_assistant/features/auth/presentation/views/flight/widgets/flight_card_oneway.dart';
+import 'package:travel_assistant/features/auth/presentation/views/flight/widgets/flight_card_roundtrip.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/widgets/home_header.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/widgets/home_categories.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -41,6 +43,9 @@ class _HomeViewState extends State<HomeView> {
     final locationServices = Get.put(LocationServices());
     final navController = Get.put(NavigationController());
     final flightServices = Get.put(FlightServices());
+
+    tripController.fetchHomeViewTrips();
+    tripController.fetchHomeViewFlights();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -97,8 +102,27 @@ class _HomeViewState extends State<HomeView> {
               ),
               const SizedBox(height: CustomSizes.spaceBtwSections,),
 
-              const SectionHeading(title: "Upcoming Trips"),
-              const SizedBox(height: CustomSizes.spaceBtwItems,),
+              tripController.upcomingFlights.length >= 0 ? SizedBox(
+                child: (tripController.upcomingFlights != FlightModel.empty()) ? Column(
+                  children: [
+                    const SectionHeading(title: "Upcoming Bookings"),
+                    const SizedBox(height: CustomSizes.spaceBtwItems,),
+
+                    SizedBox(
+                      height: 300,
+                      child: Obx(() =>
+                        ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: tripController.upcomingFlights.length,
+                          itemBuilder: (_, index) => FlightCardRoundTrip(flight: tripController.upcomingFlights[index]),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: CustomSizes.spaceBtwSections,),
+                  ],
+                ) : SizedBox(),
+              ) : SizedBox(),
 
               // Category
               const Column(

@@ -44,6 +44,7 @@ class CreateTripForm extends StatelessWidget {
                 value: controller.defaultDates,
                 onValueChanged: (dates) => controller.defaultDates = dates,
               ),
+              Image.network('https://maps.googleapis.com/maps/api/place/photo?maxheight=300&photoreference=AUGGfZkBHpwzn-E4mlQ_T3yYSSOUXXbD5VH4WSGcruHcqnLxVW61T506D0fsTDlA1Nmyo16QU3YfiL756RIDbi3sPpfldsL99xj2MxwHylyQvdM2tVLuU8L8OHbI6ukbP1YWPrYrD6n0n_-FJ-y-8x50GHOJriq0rNVyUeNbyk9gJzxiqzVK&key=AIzaSyAxXKd8jrvNtlfQIV4kpY3y5GRk5fRMczY')
             ],
           ),
           const SizedBox(height: CustomSizes.spaceBtwSections),

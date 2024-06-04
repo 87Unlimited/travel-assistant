@@ -30,7 +30,6 @@ class CreateTripController extends GetxController {
   List<DateTime?> defaultDates = [];
   String locationId = "";
   String locationName = "";
-  String image = "";
 
   // GlobalKey<FormState> createTripFormKey = GlobalKey<FormState>();
   RxList<DayModel> dayList = <DayModel>[].obs;
@@ -115,7 +114,9 @@ class CreateTripController extends GetxController {
         return;
       }
 
-      locationServices.getPlacePhoto(locationId);
+      // Get photo from google
+      String photoReference = await locationServices.getPlacePhotoReference(locationId);
+      String imageUrl = await locationServices.getPlacePhoto(photoReference);
 
       // Form Validation
       // if (!createTripFormKey.currentState!.validate()) {
@@ -124,50 +125,50 @@ class CreateTripController extends GetxController {
       //   return;
       // }
 
-      // List<Timestamp?> timestampList =
-      //     CustomFormatters.convertDateTimeListToTimestamps(defaultDates);
-      //
-      // final newTrip = TripModel(
-      //   userId: user!.uid,
-      //   tripName: tripName.text.trim(),
-      //   location:
-      //       LocationModel(locationId: locationId, locationName: locationName),
-      //   description: '',
-      //   image: image,
-      //   startDate: timestampList[0],
-      //   endDate: timestampList[1],
-      // );
-      //
-      // final tripRepository = Get.put(TripRepository());
-      // String documentId = await tripRepository.saveTripRecordAndReturnId(newTrip);
-      // newTrip.tripId = documentId;
-      //
-      // List<DateTime> allDates =
-      //     getAllDatesInRange(defaultDates[0]!, defaultDates[1]!);
-      // List<Timestamp?> allDatesTimestampList =
-      //     CustomFormatters.convertDateTimeListToTimestamps(allDates);
-      //
-      // for (var i = 0; i < allDatesTimestampList.length; i++) {
-      //   final day = DayModel(
-      //     tripId: documentId,
-      //     date: allDatesTimestampList[i],
-      //   );
-      //
-      //   await tripRepository.saveDaysRecord(day);
-      // }
-      //
+      List<Timestamp?> timestampList =
+          CustomFormatters.convertDateTimeListToTimestamps(defaultDates);
+
+      final newTrip = TripModel(
+        userId: user!.uid,
+        tripName: tripName.text.trim(),
+        location:
+            LocationModel(locationId: locationId, locationName: locationName),
+        description: '',
+        image: imageUrl,
+        startDate: timestampList[0],
+        endDate: timestampList[1],
+      );
+
+      final tripRepository = Get.put(TripRepository());
+      String documentId = await tripRepository.saveTripRecordAndReturnId(newTrip);
+      newTrip.tripId = documentId;
+
+      List<DateTime> allDates =
+          getAllDatesInRange(defaultDates[0]!, defaultDates[1]!);
+      List<Timestamp?> allDatesTimestampList =
+          CustomFormatters.convertDateTimeListToTimestamps(allDates);
+
+      for (var i = 0; i < allDatesTimestampList.length; i++) {
+        final day = DayModel(
+          tripId: documentId,
+          date: allDatesTimestampList[i],
+        );
+
+        await tripRepository.saveDaysRecord(day);
+      }
+
       // // Remove Loader
        FullScreenLoader.stopLoading();
-      //
-      // // Show Success Message
-      // CustomLoaders.successSnackBar(
-      //     title: "Trip created!",
-      //     message: "You can create your own journey now!");
-      //
-      // clearTrip();
-      //
-      // // Redirect to CreateTripDetailView
-      // Get.to(() => CreateTripDetailView(trip: newTrip,));
+
+      // Show Success Message
+      CustomLoaders.successSnackBar(
+          title: "Trip created!",
+          message: "You can create your own journey now!");
+
+      clearTrip();
+
+      // Redirect to CreateTripDetailView
+      Get.to(() => CreateTripDetailView(trip: newTrip,));
     } catch (e) {
       // Remove Loader
       FullScreenLoader.stopLoading();

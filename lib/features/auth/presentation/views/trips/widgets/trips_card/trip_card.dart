@@ -55,9 +55,15 @@ class TripCardLong extends StatelessWidget {
                 height: 120,
                 padding: const EdgeInsets.all(CustomSizes.sm),
                 backgroundColor: dark ? CustomColors.dark : CustomColors.white,
-                child: const Stack(
+                child: Stack(
                   children: [
-                    RoundedImage(imageUrl: "assets/images/location/japan.jpg", applyImageRadius: true,),
+                    RoundedImage(
+                      width: 100,
+                      height: 100,
+                      imageUrl: trip.image!,
+                      applyImageRadius: true,
+                      isNetworkImage: true,
+                    ),
                   ],
                 ),
               ),

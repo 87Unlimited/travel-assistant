@@ -40,7 +40,7 @@ class TripModel {
   );
 
   Map<String, dynamic> toJson() {
-    final flightJson = flight != null ? flight!.toJson() : FlightModel.empty().toJson();
+    final flightJson = flight != null ? flight!.toJson(false) : FlightModel.empty().toJson(false);
     return {
       'UserId': userId,
       'TripName': tripName,

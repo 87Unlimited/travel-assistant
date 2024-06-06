@@ -129,7 +129,7 @@ class LocationServices extends GetxController{
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final data = convert.jsonDecode(response.body);
-      final photoReference = data['result']['photos'][1]['photo_reference'];
+      final photoReference = data['result']['photos'][0]['photo_reference'];
       return photoReference;
     } else {
       throw Exception('Failed to fetch location details');
@@ -138,7 +138,7 @@ class LocationServices extends GetxController{
 
   Future<String> getPlacePhoto(String photoReference) async {
     final String url =
-        "https://maps.googleapis.com/maps/api/place/photo?maxheight=300&photoreference=$photoReference&key=$key";
+        "https://maps.googleapis.com/maps/api/place/photo?maxheight=300&maxwidth=300&photoreference=$photoReference&key=$key";
     print(url);
 
     return url;

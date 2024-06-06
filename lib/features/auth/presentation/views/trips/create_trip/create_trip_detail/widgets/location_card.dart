@@ -18,11 +18,11 @@ class LocationCard extends StatelessWidget {
   const LocationCard({
     super.key,
     required this.attraction,
-    required this.delete,
+    this.delete,
   });
 
   final AttractionModel attraction;
-  final VoidCallback delete;
+  final VoidCallback? delete;
 
   @override
   Widget build(BuildContext context) {
@@ -44,24 +44,11 @@ class LocationCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TripCardTitleText(
-                        title: attraction.attractionName,
-                        textStyle: Theme.of(context).textTheme.headlineSmall!,
-                      ),
-
-                      const Spacer(),
-
-                      Flexible(
-                        child: IconButton(
-                          onPressed: delete,
-                          icon: Icon(Icons.delete, color: Colors.red,),
-                        ),
-                      )
-                    ],
+                  TripCardTitleText(
+                    title: attraction.attractionName,
+                    textStyle: Theme.of(context).textTheme.headlineSmall!.apply(color: CustomColors.secondary),
                   ),
+                  const SizedBox(height: CustomSizes.spaceBtwItems / 2,),
 
                   TextWithIcon(
                     icon: Iconsax.clock,
@@ -69,7 +56,7 @@ class LocationCard extends StatelessWidget {
                     color: CustomColors.grey,
                     textStyle: Theme.of(context).textTheme.labelLarge!.apply(color: CustomColors.grey),
                   ),
-                  SizedBox(height: CustomSizes.spaceBtwItems / 2,),
+                  const SizedBox(height: CustomSizes.spaceBtwItems / 2,),
 
                   TextWithIcon(
                     icon: Iconsax.location,

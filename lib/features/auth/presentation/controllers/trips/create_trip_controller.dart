@@ -11,6 +11,7 @@ import '../../../../../core/util/constants/sizes.dart';
 import '../../../../../core/util/formatters/formatter.dart';
 import '../../../../../core/util/popups/full_screen_loader.dart';
 import '../../../../../navigation_menu.dart';
+import '../../../data/models/flight_model.dart';
 import '../../../data/models/location_model.dart';
 import '../../../data/models/trip_model.dart';
 import '../../../data/repositories/authentication/authentication_repository.dart';
@@ -133,6 +134,7 @@ class CreateTripController extends GetxController {
         tripName: tripName.text.trim(),
         location:
             LocationModel(locationId: locationId, locationName: locationName),
+        flight: FlightModel.empty(),
         description: '',
         image: imageUrl,
         startDate: timestampList[0],

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/create_trip_detail/widgets/location_card.dart';
-import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/create_trip_detail/widgets/trip_stepper.dart';
+import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/create_trip_detail/widgets/recommend_list.dart';
+import 'package:travel_assistant/features/auth/presentation/views/trips/create_trip/create_trip_detail/widgets/schedule_list.dart';
 
-import '../../../../../../../../common/widgets/button/text_icon_button.dart';
 import '../../../../../../../../core/util/constants/colors.dart';
 import '../../../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../../../core/util/constants/spacing_styles.dart';
@@ -11,7 +10,6 @@ import '../../../../../../../../core/util/formatters/formatter.dart';
 import '../../../../../../data/models/trip_model.dart';
 import '../../../../../controllers/trips/attraction_controller.dart';
 import '../../../../../controllers/trips/create_trip_detail_controller.dart';
-import 'horizontal_calendar.dart';
 import 'location_date_header.dart';
 
 class DetailsSheet extends StatelessWidget {
@@ -39,6 +37,35 @@ class DetailsSheet extends StatelessWidget {
     createTripDetailController.tripId = trip.tripId!;
 
     StepperType _type = StepperType.vertical;
+
+    List<String> tabs = [
+      "Schedule",
+      "Recommendation"
+    ];
+
+    Rx<int> current = 0.obs;
+
+    double changePositionedOfLine() {
+      switch (current.value) {
+        case 0:
+          return 0;
+        case 1:
+          return 90;
+        default:
+          return 0;
+      }
+    }
+
+    double changeContainerWidth() {
+      switch (current.value) {
+        case 0:
+          return 70;
+        case 1:
+          return 130;
+        default:
+          return 50;
+      }
+    }
 
     // Bottom sheet
     return DraggableScrollableSheet(
@@ -72,51 +99,76 @@ class DetailsSheet extends StatelessWidget {
                           dateTitle: dateTitle),
                       const SizedBox(height: CustomSizes.spaceBtwSections),
 
-                      // Calendar
-                      HorizontalCalendar(
-                        selectedDate: controller.selectedDate!,
-                        onDateChange: controller.handleDateChange,
-                        initialDate: firstDate,
-                      ),
-                      const SizedBox(height: CustomSizes.spaceBtwSections),
-
-                      // TripStepper(),
-                      SizedBox(
-                        height: 200,
-                        child: Obx(() {
-                          if (createTripDetailController.attractionsOfSingleDay.isEmpty) {
-                            return Text("You have no activities yet.");
-                          } else {
-                            return ListView.separated(
-                                shrinkWrap: true,
-                                itemCount: createTripDetailController
-                                    .attractionsOfSingleDay.length,
-                                scrollDirection: Axis.vertical,
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(height: CustomSizes.spaceBtwItems),
-                                itemBuilder: (context, index) => LocationCard(
-                                  attraction: createTripDetailController.attractionsOfSingleDay[index],
-                                  delete: () => createTripDetailController.deleteAttraction(createTripDetailController.attractionsOfSingleDay[index].attractionId),
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: 50,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  top: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: SizedBox(
+                                    height: 50,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: tabs.length,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        return Obx(() => GestureDetector(
+                                            onTap: (){
+                                              current.value = index;
+                                            },
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                left: index == 0 ? 10 : 22,
+                                                top: 7,
+                                              ),
+                                              child: Text(
+                                                tabs[index],
+                                                style: current == index ? Theme.of(context).textTheme.titleLarge!.apply(color: CustomColors.secondary)
+                                                : Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 ),
-                            );
-                          }
-                        }),
+                                Obx(() => AnimatedPositioned(
+                                    bottom: 0,
+                                    left: changePositionedOfLine(),
+                                    curve: Curves.fastLinearToSlowEaseIn,
+                                    duration: const Duration(microseconds: 500,),
+                                    child: AnimatedContainer(
+                                      duration: Duration(microseconds: 500,),
+                                      margin: const EdgeInsets.only(left: 10),
+                                      width: changeContainerWidth(),
+                                      height: 5,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: CustomColors.secondary,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Obx(() => Padding(
+                              padding: EdgeInsets.only(top: 20,),
+                              child: current.value == 0 ? RecommendList() :
+                              ScheduleList(firstDate: firstDate, trip: trip),
+                            ),
+                          )
+                        ],
                       ),
                       const SizedBox(height: CustomSizes.spaceBtwSections),
 
-                      // Add Location Button
-                      TextIconButton(
-                        icon: const Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: CustomSizes.iconMd,
-                        ),
-                        buttonText: 'Add Location',
-                        onPressed: () async {
-                          controller.tripBottomSheet(context, trip);
-                        },
-                      ),
-                      const SizedBox(height: CustomSizes.spaceBtwItems),
+                      // Calendar
+
                     ],
                   ),
                 ),

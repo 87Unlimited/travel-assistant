@@ -136,7 +136,7 @@ class TripRepository extends GetxController {
 
   Future<void> addFlightToTripDocument(String tripId, FlightModel flight) async {
     try {
-      await _db.collection('Trips').doc(tripId).update(flight.toJson());
+      await _db.collection('Trips').doc(tripId).update(flight.toJson(true));
     } on FirebaseException catch (e) {
       throw CustomFirebaseException(e.code).message;
     } on FormatException catch (_) {

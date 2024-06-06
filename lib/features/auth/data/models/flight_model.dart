@@ -40,18 +40,34 @@ class FlightModel {
     order: 0,
   );
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(isCreate) {
+    if(isCreate) {
+      return {
+        'Flight': {
+          'FlightNumber': flightNumber,
+          'Duration': duration,
+          'DepartureAirport': departureAirport,
+          'ArrivalAirport': arrivalAirport,
+          'DepartureTime': departureTime,
+          'ArrivalTime': arrivalTime,
+          'ReturnDepartureTime': returnDepartureTime,
+          'ReturnArrivalTime': returnArrivalTime,
+          'Price': price,
+          'Order': order,
+        }
+      };
+    }
     return {
-        'FlightNumber': flightNumber,
-        'Duration': duration,
-        'DepartureAirport': departureAirport,
-        'ArrivalAirport': arrivalAirport,
-        'DepartureTime': departureTime,
-        'ArrivalTime': arrivalTime,
-        'ReturnDepartureTime': returnDepartureTime,
-        'ReturnArrivalTime': returnArrivalTime,
-        'Price': price,
-        'Order': order,
+      'FlightNumber': flightNumber,
+      'Duration': duration,
+      'DepartureAirport': departureAirport,
+      'ArrivalAirport': arrivalAirport,
+      'DepartureTime': departureTime,
+      'ArrivalTime': arrivalTime,
+      'ReturnDepartureTime': returnDepartureTime,
+      'ReturnArrivalTime': returnArrivalTime,
+      'Price': price,
+      'Order': order,
     };
   }
 

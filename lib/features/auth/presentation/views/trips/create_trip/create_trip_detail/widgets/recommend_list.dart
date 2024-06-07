@@ -8,6 +8,7 @@ import 'package:travel_assistant/features/auth/presentation/views/flight/widgets
 
 import '../../../../../../../../core/util/constants/sizes.dart';
 import '../../../../../controllers/recommendation/recommendation_controller.dart';
+import 'activity_card.dart';
 
 class RecommendList extends StatelessWidget {
   const RecommendList({
@@ -21,6 +22,7 @@ class RecommendList extends StatelessWidget {
   Widget build(BuildContext context) {
     final recommendationController = Get.put(RecommendationController(trip: trip));
     recommendationController.getFlightRecommendation(trip);
+    recommendationController.getActivitiesRecommendation(trip);
 
     return Container(
       child: Column(
@@ -28,8 +30,32 @@ class RecommendList extends StatelessWidget {
           SectionHeading(title: "Flights", textColor: CustomColors.primary, showActionButton: false,),
           const SizedBox(height: CustomSizes.spaceBtwItems),
 
+          //ActivityCard(),
+
+          // Obx(() {
+          //   return recommendationController.isFlightsLoading.value ? Center(
+          //     child: Column(
+          //       children: [
+          //         CircularProgressIndicator(),
+          //         const SizedBox(height: CustomSizes.spaceBtwItems),
+          //         Text(
+          //           "Loading...",
+          //           style: Theme.of(context).textTheme.bodySmall!.apply(color: CustomColors.darkGrey),
+          //         ),
+          //       ],
+          //     ),
+          //   ) : FlightCardRoundTrip(flight: recommendationController.flight.value);
+          // }),
+          // const SizedBox(height: CustomSizes.spaceBtwSections),
+          //
+          // SectionHeading(title: "Tours And Activities", textColor: CustomColors.primary, showActionButton: false,),
+          // const SizedBox(height: CustomSizes.spaceBtwItems),
+          //
           Obx(() {
-            return recommendationController.isLoading.value ? Center(
+            if (recommendationController.activities.isEmpty) {
+              return Text("No Result.");
+            }
+            return recommendationController.isActivitiesLoading.value ? Center(
               child: Column(
                 children: [
                   CircularProgressIndicator(),
@@ -40,27 +66,17 @@ class RecommendList extends StatelessWidget {
                   ),
                 ],
               ),
-            ) : FlightCardRoundTrip(flight: recommendationController.flight.value);
+            ) : SizedBox(
+                    height: 330,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: recommendationController.activities.length,
+                      itemBuilder: (_, index) => ActivityCard(activity: recommendationController.activities[index]),
+                    ),
+                  );
           }),
           const SizedBox(height: CustomSizes.spaceBtwSections),
-
-          SectionHeading(title: "Tours And Activities", textColor: CustomColors.primary, showActionButton: false,),
-          const SizedBox(height: CustomSizes.spaceBtwItems),
-
-          Obx(() {
-            return recommendationController.isLoading.value ? Center(
-              child: Column(
-                children: [
-                  CircularProgressIndicator(),
-                  const SizedBox(height: CustomSizes.spaceBtwItems),
-                  Text(
-                    "Loading...",
-                    style: Theme.of(context).textTheme.bodySmall!.apply(color: CustomColors.darkGrey),
-                  ),
-                ],
-              ),
-            ) : FlightCardRoundTrip(flight: recommendationController.flight.value);
-          }),
           ElevatedButton(onPressed: () => recommendationController.getActivitiesRecommendation(trip), child: Center(child: Text("TEST"),))
         ],
       ),

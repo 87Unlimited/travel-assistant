@@ -47,11 +47,11 @@ class ActivitiesServices extends GetxController {
 
             return ActivityModel(
               id: id,
-              name: name,
-              description: description,
+              name: name == null ? "" : name,
+              description: description == null ? "" : description,
               latitude: latitude,
               longitude: longitude,
-              rating: rating,
+              rating: rating == null ? 0.0 : double.parse(rating),
               price: price == null ? 0.0 : double.parse(price),
               picture: picture,
               bookingLink: bookingLink == null ? "" : bookingLink,

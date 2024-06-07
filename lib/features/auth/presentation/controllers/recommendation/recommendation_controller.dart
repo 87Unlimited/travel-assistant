@@ -10,18 +10,19 @@ import '../../../domain/services/location_services.dart';
 import '../flight/flight_controller.dart';
 
 class RecommendationController extends GetxController {
-  RecommendationController({required this.trip});
+  RecommendationController({this.trip});
   static RecommendationController get instance => Get.find();
 
   final flightController = Get.put(FlightController());
   final locationService = Get.put(LocationServices());
   final activitiesServices = Get.put(ActivitiesServices());
 
-  RxBool isLoading = false.obs;
+  RxBool isFlightsLoading = false.obs;
+  RxBool isActivitiesLoading = false.obs;
 
   Rx<FlightModel> flight = FlightModel.empty().obs;
   RxList<ActivityModel> activities = <ActivityModel>[].obs;
-  TripModel trip;
+  TripModel? trip;
 
   @override
   void onClose() {
@@ -31,14 +32,14 @@ class RecommendationController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    await getFlightRecommendation(trip);
+    await getFlightRecommendation(trip!);
     super.onInit();
   }
 
   /// Flight Recommendation
   Future<void> getFlightRecommendation(TripModel trip) async {
     try {
-      isLoading.value = true;
+      isFlightsLoading.value = true;
 
       // Get latlng of location
       Map<String, double> latlng = await locationService.getPlaceLatLng(trip.location!.locationId);
@@ -57,7 +58,7 @@ class RecommendationController extends GetxController {
       );
       flight.value = flightController.flights[0];
 
-      isLoading.value = false;
+      isFlightsLoading.value = false;
     } catch (e) {
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
@@ -67,7 +68,7 @@ class RecommendationController extends GetxController {
   /// Tours and activities Recommendation
   Future<void> getActivitiesRecommendation(TripModel trip) async {
     try {
-      isLoading.value = true;
+      isActivitiesLoading.value = true;
 
       // Get latlng of location
       Map<String, double> latlng = await locationService.getPlaceLatLng(trip.location!.locationId);
@@ -77,7 +78,7 @@ class RecommendationController extends GetxController {
 
       activities.assignAll(activity);
 
-      isLoading.value = false;
+      isActivitiesLoading.value = false;
     } catch (e) {
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());

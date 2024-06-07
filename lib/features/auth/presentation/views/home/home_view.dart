@@ -14,6 +14,7 @@ import 'package:travel_assistant/features/auth/presentation/views/home/widgets/i
 import '../../../../../common/widgets/section_heading.dart';
 import '../../../../../common/widgets/trip/trip_cards/trip_card_create.dart';
 import '../../../../../common/widgets/trip/trip_cards/trip_card_vertical.dart';
+import '../../../../../core/util/constants/colors.dart';
 import '../../../../../core/util/constants/sizes.dart';
 import '../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../core/util/helpers/helper_functions.dart';
@@ -108,17 +109,27 @@ class _HomeViewState extends State<HomeView> {
                     const SectionHeading(title: "Upcoming Bookings"),
                     const SizedBox(height: CustomSizes.spaceBtwItems,),
 
-                    SizedBox(
-                      height: 300,
-                      child: Obx(() =>
-                        ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: tripController.upcomingFlights.length,
-                          itemBuilder: (_, index) => FlightCardRoundTrip(flight: tripController.upcomingFlights[index]),
-                        ),
+                    Obx(() { return tripController.isLoading.value ? Center(
+                      child: Column(
+                        children: [
+                          CircularProgressIndicator(),
+                          const SizedBox(height: CustomSizes.spaceBtwItems),
+                          Text(
+                            "Loading...",
+                            style: Theme.of(context).textTheme.bodySmall!.apply(color: CustomColors.darkGrey),
+                          ),
+                        ],
                       ),
-                    ),
+                    ) : SizedBox(
+                        height: 300,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: tripController.upcomingFlights.length,
+                            itemBuilder: (_, index) => FlightCardRoundTrip(flight: tripController.upcomingFlights[index]),
+                          ),
+                        );
+                    }),
                     const SizedBox(height: CustomSizes.spaceBtwSections,),
                   ],
                 ) : SizedBox(),
@@ -145,7 +156,7 @@ class _HomeViewState extends State<HomeView> {
               // const SizedBox(height: CustomSizes.spaceBtwItems,),
 
               // Activities Slider
-              const ImageSlider(banners: [CustomImages.japan, CustomImages.korea, CustomImages.thailand],),
+              // const ImageSlider(banners: [CustomImages.japan, CustomImages.korea, CustomImages.thailand],),
               const SizedBox(height: CustomSizes.spaceBtwSections,),
 
               // Your Trips

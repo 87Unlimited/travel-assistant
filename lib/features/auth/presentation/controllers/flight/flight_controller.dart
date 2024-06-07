@@ -48,12 +48,13 @@ class FlightController extends GetxController {
   var childCount = 0.obs;
   var babyCount = 0.obs;
   RxList<FlightModel> flights = <FlightModel>[].obs;
+  RxList<AirportModel> airports = <AirportModel>[].obs;
 
   @override
   void onInit() {
+    clearData();
     super.onInit();
   }
-
 
   @override
   void dispose() {
@@ -63,7 +64,14 @@ class FlightController extends GetxController {
     returnDateController.dispose();
     flightClassController.dispose();
     passengerController.dispose();
+    flights.clear();
+    airports.clear();
     super.dispose();
+  }
+
+  void clearData() {
+    flights.clear();
+    airports.clear();
   }
 
   /// Fetch all attractions of the user
@@ -97,6 +105,56 @@ class FlightController extends GetxController {
       // Assign attractions
       flights.assignAll(flightsResult);
 
+      isLoading.value = false;
+    } catch (e) {
+      // Show error to the user
+      CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    }
+  }
+
+  /// Fetch nearest airport of the user
+  Future<void> fetchNearestAirport(double lat, double lng) async {
+    try {
+      isLoading.value = true;
+
+      if(airports.isNotEmpty){
+        airports.clear();
+      }
+
+      // Fetch airport
+      final airport = await flightServices.fetchAirport(lat, lng);
+
+      // Assign attractions
+      airports.assignAll(airport);
+
+      isLoading.value = false;
+    } catch (e) {
+      // Show error to the user
+      CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    }
+  }
+
+  /// Fetch flight recommendation for user
+  Future<void> fetchFlightRecommendationResult(double lat, double lng, String origin, String departureDate, String returnDate) async {
+    try {
+      isLoading.value = true;
+      int adults = 1;
+      int child = 0;
+      int baby = 0;
+      String travelClass = "ECONOMY";
+      bool nonStop = true;
+
+      // Get the nearest airport of the location
+      await fetchNearestAirport(lat, lng);
+      String destination = airports[0].iataCode;
+
+      // Fetch flights
+      if(flights.isEmpty){
+        final flightsResult = await flightServices.fetchData(origin, destination, departureDate, returnDate, adults, child, baby, travelClass, nonStop);
+
+        // Assign attractions
+        flights.assignAll(flightsResult);
+      }
       isLoading.value = false;
     } catch (e) {
       // Show error to the user

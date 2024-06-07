@@ -113,7 +113,7 @@ class FlightServices extends GetxController {
     String? accessToken = _amadeusApiKeyToken;
 
     while(!isEnded){
-      var url = Uri.parse('https://test.api.amadeus.com/v1/reference-data/locations/airports?latitude=$lat&longitude=$lng&radius=150&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=distance');
+      var url = Uri.parse('https://test.api.amadeus.com/v1/reference-data/locations/airports?latitude=$lat&longitude=$lng&radius=150&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.flights.score');
 
       var headers = {'Authorization': 'Bearer $_amadeusApiKeyToken'};
 
@@ -123,7 +123,6 @@ class FlightServices extends GetxController {
 
       if (response.statusCode == 200) {
         // Request success, print result
-        print(response.body);
         List<AirportModel> airports = jsonMap['data'].map<AirportModel>((data) {
           final iataCode = data['iataCode'];
           final cityName = data['address']['cityName'];

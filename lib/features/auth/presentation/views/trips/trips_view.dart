@@ -42,16 +42,16 @@ class TripView extends StatelessWidget {
               tripController.upcomingTrips.length >= 0 ? SizedBox(
                 width: DeviceUtils.getScreenWidth(context),
                 child: Obx(() =>
-                  ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: tripController.upcomingTrips.length,
-                    scrollDirection: Axis.vertical,
-                    separatorBuilder: (context, index) => const SizedBox(height: CustomSizes.spaceBtwItems),
-                    itemBuilder: (context, index) => TripCardLong(
-                      trip: tripController.upcomingTrips[index],
-                      flight: flight,
+                    ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: tripController.upcomingTrips.length,
+                      scrollDirection: Axis.vertical,
+                      separatorBuilder: (context, index) => const SizedBox(height: CustomSizes.spaceBtwItems),
+                      itemBuilder: (context, index) => TripCardLong(
+                        trip: tripController.upcomingTrips[index],
+                        flight: flight,
+                      ),
                     ),
-                  ),
                 ),
               ) : Text("You have no upcoming trips yet! Create one now!", style: Theme.of(context).textTheme.titleMedium,),
               const SizedBox(height: CustomSizes.spaceBtwSections / 2),
@@ -64,15 +64,15 @@ class TripView extends StatelessWidget {
                   SizedBox(
                     width: DeviceUtils.getScreenWidth(context),
                     child: Obx(() => ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: tripController.pastTrips.length,
-                        scrollDirection: Axis.vertical,
-                        separatorBuilder: (context, index) => const SizedBox(height: CustomSizes.spaceBtwItems),
-                        itemBuilder: (context, index) => TripCardLong(
-                          trip: tripController.pastTrips[index],
-                          flight: flight,
-                        ),
+                      shrinkWrap: true,
+                      itemCount: tripController.pastTrips.length,
+                      scrollDirection: Axis.vertical,
+                      separatorBuilder: (context, index) => const SizedBox(height: CustomSizes.spaceBtwItems),
+                      itemBuilder: (context, index) => TripCardLong(
+                        trip: tripController.pastTrips[index],
+                        flight: flight,
                       ),
+                    ),
                     ),
                   ),
                   const SizedBox(height: CustomSizes.spaceBtwSections),
@@ -96,5 +96,3 @@ class TripView extends StatelessWidget {
     );
   }
 }
-
-

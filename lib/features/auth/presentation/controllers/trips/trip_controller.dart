@@ -40,14 +40,13 @@ class TripController extends GetxController {
       // Show loader when loading trips
       isLoading.value = true;
 
-      // Clear upcoming trips
-      upcomingTrips.clear();
-
       // Fetch trips
-      final trips = await tripRepository.getHomeViewTrips();
+      if(upcomingTrips.isEmpty && pastTrips.isEmpty){
+        final trips = await tripRepository.getHomeViewTrips();
 
-      // Assign trips
-      homeViewTrips.assignAll(trips);
+        // Assign trips
+        homeViewTrips.assignAll(trips);
+      }
 
       DateTime currentDate = DateTime.now();
 

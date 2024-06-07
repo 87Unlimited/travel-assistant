@@ -61,7 +61,7 @@ class RecommendList extends StatelessWidget {
               ),
             ) : FlightCardRoundTrip(flight: recommendationController.flight.value);
           }),
-          //ElevatedButton(onPressed: () => recommendationController.getFlightRecommendation(trip), child: Center(child: Text("TEST"),))
+          ElevatedButton(onPressed: () => recommendationController.getActivitiesRecommendation(trip), child: Center(child: Text("TEST"),))
         ],
       ),
     );

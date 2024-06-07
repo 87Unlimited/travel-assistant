@@ -152,11 +152,8 @@ class _HomeViewState extends State<HomeView> {
               const SectionHeading(title: "Top Activities"),
               const SizedBox(height: CustomSizes.spaceBtwItems,),
 
-              // FlightCard(flight: flight),
-              // const SizedBox(height: CustomSizes.spaceBtwItems,),
-
               // Activities Slider
-              // const ImageSlider(banners: [CustomImages.japan, CustomImages.korea, CustomImages.thailand],),
+              const ImageSlider(banners: [CustomImages.japan, CustomImages.korea, CustomImages.thailand],),
               const SizedBox(height: CustomSizes.spaceBtwSections,),
 
               // Your Trips

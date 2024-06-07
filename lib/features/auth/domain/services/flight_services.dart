@@ -167,15 +167,15 @@ class FlightServices extends GetxController {
     var response = await http.post(url, headers: headers, body: body, encoding: Encoding.getByName('utf-8'));
 
     if (response.statusCode == 200) {
-      // 請求成功，處理回應
+      // Request success
       print(response.body);
       var parsedJson = json.decode(response.body);
       var accessToken = parsedJson['access_token'];
 
       return accessToken;
     } else {
-      // 請求失敗，處理錯誤
-      print('請求失敗: ${response.statusCode}');
+      // Request failed
+      print('Request failed: ${response.statusCode}');
       return response.statusCode.toString();
     }
   }

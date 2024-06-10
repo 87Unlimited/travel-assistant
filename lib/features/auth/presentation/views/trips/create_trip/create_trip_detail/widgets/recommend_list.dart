@@ -72,7 +72,7 @@ class RecommendList extends StatelessWidget {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemCount: recommendationController.activities.length,
-                      itemBuilder: (_, index) => ActivityCard(activity: recommendationController.activities[index]),
+                      itemBuilder: (_, index) => ActivityCard(trip: trip, activity: recommendationController.activities[index], controller: recommendationController,),
                     ),
                   );
           }),

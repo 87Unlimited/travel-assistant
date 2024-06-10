@@ -23,6 +23,7 @@ import '../../../data/models/autocomplete_prediction.dart';
 import '../../../data/models/place_auto_complete_response.dart';
 import '../../../domain/services/flight_services.dart';
 import '../../../domain/services/location_services.dart';
+import '../../controllers/recommendation/recommendation_controller.dart';
 import '../flight/flight_view.dart';
 import '../trips/create_trip/create_trip_view.dart';
 
@@ -41,6 +42,7 @@ class _HomeViewState extends State<HomeView> {
     final dark = HelperFunctions.isDarkMode(context);
     const bool isTripExist = true;
     final tripController = Get.put(TripController());
+    final recommendationController = Get.put(RecommendationController());
     final locationServices = Get.put(LocationServices());
     final navController = Get.put(NavigationController());
     final flightServices = Get.put(FlightServices());
@@ -95,7 +97,7 @@ class _HomeViewState extends State<HomeView> {
                 width: CustomSizes.buttonWidth,
                 height: CustomSizes.buttonHeight,
                 child: ElevatedButton(
-                  onPressed: () => flightServices.fetchAirport(-37.84, -46.11),
+                  onPressed: () => locationServices.getPlaceByLatLng(44.4647452,7.3553838),
                   child: const Center(
                     child: Text('Testing Button'),
                   ),

@@ -27,6 +27,7 @@ class RecommendationController extends GetxController {
   @override
   void onClose() {
     flightController.clearData();
+    activities.clear();
     super.onClose();
   }
 
@@ -71,7 +72,7 @@ class RecommendationController extends GetxController {
       isActivitiesLoading.value = true;
 
       // Get latlng of location
-      Map<String, double> latlng = await locationService.getPlaceLatLng(trip.location!.locationId);
+      Map<String, double> latlng = await locationService.getPlaceLatLng(trip!.location!.locationId);
 
       // Get flight route result
       List<ActivityModel> activity = await activitiesServices.fetchActivities(latlng['latitude']!, latlng['longitude']!);
@@ -82,6 +83,36 @@ class RecommendationController extends GetxController {
     } catch (e) {
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    }
+  }
+
+  /// Tours and activities Recommendation
+  Future<void> getActivitiesRecommendationByActivity(ActivityModel activityModel) async {
+    try {
+      isActivitiesLoading.value = true;
+
+      // Get flight route result
+      List<ActivityModel> activity = await activitiesServices.fetchActivities(activityModel.latitude, activityModel.longitude);
+
+      activities.assignAll(activity);
+
+      isActivitiesLoading.value = false;
+    } catch (e) {
+      // Show error to the user
+      CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    }
+  }
+
+  Future<String> getActivitiesAddress(ActivityModel activity) async {
+    try {
+      // Get flight route result
+      String address = await locationService.getPlaceByLatLng(activity.latitude, activity.longitude);
+
+      return address;
+    } catch (e) {
+      // Show error to the user
+      CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+      return "No address found";
     }
   }
 }

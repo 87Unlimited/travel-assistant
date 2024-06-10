@@ -18,20 +18,28 @@ import '../../../../../../../../common/widgets/icons/text_with_icon.dart';
 import '../../../../../../../../core/util/constants/image_strings.dart';
 import '../../../../../../data/models/trip_model.dart';
 import '../../../../../controllers/recommendation/recommendation_controller.dart';
+import '../../../../activity/activity_view.dart';
 
 class ActivityCard extends StatelessWidget {
   const ActivityCard({
     super.key,
     required this.activity,
+    required this.trip,
+    required this.controller,
   });
 
+  final TripModel trip;
   final ActivityModel activity;
+  final RecommendationController controller;
 
   Widget build(BuildContext context) {
     final dark = HelperFunctions.isDarkMode(context);
 
     return GestureDetector(
-      // onTap: () => Get.to(() )),
+      onTap: () async {
+        String address = await controller.getActivitiesAddress(activity);
+        Get.to(ActivityView(trip: trip, activity: activity, address: address,));
+      },
       child: Padding(
         padding: const EdgeInsets.only(right: CustomSizes.spaceBtwItems),
         child: Container(
@@ -55,14 +63,15 @@ class ActivityCard extends StatelessWidget {
                       child: Stack(
                         children: [
                           // Image
-                          const RoundedImage(
-                            imageUrl: CustomImages.japan,
+                          RoundedImage(
+                            imageUrl: activity.picture,
+                            isNetworkImage: true,
                             applyImageRadius: true,
                             height: 130,
                           ),
                           // Tag
                           Positioned(
-                            left: 3,
+                            left: 0,
                             child: RoundedContainer(
                               height: CustomSizes.lg,
                               padding: const EdgeInsets.symmetric(horizontal: CustomSizes.sm, vertical: CustomSizes.xs),
@@ -91,9 +100,9 @@ class ActivityCard extends StatelessWidget {
                     ),
                     const SizedBox(height: CustomSizes.spaceBtwItems / 4,),
 
-                    activity.rating == null ? Text(
+                    activity.rating == 0.0 ? Text(
                       "No Rating Yet",
-                      style: Theme.of(context).textTheme.headlineSmall!.apply(color: CustomColors.primary),
+                      style: Theme.of(context).textTheme.titleLarge!.apply(color: CustomColors.grey),
                     ) :
                     RatingBar.builder(
                       initialRating: activity.rating!,
@@ -112,7 +121,7 @@ class ActivityCard extends StatelessWidget {
 
                     // Activity price
                     Text(
-                        activity.price == 0.0 ? "No Fee Needed" : '${activity.currencyCode} \$${activity.price.toString()}',
+                        activity.price == 0.0 ? "Free" : '${activity.currencyCode} \$${activity.price.toString()}',
                       style: Theme.of(context).textTheme.headlineSmall!.apply(color: CustomColors.secondary),
                     ),
                     const SizedBox(height: CustomSizes.spaceBtwItems / 4,),

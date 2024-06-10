@@ -122,6 +122,38 @@ class LocationServices extends GetxController{
     }
   }
 
+  Future<String> getPlaceByLatLng(double lat, double lng) async {
+    final String url =
+        "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$key";
+
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = convert.jsonDecode(response.body);
+
+      if (data['results'] != null && data['results'].isNotEmpty) {
+        List<dynamic> addressComponents = data['results'][0]['address_components'];
+        String country = "";
+        String locality = "";
+
+        // Find result contain country and locality
+        for (var component in addressComponents) {
+          List<dynamic> types = component['types'];
+          if (types.contains('country')) {
+            country = component['long_name'];
+          } else if(types.contains('locality')){
+            locality = component['long_name'];
+          }
+        }
+        // Combine country and locality
+        final address = locality + ", " + country;
+        return address;
+      }
+      return "";
+    } else {
+      throw Exception('Failed to fetch location details');
+    }
+  }
+
   Future<String> getPlacePhotoReference(String placeId) async {
     final String url =
         "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key";

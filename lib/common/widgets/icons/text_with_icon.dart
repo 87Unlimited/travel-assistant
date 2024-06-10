@@ -29,11 +29,12 @@ class TextWithIcon extends StatelessWidget {
           width: CustomSizes.textWithIconWidth,
         ),
         Expanded(
-            child: Text(
-          title,
-          style: textStyle,
-          overflow: TextOverflow.ellipsis,
-        )),
+          child: Text(
+            title,
+            style: textStyle,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
       ],
     );
   }

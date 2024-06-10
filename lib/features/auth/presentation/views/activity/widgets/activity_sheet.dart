@@ -21,17 +21,16 @@ class ActivitySheet extends StatelessWidget {
     required this.activity,
     required this.trip,
     required this.address,
+    required this.controller,
   });
 
   final TripModel trip;
   final ActivityModel activity;
   final String address;
+  final RecommendationController controller;
 
   @override
   Widget build(BuildContext context) {
-    final recommendationController = Get.put(RecommendationController());
-    recommendationController.getActivitiesRecommendationByActivity(activity);
-
     // Bottom sheet
     return DraggableScrollableSheet(
       initialChildSize: 0.2,
@@ -122,7 +121,7 @@ class ActivitySheet extends StatelessWidget {
                           SectionHeading(title: "Recommended Staying Time", textColor: CustomColors.primary, showActionButton: false,),
                           const SizedBox(height: CustomSizes.spaceBtwItems / 2),
                           Text(
-                            activity.minimumDuration == "" ? '1 Hour' : activity.bookingLink,
+                            activity.minimumDuration == "" ? '1 Hour' : activity.minimumDuration,
                             style: Theme.of(context).textTheme.headlineSmall!.apply(color: Colors.blueGrey),
                           ),
 
@@ -140,7 +139,7 @@ class ActivitySheet extends StatelessWidget {
                           // Activity Fee
                           Text(
                             activity.price == 0.0 ? "Free" :
-                            activity.currencyCode + activity.price.toString(),
+                            activity.currencyCode + "\$" + activity.price.toString(),
                             style: Theme.of(context).textTheme.headlineMedium!.apply(color: CustomColors.secondary),
                           ),
                           const SizedBox(height: CustomSizes.spaceBtwItems),
@@ -164,31 +163,31 @@ class ActivitySheet extends StatelessWidget {
 
                           Column(
                             children: [
-                              // Obx(() {
-                              //   if (recommendationController.activities.isEmpty) {
-                              //     return Text("No Result.");
-                              //   }
-                              //   return recommendationController.isActivitiesLoading.value ? Center(
-                              //     child: Column(
-                              //       children: [
-                              //         CircularProgressIndicator(),
-                              //         const SizedBox(height: CustomSizes.spaceBtwItems),
-                              //         Text(
-                              //           "Loading...",
-                              //           style: Theme.of(context).textTheme.bodySmall!.apply(color: CustomColors.darkGrey),
-                              //         ),
-                              //       ],
-                              //     ),
-                              //   ) : SizedBox(
-                              //     height: 330,
-                              //     child: ListView.builder(
-                              //       shrinkWrap: true,
-                              //       scrollDirection: Axis.horizontal,
-                              //       itemCount: recommendationController.activities.length,
-                              //       itemBuilder: (_, index) => ActivityCard(trip: trip, activity: recommendationController.activities[index]),
-                              //     ),
-                              //   );
-                              // }),
+                              Obx(() {
+                                if (controller.activities.isEmpty) {
+                                  return Text("No Result.");
+                                }
+                                return controller.isActivitiesLoading.value ? Center(
+                                  child: Column(
+                                    children: [
+                                      CircularProgressIndicator(),
+                                      const SizedBox(height: CustomSizes.spaceBtwItems),
+                                      Text(
+                                        "Loading...",
+                                        style: Theme.of(context).textTheme.bodySmall!.apply(color: CustomColors.darkGrey),
+                                      ),
+                                    ],
+                                  ),
+                                ) : SizedBox(
+                                  height: 330,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: controller.activities.length,
+                                    itemBuilder: (_, index) => ActivityCard(trip: trip, activity: controller.activities[index], controller: controller,),
+                                  ),
+                                );
+                              }),
                             ],
                           ),
                           const SizedBox(height: CustomSizes.spaceBtwSections),

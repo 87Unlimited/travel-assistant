@@ -34,6 +34,7 @@ class RecommendationController extends GetxController {
   @override
   Future<void> onInit() async {
     await getFlightRecommendation(trip!);
+    await getActivitiesRecommendation(trip!);
     super.onInit();
   }
 

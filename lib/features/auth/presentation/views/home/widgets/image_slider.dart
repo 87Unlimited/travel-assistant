@@ -26,7 +26,10 @@ class ImageSlider extends StatelessWidget {
             viewportFraction: 1,
             onPageChanged: (index, _) => controller.updatePageIndicator(index),
           ),
-          items: banners.map((url) => RoundedImage(imageUrl: url)).toList(),
+          items: banners.map((url) => RoundedImage(
+              imageUrl: url,
+              isNetworkImage: true,
+          )).toList(),
         ),
         const SizedBox(height: CustomSizes.spaceBtwItems,),
         Obx(() => Center(

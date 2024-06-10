@@ -15,6 +15,7 @@ import 'package:travel_assistant/features/auth/presentation/views/trips/create_t
 
 import '../../../../../../../common/widgets/appbar.dart';
 import '../../../../../../../navigation_menu.dart';
+import '../../controllers/recommendation/recommendation_controller.dart';
 import '../trips/create_trip/create_trip_detail/create_trip_detail_view.dart';
 
 class ActivityView extends StatelessWidget {
@@ -23,11 +24,13 @@ class ActivityView extends StatelessWidget {
     required this.trip,
     required this.activity,
     required this.address,
+    required this.controller,
   });
 
   final TripModel trip;
   final ActivityModel activity;
   final String address;
+  final RecommendationController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +60,7 @@ class ActivityView extends StatelessWidget {
           ),
         ),
         // Draggable Sheet
-        child: ActivitySheet(activity: activity, trip: trip, address: address,),
+        child: ActivitySheet(activity: activity, trip: trip, address: address, controller: controller,),
       ),
     );
   }

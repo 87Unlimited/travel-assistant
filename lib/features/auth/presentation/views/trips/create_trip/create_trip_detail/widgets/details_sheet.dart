@@ -159,8 +159,10 @@ class DetailsSheet extends StatelessWidget {
                           ),
                           Obx(() => Padding(
                               padding: EdgeInsets.only(top: 20,),
-                              child: current.value == 0 ? RecommendList(trip: trip,) :
-                              ScheduleList(firstDate: firstDate, trip: trip),
+                              child: current.value == 0 ?
+                              ScheduleList(firstDate: firstDate, trip: trip) :
+                              RecommendList(trip: trip,)
+                              ,
                             ),
                           )
                         ],

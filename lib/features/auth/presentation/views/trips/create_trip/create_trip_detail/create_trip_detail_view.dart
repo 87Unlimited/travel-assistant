@@ -58,7 +58,6 @@ class CreateTripDetailView extends StatelessWidget {
         children: [
           Column(
             children: [
-              SearchDirection(),
               GoogleMapWidget(trip: trip),
             ],
           ),

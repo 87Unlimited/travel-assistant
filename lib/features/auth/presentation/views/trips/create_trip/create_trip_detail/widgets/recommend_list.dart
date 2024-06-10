@@ -32,25 +32,25 @@ class RecommendList extends StatelessWidget {
 
           //ActivityCard(),
 
-          // Obx(() {
-          //   return recommendationController.isFlightsLoading.value ? Center(
-          //     child: Column(
-          //       children: [
-          //         CircularProgressIndicator(),
-          //         const SizedBox(height: CustomSizes.spaceBtwItems),
-          //         Text(
-          //           "Loading...",
-          //           style: Theme.of(context).textTheme.bodySmall!.apply(color: CustomColors.darkGrey),
-          //         ),
-          //       ],
-          //     ),
-          //   ) : FlightCardRoundTrip(flight: recommendationController.flight.value);
-          // }),
-          // const SizedBox(height: CustomSizes.spaceBtwSections),
-          //
-          // SectionHeading(title: "Tours And Activities", textColor: CustomColors.primary, showActionButton: false,),
-          // const SizedBox(height: CustomSizes.spaceBtwItems),
-          //
+          Obx(() {
+            return recommendationController.isFlightsLoading.value ? Center(
+              child: Column(
+                children: [
+                  CircularProgressIndicator(),
+                  const SizedBox(height: CustomSizes.spaceBtwItems),
+                  Text(
+                    "Loading...",
+                    style: Theme.of(context).textTheme.bodySmall!.apply(color: CustomColors.darkGrey),
+                  ),
+                ],
+              ),
+            ) : FlightCardRoundTrip(flight: recommendationController.flight.value);
+          }),
+          const SizedBox(height: CustomSizes.spaceBtwSections),
+
+          SectionHeading(title: "Tours And Activities", textColor: CustomColors.primary, showActionButton: false,),
+          const SizedBox(height: CustomSizes.spaceBtwItems),
+
           Obx(() {
             if (recommendationController.activities.isEmpty) {
               return Text("No Result.");
@@ -77,7 +77,6 @@ class RecommendList extends StatelessWidget {
                   );
           }),
           const SizedBox(height: CustomSizes.spaceBtwSections),
-          ElevatedButton(onPressed: () => recommendationController.getActivitiesRecommendation(trip), child: Center(child: Text("TEST"),))
         ],
       ),
     );

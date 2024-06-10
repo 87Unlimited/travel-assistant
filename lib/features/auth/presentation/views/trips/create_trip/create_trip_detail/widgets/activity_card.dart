@@ -38,7 +38,8 @@ class ActivityCard extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         String address = await controller.getActivitiesAddress(activity);
-        Get.to(ActivityView(trip: trip, activity: activity, address: address,));
+        await controller.getActivitiesRecommendationByActivity(activity);
+        Get.to(ActivityView(trip: trip, activity: activity, address: address, controller: controller));
       },
       child: Padding(
         padding: const EdgeInsets.only(right: CustomSizes.spaceBtwItems),

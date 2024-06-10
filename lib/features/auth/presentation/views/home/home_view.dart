@@ -23,6 +23,7 @@ import '../../../data/models/autocomplete_prediction.dart';
 import '../../../data/models/place_auto_complete_response.dart';
 import '../../../domain/services/flight_services.dart';
 import '../../../domain/services/location_services.dart';
+import '../../controllers/home_controller.dart';
 import '../../controllers/recommendation/recommendation_controller.dart';
 import '../flight/flight_view.dart';
 import '../trips/create_trip/create_trip_view.dart';
@@ -40,15 +41,16 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final dark = HelperFunctions.isDarkMode(context);
-    const bool isTripExist = true;
+    final homeController = Get.put(HomeController());
     final tripController = Get.put(TripController());
     final recommendationController = Get.put(RecommendationController());
-    final locationServices = Get.put(LocationServices());
     final navController = Get.put(NavigationController());
     final flightServices = Get.put(FlightServices());
 
     tripController.fetchHomeViewTrips();
     tripController.fetchHomeViewFlights();
+    homeController.fetchRecommendActivities();
+
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -97,7 +99,7 @@ class _HomeViewState extends State<HomeView> {
                 width: CustomSizes.buttonWidth,
                 height: CustomSizes.buttonHeight,
                 child: ElevatedButton(
-                  onPressed: () => locationServices.getPlaceByLatLng(44.4647452,7.3553838),
+                  onPressed: () {},
                   child: const Center(
                     child: Text('Testing Button'),
                   ),
@@ -138,24 +140,26 @@ class _HomeViewState extends State<HomeView> {
               ) : SizedBox(),
 
               // Category
-              const Column(
-                children: [
-                  // Heading
-                  SectionHeading(title: "Category", showActionButton: false,),
-                  SizedBox(height: CustomSizes.spaceBtwItems,),
-
-                  // Categories
-                  HomeCategories(),
-                ],
-              ),
-              const SizedBox(height: CustomSizes.spaceBtwSections / 2),
+              // const Column(
+              //   children: [
+              //     // Heading
+              //     SectionHeading(title: "Category", showActionButton: false,),
+              //     SizedBox(height: CustomSizes.spaceBtwItems,),
+              //
+              //     // Categories
+              //     HomeCategories(),
+              //   ],
+              // ),
+              // const SizedBox(height: CustomSizes.spaceBtwSections / 2),
 
               // Body
               const SectionHeading(title: "Top Activities"),
               const SizedBox(height: CustomSizes.spaceBtwItems,),
 
               // Activities Slider
-              const ImageSlider(banners: [CustomImages.japan, CustomImages.korea, CustomImages.thailand],),
+              ImageSlider(
+                banners: homeController.activityPictures,
+              ),
               const SizedBox(height: CustomSizes.spaceBtwSections,),
 
               // Your Trips

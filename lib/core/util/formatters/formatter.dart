@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../../../features/auth/data/models/day_model.dart';
 
 class CustomFormatters {
   static String formatDate(DateTime? date) {
@@ -9,6 +12,17 @@ class CustomFormatters {
 
   static String formatCurrency(double amount) {
     return NumberFormat.currency(locale: 'en_US', symbol: '\S').format(amount);
+  }
+
+  static Timestamp convertTimeOfDayToTimestamp(DayModel day, TimeOfDay time) {
+    final selectedDateTime = DateTime(
+      day.date!.toDate().year,
+      day.date!.toDate().month,
+      day.date!.toDate().day,
+      time.hour,
+      time.minute,
+    );
+    return Timestamp.fromDate(selectedDateTime);
   }
 
   static Timestamp? convertDateTimeToTimestamps(DateTime? dateTime) {

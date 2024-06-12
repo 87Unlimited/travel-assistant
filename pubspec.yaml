@@ -86,6 +86,8 @@ dependencies:
   flutter_slidable: ^3.1.0
   flutter_rating_bar: ^4.0.1
   url_launcher: ^6.3.0
+  timeline_tile: ^2.0.0
+  location: ^6.0.2
 
 dev_dependencies:
   flutter_test:

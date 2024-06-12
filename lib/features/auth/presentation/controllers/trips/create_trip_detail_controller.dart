@@ -43,7 +43,7 @@ class CreateTripDetailController extends GetxController {
   final startTime = TextEditingController();
   final endTime = TextEditingController();
   ValueNotifier<TimeOfDay> startTimeNotifier = ValueNotifier<TimeOfDay>(TimeOfDay(hour: 8, minute: 0));
-  ValueNotifier<TimeOfDay> endTimeNotifier = ValueNotifier<TimeOfDay>(TimeOfDay(hour: 8, minute: 0));
+  ValueNotifier<TimeOfDay> endTimeNotifier = ValueNotifier<TimeOfDay>(TimeOfDay(hour: 9, minute: 0));
 
   String locationId = "";
   String locationName = "";
@@ -148,6 +148,16 @@ class CreateTripDetailController extends GetxController {
         return;
       }
 
+      // Transfer selectedDate to Timestamp
+      Timestamp? selectedTimestamp = CustomFormatters.convertDateTimeToTimestamps(selectedDate);
+
+      final attractionRepository = Get.put(AttractionRepository());
+      // Get the day model to fetch dayId
+      List<DayModel> day = await attractionRepository.fetchDay(tripId, selectedTimestamp!);
+
+      Timestamp? startTimeStamp = CustomFormatters.convertTimeOfDayToTimestamp(day[0], startTimeNotifier.value);
+      Timestamp? endTimeStamp = CustomFormatters.convertTimeOfDayToTimestamp(day[0], endTimeNotifier.value);
+
       // Transfer startTime to Json value
       final startTimeJsonValue = {
         'hour': startTimeNotifier.value.hour,
@@ -160,22 +170,16 @@ class CreateTripDetailController extends GetxController {
         'minute': endTimeNotifier.value.minute,
       };
 
-      // Transfer selectedDate to Timestamp
-      Timestamp? selectedTimestamp = CustomFormatters.convertDateTimeToTimestamps(selectedDate);
-
       final attraction = AttractionModel(
         tripId: tripId,
         attractionName: attractionName.text.trim(),
         location: LocationModel(locationId: locationId, locationName: locationName),
         description: description.text.trim(),
         image: '',
-        startTime: startTimeJsonValue,
-        endTime: endTimeJsonValue,
+        startTime: startTimeStamp,
+        endTime: endTimeStamp,
       );
 
-      final attractionRepository = Get.put(AttractionRepository());
-      // Get the day model to fetch dayId
-      List<DayModel> day = await attractionRepository.fetchDay(tripId, selectedTimestamp!);
       // Save to the Firebase using dayId
       await attractionRepository.saveAttractionRecord(tripId, day[0].dayId!, attraction);
 
@@ -244,6 +248,8 @@ class CreateTripDetailController extends GetxController {
 
       // Fetch trips
       final attractions = await attractionRepository.fetchAttractionsByDayId(tripId, day[0].dayId!);
+
+      attractions.sort((a, b) => a.startTime.compareTo(b.startTime));
 
       // Assign attractions
       attractionsOfSingleDay.assignAll(attractions);

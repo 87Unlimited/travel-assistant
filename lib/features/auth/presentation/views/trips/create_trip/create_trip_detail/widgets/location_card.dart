@@ -28,15 +28,10 @@ class LocationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 400,
-      height: 200,
+      height: 130,
       padding: const EdgeInsets.all(1),
-      decoration: BoxDecoration(
-        boxShadow: [ShadowStyle.horizontalCardShadow],
-        borderRadius: BorderRadius.circular(CustomSizes.cardRadiusLg),
-        color: Colors.white,
-      ),
       child: RoundedContainer(
-        height: 200,
+        height: 10,
         child: Padding(
           padding: const EdgeInsets.all(CustomSizes.md),
           child: Column(
@@ -47,14 +42,6 @@ class LocationCard extends StatelessWidget {
                   TripCardTitleText(
                     title: attraction.attractionName,
                     textStyle: Theme.of(context).textTheme.headlineSmall!.apply(color: CustomColors.secondary),
-                  ),
-                  const SizedBox(height: CustomSizes.spaceBtwItems / 2,),
-
-                  TextWithIcon(
-                    icon: Iconsax.clock,
-                    title: "${attraction.startTime.values} - ${attraction.endTime.values}",
-                    color: CustomColors.grey,
-                    textStyle: Theme.of(context).textTheme.labelLarge!.apply(color: CustomColors.grey),
                   ),
                   const SizedBox(height: CustomSizes.spaceBtwItems / 2,),
 

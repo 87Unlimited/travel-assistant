@@ -10,8 +10,8 @@ class AttractionModel {
   LocationModel? location;
   String description;
   String? image;
-  Map<String, dynamic> startTime;
-  Map<String, dynamic> endTime;
+  Timestamp startTime;
+  Timestamp endTime;
   int? order;
 
   AttractionModel({
@@ -33,8 +33,8 @@ class AttractionModel {
         location: null,
         description: '',
         image: '',
-        startTime: {},
-        endTime: {},
+        startTime: Timestamp.fromDate(DateTime.now()),
+        endTime: Timestamp.fromDate(DateTime.now()),
         order: 0,
       );
 
@@ -61,8 +61,8 @@ class AttractionModel {
         location: LocationModel.fromJson(data['Location']),
         description: data['Description'] ?? '',
         image: data['Image'] ?? '',
-        startTime: _parseDateTime(data['StartDate']),
-        endTime: _parseDateTime(data['endTime']),
+        startTime: data['StartTime'] ?? Timestamp.fromDate(DateTime(0)),
+        endTime: data['EndTime'] ?? Timestamp.fromDate(DateTime(0)),
         order: data['order'] ?? 0,
       );
     }

@@ -24,39 +24,40 @@ class HomeHeader extends StatelessWidget {
       if (controller.profileLoading.value) {
         return const ShimmerEffect(width: 80, height: 15);
       }
-      return ListTile(
-        title: Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                text: "Hi, ",
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineLarge!
-                    .apply(color: dark ? Colors.white : CustomColors.primary),
-              ),
-              TextSpan(
-                text: controller.user.value.fullName,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineLarge!
-                    .apply(color: CustomColors.secondary),
-              ),
-            ],
+      return Obx(() => ListTile(
+          title: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: "Hi, ",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineLarge!
+                      .apply(color: dark ? Colors.white : CustomColors.primary),
+                ),
+                TextSpan(
+                  text: controller.user.value.fullName,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineLarge!
+                      .apply(color: CustomColors.secondary),
+                ),
+              ],
+            ),
           ),
+          subtitle: Text(
+            "Let's Travel Around The World",
+            style: Theme.of(context)
+                .textTheme
+                .labelMedium!
+                .apply(color: dark ? Colors.white : CustomColors.primary),
+          ),
+          // trailing: NotificationIcon(
+          //   onPressed: () {},
+          //   dark: dark,
+          //   text: "2",
+          // ),
         ),
-        subtitle: Text(
-          "Let's Travel Around The World",
-          style: Theme.of(context)
-              .textTheme
-              .labelMedium!
-              .apply(color: dark ? Colors.white : CustomColors.primary),
-        ),
-        // trailing: NotificationIcon(
-        //   onPressed: () {},
-        //   dark: dark,
-        //   text: "2",
-        // ),
       );
     });
   }

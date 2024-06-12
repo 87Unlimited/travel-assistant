@@ -101,7 +101,6 @@ class ProfileView extends StatelessWidget {
                     final shouldLogout = await showLogOutDialog(context);
                     if (shouldLogout) {
                       await AuthenticationRepository.instance.logout();
-                      print(FirebaseAuth.instance.currentUser);
                     } else {
                       return;
                     }

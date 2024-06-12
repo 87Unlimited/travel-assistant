@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_assistant/common/widgets/loaders/loaders.dart';
@@ -24,6 +26,7 @@ class SignupController extends GetxController {
   final phoneNumber = TextEditingController();
   GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
 
+  // Sign up account
   void signup() async {
     try {
       // Start Loading
@@ -78,14 +81,22 @@ class SignupController extends GetxController {
       FullScreenLoader.stopLoading();
 
       // Show Success Message
-      CustomLoaders.successSnackBar(title: "Congratulations", message: "Your account has been created! Verify email to continue");
+      CustomLoaders.successSnackBar(
+          title: "Congratulations",
+          message: "Your account has been created! Verify email to continue"
+      );
 
-      // Move to Verify Email Screen
-      Get.to(() => VerifyEmailView(email: email.text.trim()));
-
+      Timer.periodic(Duration(seconds: 2), (timer) {
+        // Move to Verify Email Screen
+        Get.offAll(() => VerifyEmailView(email: email.text.trim()));
+        timer.cancel();
+      });
     } catch (e) {
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    } finally {
+      // Remove Loader
+      FullScreenLoader.stopLoading();
     }
   }
 }

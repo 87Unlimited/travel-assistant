@@ -50,7 +50,7 @@ class VerifyEmailView extends StatelessWidget {
               ),
               const SizedBox(height: CustomSizes.spaceBtwItems),
               Text(
-                "Congratulations! Your Account Awaits: Verify Your Email to Start Shopping and Experience a World of Unrivaled Deals and Personalized Offers.",
+                "Congratulations! Your account has been created! Verify Your Email to Start travel around the world!",
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),
@@ -60,7 +60,7 @@ class VerifyEmailView extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => Get.to(() => LoginView()),
+                  onPressed: () => controller.checkEmailVerificationStatus(),
                   child: const Text("Continue"),
                 ),
               ),

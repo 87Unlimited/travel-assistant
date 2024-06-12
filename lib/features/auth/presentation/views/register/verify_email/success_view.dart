@@ -5,7 +5,13 @@ import '../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../core/util/constants/spacing_styles.dart';
 
 class SuccessView extends StatelessWidget {
-  const SuccessView({super.key, required this.image, required this.title, required this.subTitle, required this.onPressed});
+  const SuccessView({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.subTitle,
+    required this.onPressed,
+  });
 
   final String image, title, subTitle;
   final VoidCallback onPressed;
@@ -18,7 +24,11 @@ class SuccessView extends StatelessWidget {
           padding: SpacingStyle.paddingWithAppBarHeight * 2,
           child: Column(
             children: [
-              Lottie.asset(image, width: MediaQuery.of(context).size.width * 0.6),
+              Image(image: AssetImage("assets/animations/sammy-line-success.png")),
+              // Lottie.asset(
+              //     "assets/animations/sammy-line-success.png",
+              //     width: MediaQuery.of(context).size.width * 0.6,
+              // ),
               const SizedBox(height: CustomSizes.spaceBtwSections),
 
               // Title and subtile

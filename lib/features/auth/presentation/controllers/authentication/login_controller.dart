@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:travel_assistant/features/auth/presentation/controllers/personalization/user_controller.dart';
+import 'package:travel_assistant/features/auth/presentation/controllers/trips/trip_controller.dart';
 
 import '../../../../../common/widgets/loaders/loaders.dart';
 import '../../../../../core/network/network_manager.dart';
 import '../../../../../core/util/popups/full_screen_loader.dart';
 import '../../../data/repositories/authentication/authentication_repository.dart';
+import '../home_controller.dart';
 
 class LoginController extends GetxController {
 
@@ -18,6 +20,9 @@ class LoginController extends GetxController {
   final password = TextEditingController();
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   final userController = Get.put(UserController());
+
+  // Prepare for the home page info
+  final homeController = Get.put(HomeController());
 
   @override
   void onInit() {
@@ -60,6 +65,9 @@ class LoginController extends GetxController {
 
       // Remove Loader
       FullScreenLoader.stopLoading();
+
+      // Prepare for the home page info
+      // await homeController.fetchHomeViewData();
 
       // Move to Verify Email Screen
       AuthenticationRepository.instance.screenRedirect();

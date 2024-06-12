@@ -17,6 +17,7 @@ class VerifyEmailController extends GetxController {
   @override
   void onInit(){
     sendEmailVerification();
+    setTimerForAutoRedirect();
     super.onInit();
   }
 
@@ -33,7 +34,7 @@ class VerifyEmailController extends GetxController {
   /// Timer to automatically redirect on email verification
   setTimerForAutoRedirect() {
     Timer.periodic(
-      const Duration(seconds: 1),
+      const Duration(seconds: 3),
       (timer) async {
         await FirebaseAuth.instance.currentUser?.reload();
         final user = FirebaseAuth.instance.currentUser;
@@ -53,13 +54,14 @@ class VerifyEmailController extends GetxController {
   }
 
   /// Manually check if email verified
-  checkEmailVerificationStatus() async {
+  Future checkEmailVerificationStatus() async {
+    await FirebaseAuth.instance.currentUser?.reload();
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null && currentUser.emailVerified) {
       print("success");
       Get.off(
         () => SuccessView(
-          image: "assets/animations/sammy-line-man-receives-a-mail.png",
+          image: "assets/animations/sammy-line-success.png",
           title: "Your account successfully created!",
           subTitle:
               "Welcome to Your Ultimate Shopping Destination: Your Account is Created, Unleash the Joy of Seamless Online Shopping!",

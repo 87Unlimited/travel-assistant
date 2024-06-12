@@ -152,6 +152,7 @@ class AuthenticationRepository extends GetxController {
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
       Get.offAll(() => const LoginView());
+      update();
     } on FirebaseAuthException catch (e) {
       throw CustomFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

@@ -51,7 +51,6 @@ class _HomeViewState extends State<HomeView> {
     tripController.fetchHomeViewFlights();
     homeController.fetchRecommendActivities();
 
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -107,7 +106,7 @@ class _HomeViewState extends State<HomeView> {
               ),
               const SizedBox(height: CustomSizes.spaceBtwSections,),
 
-              tripController.upcomingFlights.length >= 0 ? SizedBox(
+              tripController.upcomingFlights.length > 0 ? SizedBox(
                 child: (tripController.upcomingFlights != FlightModel.empty()) ? Column(
                   children: [
                     const SectionHeading(title: "Upcoming Bookings"),

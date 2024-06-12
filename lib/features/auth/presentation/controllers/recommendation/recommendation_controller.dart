@@ -28,6 +28,7 @@ class RecommendationController extends GetxController {
   void onClose() {
     flightController.clearData();
     activities.clear();
+    activities.refresh();
     super.onClose();
   }
 

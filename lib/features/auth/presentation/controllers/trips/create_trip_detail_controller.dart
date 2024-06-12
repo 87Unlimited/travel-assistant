@@ -185,7 +185,10 @@ class CreateTripDetailController extends GetxController {
       FullScreenLoader.stopLoading();
 
       // Show Success Message
-      CustomLoaders.successSnackBar(title: "Attraction has been saved!", message: "Add more attraction to have a better experience!");
+      CustomLoaders.successSnackBar(
+          title: "Attraction has been saved!",
+          message: "Add more attraction to have a better experience!"
+      );
 
       // Redirect to create trip view
       Navigator.pop(Get.overlayContext!);

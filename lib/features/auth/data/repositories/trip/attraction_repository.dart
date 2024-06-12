@@ -67,7 +67,9 @@ class AttractionRepository extends GetxController {
   /// Function match the date and return dayId from Firestore
   Future<List<DayModel>> fetchDay(String tripId, Timestamp date) async {
     try {
-      final snapshot = await _db.collection("Trips").doc(tripId).collection("Days").where("Date", isEqualTo: date).get();
+      final endOfDay = date.toDate().add(Duration(days: 1));
+
+      final snapshot = await _db.collection("Trips").doc(tripId).collection("Days").where("Date", isGreaterThanOrEqualTo: date, isLessThan: endOfDay).get();
       return snapshot.docs.map((e) => DayModel.fromSnapshot(e)).toList();
     } on FirebaseException catch (e) {
       throw CustomFirebaseException(e.code).message;

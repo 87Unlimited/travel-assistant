@@ -22,7 +22,6 @@ class DetailsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CreateTripDetailController());
     final attractionsController = Get.put(AttractionController());
     final createTripDetailController = Get.put(CreateTripDetailController());
     createTripDetailController.trip = trip;
@@ -32,7 +31,7 @@ class DetailsSheet extends StatelessWidget {
     DateTime? lastDate = trip.endDate!.toDate();
     String dateTitle =
         "${CustomFormatters.yearMonthDay.format(firstDate)} - ${CustomFormatters.yearMonthDay.format(lastDate)}";
-    controller.selectedDate = firstDate;
+    createTripDetailController.selectedDate = firstDate;
 
     createTripDetailController.tripId = trip.tripId!;
 

@@ -77,6 +77,11 @@ class CreateTripDetailController extends GetxController {
   //   }
   // }
 
+  Future<LatLng> getLatlng(String placeId) async {
+    Map<String, double> latlng = await locationServices.getPlaceLatLng(placeId);
+    return LatLng(latlng['latitude']!, latlng['longitude']!);
+  }
+
   Future<void> getMarker() async {
     try {
       // Show loader when loading trips
@@ -84,12 +89,21 @@ class CreateTripDetailController extends GetxController {
 
       await getAllAttractions();
 
-      for (var attraction in allAttractions) {
+      for (var index = 0; index < allAttractions.length; index++) {
+        var attraction = allAttractions[index];
         LatLng locationLatLng = await googleMapController.setLatLng(attraction.location!.locationId);
         googleMapController.setMarker(attraction.location!.locationId, locationLatLng);
-        // googleMapController.goToPlace(locationLatLng.longitude, locationLatLng.latitude);
-      }
 
+        // if (attraction == allAttractions.last) {
+        //   googleMapController.calculateRoute(locationLatLng, destinationLatLng);
+        // } else {
+        //   googleMapController.calculateRoute(locationLatLng, allAttractions[index + 1].location!.locationId);
+        // }
+
+        if (index == allAttractions.length - 1) {
+          googleMapController.goToPlace(locationLatLng);
+        }
+      }
     } catch (e) {
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());

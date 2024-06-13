@@ -6,11 +6,13 @@ import '../../../../common/widgets/loaders/loaders.dart';
 import '../../../../core/util/popups/full_screen_loader.dart';
 import '../../data/models/trip_model.dart';
 import '../../data/repositories/trip/trip_repository.dart';
+import '../../domain/services/location_services.dart';
 
 class HomeController extends GetxController {
   static HomeController get instance => Get.find();
 
   final carousalCurrentIndex = 0.obs;
+  final locationServices = Get.put(LocationServices());
   final tripRepository = Get.put(TripRepository());
   final tripController = Get.put(TripController());
   final recommendationController = Get.put(RecommendationController());
@@ -22,9 +24,10 @@ class HomeController extends GetxController {
   }
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     fetchHomeViewTrips();
     fetchRecommendActivities();
+    await locationServices.grantLocationPermission();
     super.onInit();
   }
 

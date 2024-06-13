@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
 import 'package:travel_assistant/features/auth/data/models/trip_model.dart';
+import 'package:location/location.dart';
 
 import '../../../../../../domain/services/location_services.dart';
 import '../../../../../controllers/google_map/google_map_controller.dart';
@@ -20,9 +21,8 @@ class GoogleMapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CustomGoogleMapController());
+    final mapController = Get.put(CustomGoogleMapController());
     final tripController = Get.put(CreateTripDetailController());
-    final Completer<GoogleMapController> googleMapController = Completer<GoogleMapController>();
 
     String placeId = trip.location!.locationId;
     if(tripController.allAttractions.isNotEmpty) {
@@ -30,7 +30,7 @@ class GoogleMapWidget extends StatelessWidget {
     }
 
     return FutureBuilder<LatLng>(
-      future: controller.setLatLng(placeId),
+      future: mapController.setLatLng(placeId),
       builder: (BuildContext context, AsyncSnapshot<LatLng> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
@@ -48,21 +48,22 @@ class GoogleMapWidget extends StatelessWidget {
             return Expanded(
               child: GoogleMap(
                 mapType: MapType.normal,
-                markers: controller.markers,
-                polylines: controller.polylines,
-                polygons: controller.polygons,
+                markers: mapController.markers,
+                polylines: Set<Polyline>.of(mapController.polylines.values),
+                polygons: mapController.polygons,
                 initialCameraPosition: initialCamaraPosition,
-                onMapCreated: (GoogleMapController controller) {
-                  googleMapController.complete(controller);
+                onMapCreated: (controller) {
+                  if(!mapController.googleMapController.isCompleted){
+                    mapController.googleMapController.complete(controller);
+                  }
                 },
                 onTap: (point) {
-                  controller.polygonLatLngs.add(point);
-                  controller.setPolygon();
+                  mapController.polygonLatLngs.add(point);
+                  mapController.setPolygon();
                 },
               ),
             );
           } else {
-            // 如果 initLatLng 為 null，可以顯示一個錯誤訊息或控制項
             return Text('Failed to get LatLng');
           }
         }

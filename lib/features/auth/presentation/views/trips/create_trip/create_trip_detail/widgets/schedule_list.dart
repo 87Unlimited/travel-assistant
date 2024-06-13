@@ -27,7 +27,6 @@ class ScheduleList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(CreateTripDetailController());
-    final createTripDetailController = Get.put(CreateTripDetailController());
 
     return Column(
       children: [
@@ -42,12 +41,12 @@ class ScheduleList extends StatelessWidget {
         SizedBox(
           height: 400,
           child: Obx(() {
-            if (createTripDetailController.attractionsOfSingleDay.isEmpty) {
+            if (controller.attractionsOfSingleDay.isEmpty) {
               return Text("You have no activities yet.");
             } else {
               return ListView.separated(
                 shrinkWrap: true,
-                itemCount: createTripDetailController.attractionsOfSingleDay
+                itemCount: controller.attractionsOfSingleDay
                     .length,
                 scrollDirection: Axis.vertical,
                 separatorBuilder: (context, index) =>
@@ -61,10 +60,7 @@ class ScheduleList extends StatelessWidget {
                             // An action can be bigger than the others.
                             flex: 1,
                             onPressed: (_) =>
-                                createTripDetailController.deleteAttraction(
-                                    createTripDetailController
-                                        .attractionsOfSingleDay[index]
-                                        .attractionId),
+                                controller.deleteAttraction(controller.attractionsOfSingleDay[index].attractionId),
                             backgroundColor: Colors.red,
                             foregroundColor: Colors.white,
                             icon: Icons.delete,
@@ -75,7 +71,7 @@ class ScheduleList extends StatelessWidget {
                       child: TimelineTile(
                         alignment: TimelineAlign.manual,
                         lineXY: 0.3,
-                        isFirst: createTripDetailController.attractionsOfSingleDay.indexOf(index) == 0 ? true : false,
+                        isFirst: controller.attractionsOfSingleDay.indexOf(index) == 0 ? true : false,
                         indicatorStyle: IndicatorStyle(
                           width: 40,
                           color: Colors.purple,
@@ -94,14 +90,14 @@ class ScheduleList extends StatelessWidget {
                               children: [
                                 Text(
                                 CustomFormatters.hourAndMinute.format(
-                                    createTripDetailController.attractionsOfSingleDay[index].startTime.toDate()
+                                    controller.attractionsOfSingleDay[index].startTime.toDate()
                                 ),
                                   style: Theme.of(context).textTheme.titleLarge!.apply(color: Colors.blueGrey),
                                 ),
                                 Icon(Icons.remove, color: Colors.blueGrey,),
                                 Text(
                                   CustomFormatters.hourAndMinute.format(
-                                      createTripDetailController.attractionsOfSingleDay[index].endTime.toDate()
+                                      controller.attractionsOfSingleDay[index].endTime.toDate()
                                   ),
                                   style: Theme.of(context).textTheme.titleLarge!.apply(color: Colors.blueGrey),
                                 ),
@@ -110,8 +106,8 @@ class ScheduleList extends StatelessWidget {
                           ),
                         ),
                         endChild: LocationCard(
-                          attraction: createTripDetailController
-                              .attractionsOfSingleDay[index], delete: () {},
+                          attraction: controller.attractionsOfSingleDay[index],
+                          controller: controller,
                         ),
                       )
                     ),

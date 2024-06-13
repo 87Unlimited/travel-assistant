@@ -1,5 +1,11 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:travel_assistant/core/util/constants/colors.dart';
 
 import '../../../../auth/secrets.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +25,56 @@ class LocationServices extends GetxController{
   List<AutocompletePrediction> placePredictions = <AutocompletePrediction>[].obs;
   final Debouncer _debouncer = Debouncer(milliseconds: 500);
 
+  final locationController = Location();
+
+  // Future<DirectionResponse> getRoutes(originId, destinationId) async {
+  //   final uri = Uri.parse("https://routes.googleapis.com/directions/v2:computeRoute");
+  //
+  //   final response = await http.post(
+  //     uri,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "X-Goog-Api-Key": key!,
+  //       "X-Goog-FieldMask": "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline,routes.legs.steps",
+  //     },
+  //     body: jsonEncode({
+  //       'origin': {'placeId': originId},
+  //       'destination': {'placeId': destinationId},
+  //     }),
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     final responseJson = convert.jsonDecode(response.body);
+  //     return DirectionResponse.fromJson(responseJson);
+  //   } else {
+  //     throw Exception('Failed to fetch location details');
+  //   }
+  //
+  //
+  // }
+
+  /// Check and grant user location permission
+  Future<void> grantLocationPermission() async {
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    serviceEnabled = await locationController.serviceEnabled();
+    if(serviceEnabled){
+      serviceEnabled = await locationController.requestService();
+    } else {
+      return;
+    }
+
+    permissionGranted = await locationController.hasPermission();
+    if(permissionGranted == PermissionStatus.denied){
+      permissionGranted = await locationController.requestPermission();
+      if(permissionGranted == PermissionStatus.granted){
+        return;
+      }
+    }
+  }
+
+  /// Place autocompletion
   void placeAutoComplete(String query, String type) async {
     _debouncer.run(() {
       Uri uri = Uri.https("maps.googleapis.com",
@@ -42,6 +98,7 @@ class LocationServices extends GetxController{
     });
   }
 
+  /// Place autocompletion restricted by the country
   void placeAutoCompleteWithCountryRestrict(String query, String type, String country) async {
     _debouncer.run(() {
       Uri uri = Uri.https("maps.googleapis.com",
@@ -66,6 +123,7 @@ class LocationServices extends GetxController{
     });
   }
 
+  /// Get place Id by input
   Future<String> getPlaceId(String input) async {
     final String url = ""
         "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$input&inputtype=textquery&key=$key";
@@ -210,7 +268,7 @@ class LocationServices extends GetxController{
         return iataCode;
       }
     }
-    return null; // 如果找不到對應的IATA碼，返回null或其他適當值
+    return null;
   }
 
   Future<Map<String, dynamic>> getDirections(String origin, String destination) async {
@@ -232,5 +290,26 @@ class LocationServices extends GetxController{
 
     print(response);
     return result;
+  }
+
+  Future<List<LatLng>> fetchPolylinePoints(LatLng origin, LatLng destination) async {
+    final polylinePoints = PolylinePoints();
+    double originLat = origin.latitude;
+    double originLng = origin.longitude;
+    double destinationLat = destination.latitude;
+    double destinationLng = destination.longitude;
+
+    final result = await polylinePoints.getRouteBetweenCoordinates(
+      key!,
+      PointLatLng(originLat, originLng),
+      PointLatLng(destinationLat, destinationLng),
+    );
+
+    if(result.points.isNotEmpty){
+      return result.points.map((point) => LatLng(point.latitude, point.longitude)).toList();
+    } else {
+      debugPrint(result.errorMessage);
+      return [];
+    }
   }
 }

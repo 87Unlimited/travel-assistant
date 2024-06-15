@@ -14,6 +14,7 @@ import 'package:travel_assistant/features/auth/presentation/views/trips/create_t
 import '../../../../../../../common/widgets/appbar.dart';
 import '../../../../../../../navigation_menu.dart';
 import '../../../../../data/models/flight_model.dart';
+import '../../../../controllers/trips/create_trip_detail_controller.dart';
 import '../create_trip_view.dart';
 
 class CreateTripDetailView extends StatelessWidget {
@@ -29,13 +30,15 @@ class CreateTripDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navController = Get.put(NavigationController());
+    final controller = Get.put(CreateTripDetailController());
+    controller.onInit();
 
     return Scaffold(
       appBar: CustomAppBar(
         showBackArrow: false,
         leadingIcon: Iconsax.arrow_left,
         leadingOnPressed: () {
-          navController.selectedIndex.value = 2;
+          navController.selectedIndex.value = 1;
           Get.to(NavigationMenu());
         },
         actions: [
@@ -58,11 +61,11 @@ class CreateTripDetailView extends StatelessWidget {
         children: [
           Column(
             children: [
-              GoogleMapWidget(trip: trip),
+              GoogleMapWidget(trip: trip, tripController: controller,),
             ],
           ),
           // Draggable Sheet
-          DetailsSheet(trip: trip),
+          DetailsSheet(trip: trip, tripController: controller,),
         ],
       ),
     );

@@ -27,6 +27,7 @@ class ActivitiesServices extends GetxController {
       final jsonMap = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        print(response.body);
         // Request success, print result
         try{
           List<ActivityModel> activities = jsonMap['data'].map<ActivityModel>((data) {

@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_assistant/features/auth/presentation/controllers/home_controller.dart';
+import 'package:travel_assistant/features/auth/presentation/controllers/recommendation/recommendation_controller.dart';
+import 'package:travel_assistant/features/auth/presentation/views/activity/activity_view.dart';
 
 import '../../../../../../common/widgets/custom_shapes/circular_container.dart';
 import '../../../../../../common/widgets/images/rounded_image.dart';
@@ -22,37 +24,45 @@ class ImageSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController());
+    final recommendationController = Get.find<RecommendationController>();
 
-    return Obx(() => Column(
-        children: [
-          CarouselSlider(
-            options: CarouselOptions(
-              viewportFraction: 1,
-              onPageChanged: (index, _) => controller.updatePageIndicator(index),
+    return Obx(() => GestureDetector(
+      onTap: () async {
+        // String address = await recommendationController.getActivitiesAddress(activity);
+        // await recommendationController.getActivitiesRecommendationByActivity(activity);
+        // Get.to(ActivityView(trip: trip, activity: activity, address: address, controller: controller));
+      },
+      child: Column(
+          children: [
+            CarouselSlider(
+              options: CarouselOptions(
+                viewportFraction: 1,
+                onPageChanged: (index, _) => controller.updatePageIndicator(index),
+              ),
+              items: banners.map((url) => RoundedImage(
+                  imageUrl: url,
+                  isNetworkImage: true,
+              )).toList(),
             ),
-            items: banners.map((url) => RoundedImage(
-                imageUrl: url,
-                isNetworkImage: true,
-            )).toList(),
-          ),
-          const SizedBox(height: CustomSizes.spaceBtwItems,),
-          Obx(() => Center(
-              child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    for(int i = 0; i < banners.length; i++)
-                      CircularContainer(
-                        width: 20,
-                        height: 4,
-                        margin: const EdgeInsets.only(right: 10),
-                        backgroundColor: controller.carousalCurrentIndex.value == i ? CustomColors.secondary : CustomColors.grey,
-                      ),
-                  ],
-                ),
+            const SizedBox(height: CustomSizes.spaceBtwItems,),
+            Obx(() => Center(
+                child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      for(int i = 0; i < banners.length; i++)
+                        CircularContainer(
+                          width: 20,
+                          height: 4,
+                          margin: const EdgeInsets.only(right: 10),
+                          backgroundColor: controller.carousalCurrentIndex.value == i ? CustomColors.secondary : CustomColors.grey,
+                        ),
+                    ],
+                  ),
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+    ),
     );
   }
 }

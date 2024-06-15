@@ -31,6 +31,7 @@ class TripCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(right: CustomSizes.spaceBtwItems),
         child: Container(
+          height: 300,
           width: 200,
           padding: const EdgeInsets.all(1),
           decoration: BoxDecoration(
@@ -40,7 +41,7 @@ class TripCard extends StatelessWidget {
           child: Column(
             children: [
               RoundedContainer(
-                height: 200,
+                height: 230,
                 padding: const EdgeInsets.all(CustomSizes.sm),
                 backgroundColor: dark ? CustomColors.darkGrey : Colors.white,
                 child: Column(
@@ -49,7 +50,13 @@ class TripCard extends StatelessWidget {
                     Stack(
                       children: [
                         // Image
-                        const RoundedImage(imageUrl: CustomImages.japan, applyImageRadius: true,),
+                        RoundedImage(
+                          height: 150,
+                          width: 200,
+                          imageUrl: trip.image!,
+                          applyImageRadius: true,
+                          isNetworkImage: true,
+                        ),
                         // Tag
                         Positioned(
                           left: 3,
@@ -75,6 +82,7 @@ class TripCard extends StatelessWidget {
                       trip.tripName,
                       style: Theme.of(context).textTheme.headlineSmall!.apply(color: CustomColors.primary),
                     ),
+                    const SizedBox(height: CustomSizes.spaceBtwItems / 2,),
                     // Location with icon
                     TextWithIcon(
                       icon: Iconsax.location5,

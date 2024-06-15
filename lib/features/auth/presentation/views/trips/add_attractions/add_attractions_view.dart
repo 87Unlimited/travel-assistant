@@ -14,6 +14,7 @@ import '../../../../../../../../core/util/device/device_utility.dart';
 import '../../../../../../../../core/util/validators/validation.dart';
 import '../../../../../../common/widgets/search_bar/location_search_bar.dart';
 import '../../../../domain/services/location_services.dart';
+import '../../../controllers/google_map/google_map_controller.dart';
 import '../../../controllers/trips/create_trip_detail_controller.dart';
 import '../create_trip/widgets/location_list_tile.dart';
 
@@ -27,7 +28,8 @@ class AddAttractionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CreateTripDetailController());
+    final controller = Get.find<CreateTripDetailController>();
+    final mapController = Get.find<CustomGoogleMapController>();
     final locationServices = Get.put(LocationServices());
     var abbreviation = "";
     TimeOfDay selectedTime = TimeOfDay(hour: 8, minute: 0);
@@ -222,7 +224,9 @@ class AddAttractionView extends StatelessWidget {
                             ),
                             buttonText: 'Save Location To Trip',
                             onPressed: () async {
-                              controller.saveAttractionRecord(trip.tripId!, controller.selectedDate!);
+                              await controller.saveAttractionRecord(trip.tripId!, controller.selectedDate!);
+                              await mapController.getMarker();
+                              await mapController.fetchPolylinePoints(mapController.markers);
                             },
                           ),
                         ],

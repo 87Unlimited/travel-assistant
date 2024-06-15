@@ -11,6 +11,7 @@ import 'package:travel_assistant/features/auth/presentation/views/home/widgets/h
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:travel_assistant/features/auth/presentation/views/home/widgets/image_slider.dart';
 
+import '../../../../../common/widgets/loaders/loaders.dart';
 import '../../../../../common/widgets/section_heading.dart';
 import '../../../../../common/widgets/trip/trip_cards/trip_card_create.dart';
 import '../../../../../common/widgets/trip/trip_cards/trip_card_vertical.dart';
@@ -45,7 +46,6 @@ class _HomeViewState extends State<HomeView> {
     final tripController = Get.put(TripController());
     final recommendationController = Get.put(RecommendationController());
     final navController = Get.put(NavigationController());
-    final flightServices = Get.put(FlightServices());
 
     tripController.fetchHomeViewTrips();
     tripController.fetchHomeViewFlights();
@@ -60,56 +60,10 @@ class _HomeViewState extends State<HomeView> {
               HomeHeader(dark: dark,),
               const SizedBox(height: CustomSizes.spaceBtwSections,),
 
-              // Search Bar
-              // LocationSearchBar(
-              //   controller: locationServices.location,
-              //   leadingIcon: const Icon(Iconsax.location),
-              //   trailingIcon: [
-              //     IconButton(
-              //       onPressed: () {},
-              //       icon: Center(
-              //         child: Icon(
-              //           Icons.camera_alt,
-              //         ),
-              //       ),
-              //     )
-              //   ],
-              //   hintText: "Search Country/Region",
-              //   viewOnChanged: (value) {
-              //     if (value != "") {
-              //       locationServices.placeAutoComplete(value, "country");
-              //     } else {
-              //       locationServices.placePredictions.clear();
-              //     }
-              //   },
-              //   suggestionsBuilder: (BuildContext context, SearchController location) {
-              //     return Iterable<Widget>.generate(
-              //         placePredictions.length, (int index) {
-              //       return LocationListTile(
-              //         location: placePredictions[index].description,
-              //         onPressed: () {
-              //
-              //         },
-              //       );
-              //     });
-              //   },
-              // ),
-              SizedBox(
-                width: CustomSizes.buttonWidth,
-                height: CustomSizes.buttonHeight,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Center(
-                    child: Text('Testing Button'),
-                  ),
-                ),
-              ),
-              const SizedBox(height: CustomSizes.spaceBtwSections,),
-
               tripController.upcomingFlights.length > 0 ? SizedBox(
                 child: (tripController.upcomingFlights != FlightModel.empty()) ? Column(
                   children: [
-                    const SectionHeading(title: "Upcoming Bookings"),
+                    const SectionHeading(title: "Upcoming Bookings", showActionButton: false,),
                     const SizedBox(height: CustomSizes.spaceBtwItems,),
 
                     Obx(() { return tripController.isLoading.value ? Center(
@@ -125,6 +79,7 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ) : SizedBox(
                         height: 300,
+                        width: 600,
                         child: ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
@@ -152,11 +107,12 @@ class _HomeViewState extends State<HomeView> {
               // const SizedBox(height: CustomSizes.spaceBtwSections / 2),
 
               // Body
-              const SectionHeading(title: "Top Activities"),
+              const SectionHeading(title: "Top Activities", showActionButton: false,),
               const SizedBox(height: CustomSizes.spaceBtwItems,),
 
               // Activities Slider
               ImageSlider(
+                activities: recommendationController.activities,
                 banners: homeController.activityPictures,
               ),
               const SizedBox(height: CustomSizes.spaceBtwSections,),
@@ -175,7 +131,7 @@ class _HomeViewState extends State<HomeView> {
                   return TripCardCreate();
                 }
                 return SizedBox(
-                  height: 210,
+                  height: 235,
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,

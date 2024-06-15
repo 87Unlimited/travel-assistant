@@ -8,6 +8,7 @@ import '../../../../../../../../core/util/constants/colors.dart';
 import '../../../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../../../../core/util/device/device_utility.dart';
+import '../../../../../../../../navigation_menu.dart';
 import '../../../../../controllers/trips/create_trip_detail_controller.dart';
 import '../../../add_attractions/add_attractions_view.dart';
 import 'bottom_sheet_add_attraction.dart';
@@ -22,7 +23,7 @@ class CreateAttractionSelectionSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CreateTripDetailController());
+    final navController = Get.put(NavigationController());
 
     return SingleChildScrollView(
       child: Padding(
@@ -68,18 +69,6 @@ class CreateAttractionSelectionSheet extends StatelessWidget {
                         tiles: [
                           // Title
                           ListTile(
-                            leading: const Icon(Iconsax.search_normal, color: CustomColors.primary,),
-                            title: Text(
-                              'Search Attractions',
-                              style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            onTap: () {
-
-                            },
-                          ),
-                          // Title
-                          ListTile(
                             leading: const Icon(Icons.add, color: CustomColors.primary,),
                             title: Text(
                               'Add Custom Attractions',
@@ -88,7 +77,7 @@ class CreateAttractionSelectionSheet extends StatelessWidget {
                             ),
                             onTap: () {
                               Navigator.pop(context);
-                              Get.to(AddAttractionView(trip: trip,));
+                              Get.to(AddAttractionView(trip: trip));
                             },
                           ),
                         ],
@@ -99,7 +88,7 @@ class CreateAttractionSelectionSheet extends StatelessWidget {
 
                   // Add Flight and hotel
                   Text(
-                    "Add Flight and hotel",
+                    "Add Flight To Trip",
                     style: Theme.of(context).textTheme.headlineSmall!.apply(color: CustomColors.primary),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -115,21 +104,16 @@ class CreateAttractionSelectionSheet extends StatelessWidget {
                         tiles: [
                           // Title
                           ListTile(
-                            leading: const Icon(Iconsax.building, color: CustomColors.primary,),
-                            title: Text(
-                              'Add Hotel',
-                              style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          // Title
-                          ListTile(
                             leading: const Icon(CupertinoIcons.airplane, color: CustomColors.primary,),
                             title: Text(
                               'Add Flight',
                               style: Theme.of(context).textTheme.titleMedium!.apply(color: CustomColors.primary),
                               overflow: TextOverflow.ellipsis,
                             ),
+                            onTap:(){
+                              navController.selectedIndex.value = 2;
+                              Get.to(NavigationMenu());
+                            },
                           ),
                         ],
                       ).toList(),

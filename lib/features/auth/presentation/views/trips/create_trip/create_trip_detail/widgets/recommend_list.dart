@@ -33,6 +33,9 @@ class RecommendList extends StatelessWidget {
           //ActivityCard(),
 
           Obx(() {
+            if (recommendationController.flight == FlightModel.empty()) {
+              return Text("No Result.");
+            }
             return recommendationController.isFlightsLoading.value ? Center(
               child: Column(
                 children: [

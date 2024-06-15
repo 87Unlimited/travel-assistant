@@ -87,7 +87,7 @@ class FlightController extends GetxController {
       int baby = babyCount.value;
       String travelClass = "ECONOMY";
 
-      switch(flightClassController.value){
+      switch(flightClassController.value.text){
         case ("First Class"):
           travelClass = "FIRST";
           break;

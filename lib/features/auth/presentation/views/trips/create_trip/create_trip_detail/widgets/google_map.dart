@@ -15,14 +15,16 @@ class GoogleMapWidget extends StatelessWidget {
   const GoogleMapWidget({
     super.key,
     required this.trip,
+    required this.tripController,
   });
 
   final TripModel trip;
+  final CreateTripDetailController tripController;
 
   @override
   Widget build(BuildContext context) {
     final mapController = Get.put(CustomGoogleMapController());
-    final tripController = Get.put(CreateTripDetailController());
+    mapController.onInit();
 
     String placeId = trip.location!.locationId;
     if(tripController.allAttractions.isNotEmpty) {
@@ -46,21 +48,16 @@ class GoogleMapWidget extends StatelessWidget {
             );
 
             return Expanded(
-              child: GoogleMap(
-                mapType: MapType.normal,
-                markers: mapController.markers,
-                polylines: Set<Polyline>.of(mapController.polylines.values),
-                polygons: mapController.polygons,
-                initialCameraPosition: initialCamaraPosition,
-                onMapCreated: (controller) {
-                  if(!mapController.googleMapController.isCompleted){
+              child: Obx(() => GoogleMap(
+                  mapType: MapType.normal,
+                  markers: mapController.markers.toSet(),
+                  polylines: mapController.polylines.values.toSet(),
+                  initialCameraPosition: initialCamaraPosition,
+                  onMapCreated: (controller) async {
+                    await mapController.initializeMap();
                     mapController.googleMapController.complete(controller);
-                  }
-                },
-                onTap: (point) {
-                  mapController.polygonLatLngs.add(point);
-                  mapController.setPolygon();
-                },
+                  },
+                ),
               ),
             );
           } else {

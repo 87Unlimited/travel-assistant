@@ -8,6 +8,7 @@ import '../../../../../../../../core/util/constants/sizes.dart';
 import '../../../../../../../../core/util/constants/spacing_styles.dart';
 import '../../../../../../../../core/util/formatters/formatter.dart';
 import '../../../../../../data/models/trip_model.dart';
+import '../../../../../controllers/google_map/google_map_controller.dart';
 import '../../../../../controllers/trips/attraction_controller.dart';
 import '../../../../../controllers/trips/create_trip_detail_controller.dart';
 import 'location_date_header.dart';
@@ -16,24 +17,24 @@ class DetailsSheet extends StatelessWidget {
   const DetailsSheet({
     super.key,
     required this.trip,
+    required this.tripController,
   });
 
   final TripModel trip;
+  final CreateTripDetailController tripController;
 
   @override
   Widget build(BuildContext context) {
-    final attractionsController = Get.put(AttractionController());
-    final createTripDetailController = Get.put(CreateTripDetailController());
-    createTripDetailController.trip = trip;
-    createTripDetailController.getMarker();
+    tripController.trip = trip;
+    //createTripDetailController.getMarker();
 
     DateTime? firstDate = trip.startDate!.toDate();
     DateTime? lastDate = trip.endDate!.toDate();
     String dateTitle =
         "${CustomFormatters.yearMonthDay.format(firstDate)} - ${CustomFormatters.yearMonthDay.format(lastDate)}";
-    createTripDetailController.selectedDate = firstDate;
+    tripController.selectedDate = firstDate;
 
-    createTripDetailController.tripId = trip.tripId!;
+    tripController.tripId = trip.tripId!;
 
     StepperType _type = StepperType.vertical;
 
@@ -159,7 +160,7 @@ class DetailsSheet extends StatelessWidget {
                           Obx(() => Padding(
                               padding: EdgeInsets.only(top: 20,),
                               child: current.value == 0 ?
-                              ScheduleList(firstDate: firstDate, trip: trip) :
+                              ScheduleList(firstDate: firstDate, trip: trip, tripController: tripController,) :
                               RecommendList(trip: trip,)
                               ,
                             ),

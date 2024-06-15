@@ -41,14 +41,6 @@ class NavigationMenu extends StatelessWidget {
               label: "Home",
             ),
             NavigationDestination(
-              icon: Icon(Iconsax.location),
-              selectedIcon: Icon(
-                Iconsax.location,
-                color: CustomColors.secondary,
-              ),
-              label: "Location",
-            ),
-            NavigationDestination(
               icon: Icon(Iconsax.calendar_edit),
               selectedIcon: Icon(
                 Iconsax.calendar_edit,
@@ -85,7 +77,6 @@ class NavigationController extends GetxController{
 
   final screens = [
     HomeView(),
-    const MapSample(),
     const TripView(),
     const FlightView(),
     const ProfileView(),

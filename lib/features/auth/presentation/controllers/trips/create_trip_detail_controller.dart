@@ -24,7 +24,6 @@ class CreateTripDetailController extends GetxController {
   static CreateTripDetailController get instance => Get.find();
   final locationServices = Get.put(LocationServices());
   final attractionRepository = Get.put(AttractionRepository());
-  final googleMapController = Get.put(CustomGoogleMapController());
 
   // Variables
   DateTime? selectedDate;
@@ -33,7 +32,6 @@ class CreateTripDetailController extends GetxController {
   TripModel trip = TripModel.empty();
 
   final isLoading = false.obs;
-  bool isFirst = true;
 
   final location = SearchController();
   final attractionName = TextEditingController();
@@ -52,12 +50,20 @@ class CreateTripDetailController extends GetxController {
   RxList<AttractionModel> attractionsOfSingleDay = <AttractionModel>[].obs;
   RxList<AttractionModel> allAttractions = <AttractionModel>[].obs;
   Rx<AttractionModel> attraction = AttractionModel.empty().obs;
+  VoidCallback? onAttractionsChange;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
+    await getAllAttractions();
     fetchAttractionsOfSingleDay(tripId);
-    getMarker();
     super.onInit();
+  }
+
+
+  @override
+  void dispose() {
+    attractionsOfSingleDay.clear();
+    super.dispose();
   }
 
   void updateStartTime(TimeOfDay pickedTime) {
@@ -82,34 +88,7 @@ class CreateTripDetailController extends GetxController {
     return LatLng(latlng['latitude']!, latlng['longitude']!);
   }
 
-  Future<void> getMarker() async {
-    try {
-      // Show loader when loading trips
-      isLoading.value = true;
-
-      await getAllAttractions();
-
-      for (var index = 0; index < allAttractions.length; index++) {
-        var attraction = allAttractions[index];
-        LatLng locationLatLng = await googleMapController.setLatLng(attraction.location!.locationId);
-        googleMapController.setMarker(attraction.location!.locationId, locationLatLng);
-
-        // if (attraction == allAttractions.last) {
-        //   googleMapController.calculateRoute(locationLatLng, destinationLatLng);
-        // } else {
-        //   googleMapController.calculateRoute(locationLatLng, allAttractions[index + 1].location!.locationId);
-        // }
-
-        if (index == allAttractions.length - 1) {
-          googleMapController.goToPlace(locationLatLng);
-        }
-      }
-    } catch (e) {
-      // Show error to the user
-      CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
-    }
-  }
-
+  /// Get All attractions from Firebase
   Future<void> getAllAttractions() async {
     allAttractions.clear();
     
@@ -127,6 +106,8 @@ class CreateTripDetailController extends GetxController {
       // Fetch trips
       final attractions = await attractionRepository.fetchAttractionsByDayId(tripId, day[0].dayId!);
 
+      attractions.sort((a, b) => a.startTime.compareTo(b.startTime));
+
       // Assign attractions
       for (var attraction in attractions) {
         allAttractions.add(attraction);
@@ -134,7 +115,7 @@ class CreateTripDetailController extends GetxController {
     }
   }
 
-  // Save Attraction to Firebase
+  /// Save Attraction to Firebase
   Future<void> saveAttractionRecord(String tripId, DateTime selectedDate) async {
     try {
       // Start Loading
@@ -197,6 +178,7 @@ class CreateTripDetailController extends GetxController {
       // Save to the Firebase using dayId
       await attractionRepository.saveAttractionRecord(tripId, day[0].dayId!, attraction);
 
+      await getAllAttractions();
       fetchAttractionsOfSingleDay(tripId);
 
       // Remove Loader
@@ -218,37 +200,14 @@ class CreateTripDetailController extends GetxController {
     }
   }
 
-  void tripBottomSheet(context, TripModel trip) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return SizedBox(
-            height: DeviceUtils.getScreenHeight(context) * 0.5,
-            width: DeviceUtils.getScreenWidth(context),
-            child: CreateAttractionSelectionSheet(trip: trip,),
-          );
-        });
-  }
-
-  void addAttractionBottomSheet(context, TripModel trip) {
-    // showModalBottomSheet(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return SizedBox(
-    //         height: DeviceUtils.getScreenHeight(context) * 0.5,
-    //         width: DeviceUtils.getScreenWidth(context),
-    //         child: BottomSheetAddAttraction(trip: trip,),
-    //       );
-    //     });
-  }
-
+  /// Handle the selected day change
   void handleDateChange(DateTime changedDate) {
     selectedDate = changedDate;
     formattedDate = DateFormat('d, EEE').format(selectedDate!);
     fetchAttractionsOfSingleDay(tripId);
   }
 
-  /// Fetch all attractions of the user
+  /// Fetch all attractions of the specific day
   void fetchAttractionsOfSingleDay(String tripId) async {
     try {
       // Show loader when loading trips
@@ -267,6 +226,8 @@ class CreateTripDetailController extends GetxController {
 
       // Assign attractions
       attractionsOfSingleDay.assignAll(attractions);
+
+      print(attractionsOfSingleDay.indexOf(1));
     } catch (e) {
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
@@ -275,6 +236,7 @@ class CreateTripDetailController extends GetxController {
     }
   }
 
+  /// Delete attraction from firebase
   void deleteAttraction(attractionId) async {
     try {
       // Show loader when loading trips
@@ -293,6 +255,10 @@ class CreateTripDetailController extends GetxController {
 
       // Assign attractions
       attractionsOfSingleDay.assignAll(attractions);
+
+      await getAllAttractions();
+      // Show error to the user
+      CustomLoaders.successSnackBar(title: "Success", message: "");
     } catch (e) {
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
@@ -301,6 +267,7 @@ class CreateTripDetailController extends GetxController {
     }
   }
 
+  /// Calculate date range
   List<DateTime> getAllDatesInRange(DateTime startDate, DateTime endDate) {
     List<DateTime> allDates = [];
 
@@ -310,8 +277,21 @@ class CreateTripDetailController extends GetxController {
       allDates.add(currentDate);
       currentDate = currentDate.add(Duration(days: 1));
     }
-
-    print(allDates);
     return allDates;
+  }
+
+  /// Show Bottom sheet
+  void tripBottomSheet(context, TripModel trip) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SizedBox(
+            height: DeviceUtils.getScreenHeight(context) * 0.5,
+            width: DeviceUtils.getScreenWidth(context),
+            child: CreateAttractionSelectionSheet(
+              trip: trip,
+            ),
+          );
+        });
   }
 }

@@ -17,13 +17,24 @@ class FlightServices extends GetxController {
   final String apiSecret = amadeusApiKeySecret;
   String _amadeusApiKeyToken = "dGQglXhv9d2BXXHDeNN0qww63S3B";
 
-  Future<List<FlightModel>> fetchData(String origin, String destination, String departureDate, String returnDate, int adults, int child, int baby, String travelClass, bool nonStop) async {
+  Future<List<FlightModel>> fetchData(
+      String origin,
+      String destination,
+      String departureDate,
+      String returnDate,
+      int adults,
+      int child,
+      int baby,
+      String travelClass,
+      bool nonStop) async {
     bool isEnded = false;
     String? accessToken = _amadeusApiKeyToken;
 
-    while(!isEnded){
-      var url = Uri.parse('https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode='
-          '$origin&destinationLocationCode=$destination&departureDate=$departureDate&returnDate=$returnDate&adults=$adults&children=$child&infants=$baby&travelClass=$travelClass&nonStop=$nonStop&currencyCode=HKD&max=250');
+    while (!isEnded) {
+      var url = Uri.parse(
+          'https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode='
+          '$origin&destinationLocationCode=$destination&departureDate=$departureDate&returnDate=$returnDate&adults=$adults&children=$child&infants=$baby&travelClass=$travelClass&nonStop=$nonStop&currencyCode=HKD&max=250'
+      );
       var headers = {'Authorization': 'Bearer $_amadeusApiKeyToken'};
 
       var response = await http.get(url, headers: headers);
@@ -33,22 +44,32 @@ class FlightServices extends GetxController {
       if (response.statusCode == 200) {
         // Request success, print result
         print(response.body);
-        List<FlightModel> flightModels = jsonMap['data'].map<FlightModel>((data) {
+        List<FlightModel> flightModels =
+            jsonMap['data'].map<FlightModel>((data) {
           final airline = data['itineraries'][0]['segments'][0]['carrierCode'];
           final number = data['itineraries'][0]['segments'][0]['number'];
           final duration = data['itineraries'][0]['duration'];
-          final departureAirport = data['itineraries'][0]['segments'][0]['departure']['iataCode'];
-          final arrivalAirport = data['itineraries'][0]['segments'][0]['arrival']['iataCode'];
-          final departureTime = DateTime.parse(data['itineraries'][0]['segments'][0]['departure']['at']);
-          final arrivalTime = DateTime.parse(data['itineraries'][0]['segments'][0]['arrival']['at']);
+          final departureAirport =
+              data['itineraries'][0]['segments'][0]['departure']['iataCode'];
+          final arrivalAirport =
+              data['itineraries'][0]['segments'][0]['arrival']['iataCode'];
+          final departureTime = DateTime.parse(
+              data['itineraries'][0]['segments'][0]['departure']['at']);
+          final arrivalTime = DateTime.parse(
+              data['itineraries'][0]['segments'][0]['arrival']['at']);
 
-          final returnAirline = data['itineraries'][1]['segments'][0]['carrierCode'];
+          final returnAirline =
+              data['itineraries'][1]['segments'][0]['carrierCode'];
           final returnNumber = data['itineraries'][1]['segments'][0]['number'];
           final returnDuration = data['itineraries'][1]['duration'];
-          final returnDepartureAirport = data['itineraries'][1]['segments'][0]['departure']['iataCode'];
-          final returnArrivalAirport = data['itineraries'][1]['segments'][0]['arrival']['iataCode'];
-          final returnDepartureTime = DateTime.parse(data['itineraries'][1]['segments'][0]['departure']['at']);
-          final returnArrivalTime = DateTime.parse(data['itineraries'][1]['segments'][0]['arrival']['at']);
+          final returnDepartureAirport =
+              data['itineraries'][1]['segments'][0]['departure']['iataCode'];
+          final returnArrivalAirport =
+              data['itineraries'][1]['segments'][0]['arrival']['iataCode'];
+          final returnDepartureTime = DateTime.parse(
+              data['itineraries'][1]['segments'][0]['departure']['at']);
+          final returnArrivalTime = DateTime.parse(
+              data['itineraries'][1]['segments'][0]['arrival']['at']);
 
           final price = double.parse(data['price']['total']);
           // final order = int.parse(data['id']);
@@ -59,10 +80,14 @@ class FlightServices extends GetxController {
           final durationString = duration.replaceAll('PT', '');
           final returnDurationString = returnDuration.replaceAll('PT', '');
 
-          Timestamp? departureTimestamp = CustomFormatters.convertDateTimeToTimestamps(departureTime);
-          Timestamp? arrivalTimestamp = CustomFormatters.convertDateTimeToTimestamps(arrivalTime);
-          Timestamp? returnDepartureTimestamp = CustomFormatters.convertDateTimeToTimestamps(returnDepartureTime);
-          Timestamp? returnArrivalTimestamp = CustomFormatters.convertDateTimeToTimestamps(returnArrivalTime);
+          Timestamp? departureTimestamp =
+              CustomFormatters.convertDateTimeToTimestamps(departureTime);
+          Timestamp? arrivalTimestamp =
+              CustomFormatters.convertDateTimeToTimestamps(arrivalTime);
+          Timestamp? returnDepartureTimestamp =
+              CustomFormatters.convertDateTimeToTimestamps(returnDepartureTime);
+          Timestamp? returnArrivalTimestamp =
+              CustomFormatters.convertDateTimeToTimestamps(returnArrivalTime);
 
           // End the while loop
           isEnded = true;
@@ -95,7 +120,8 @@ class FlightServices extends GetxController {
 
         // Return the list of FlightModel objects
         return flightModels;
-      } if(response.statusCode == 401) {
+      }
+      if (response.statusCode == 401) {
         accessToken = await fetchAccessToken(); // Update accessToken value
         _amadeusApiKeyToken = accessToken!;
       } else {
@@ -113,7 +139,9 @@ class FlightServices extends GetxController {
     String? accessToken = _amadeusApiKeyToken;
 
     while(!isEnded){
-      var url = Uri.parse('https://test.api.amadeus.com/v1/reference-data/locations/airports?latitude=$lat&longitude=$lng&radius=150&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.flights.score');
+      var url = Uri.parse(
+          'https://test.api.amadeus.com/v1/reference-data/locations/airports?latitude=$lat&longitude=$lng&radius=150&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.flights.score'
+      );
 
       var headers = {'Authorization': 'Bearer $_amadeusApiKeyToken'};
 
@@ -155,6 +183,7 @@ class FlightServices extends GetxController {
     return [];
   }
 
+  /// OAuth access token generation
   Future<String?> fetchAccessToken() async {
     var url = Uri.parse('https://test.api.amadeus.com/v1/security/oauth2/token');
     var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
@@ -164,7 +193,8 @@ class FlightServices extends GetxController {
       'client_secret': amadeusApiKeySecret,
     };
 
-    var response = await http.post(url, headers: headers, body: body, encoding: Encoding.getByName('utf-8'));
+    var response = await http.post(url,
+        headers: headers, body: body, encoding: Encoding.getByName('utf-8'));
 
     if (response.statusCode == 200) {
       // Request success

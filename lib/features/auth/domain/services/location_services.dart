@@ -27,32 +27,6 @@ class LocationServices extends GetxController{
 
   final locationController = Location();
 
-  // Future<DirectionResponse> getRoutes(originId, destinationId) async {
-  //   final uri = Uri.parse("https://routes.googleapis.com/directions/v2:computeRoute");
-  //
-  //   final response = await http.post(
-  //     uri,
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "X-Goog-Api-Key": key!,
-  //       "X-Goog-FieldMask": "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline,routes.legs.steps",
-  //     },
-  //     body: jsonEncode({
-  //       'origin': {'placeId': originId},
-  //       'destination': {'placeId': destinationId},
-  //     }),
-  //   );
-  //
-  //   if (response.statusCode == 200) {
-  //     final responseJson = convert.jsonDecode(response.body);
-  //     return DirectionResponse.fromJson(responseJson);
-  //   } else {
-  //     throw Exception('Failed to fetch location details');
-  //   }
-  //
-  //
-  // }
-
   /// Check and grant user location permission
   Future<void> grantLocationPermission() async {
     bool serviceEnabled;
@@ -254,23 +228,6 @@ class LocationServices extends GetxController{
     return '';
   }
 
-  Future<String?> getIATACodeFromLocation(String placeId) async {
-    final url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key';
-
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      final data = convert.jsonDecode(response.body);
-
-      if (data['status'] == 'OK') {
-        final iataCode = data['result']['address_components']
-            .firstWhere((component) => component['types'].contains('airport'))
-        ['short_name'];
-        return iataCode;
-      }
-    }
-    return null;
-  }
-
   Future<Map<String, dynamic>> getDirections(String origin, String destination) async {
     final String url =
         "https://maps.googleapis.com/maps/api/directions/json?origin=$origin&destination=$destination&key=$key";
@@ -290,26 +247,5 @@ class LocationServices extends GetxController{
 
     print(response);
     return result;
-  }
-
-  Future<List<LatLng>> fetchPolylinePoints(LatLng origin, LatLng destination) async {
-    final polylinePoints = PolylinePoints();
-    double originLat = origin.latitude;
-    double originLng = origin.longitude;
-    double destinationLat = destination.latitude;
-    double destinationLng = destination.longitude;
-
-    final result = await polylinePoints.getRouteBetweenCoordinates(
-      key!,
-      PointLatLng(originLat, originLng),
-      PointLatLng(destinationLat, destinationLng),
-    );
-
-    if(result.points.isNotEmpty){
-      return result.points.map((point) => LatLng(point.latitude, point.longitude)).toList();
-    } else {
-      debugPrint(result.errorMessage);
-      return [];
-    }
   }
 }

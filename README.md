@@ -29,11 +29,13 @@ Before running the app, perform the following initialization steps:
 $flutter pub get
 
 This will download and configure the necessary packages specified in the `pubspec.yaml` file.
+3. Inside the package file, there are two file contains the API key
+![image](https://github.com/87Unlimited/travel-assistant/assets/94755505/91519dda-065a-4559-9c3d-56415b3d09f2)
 
-3. Place the provided `.env` file in the root directory of the project. Make sure it is in the correct location for the app to access the necessary secrets or configurations.
+4. Place the provided `.env` file in the root directory of the project. Make sure it is in the correct location for the app to access the necessary secrets or configurations.
 ![image](https://github.com/87Unlimited/travel-assistant/assets/94755505/d32b3c7a-0763-4e09-9b0f-18b7bbe35400)
 
-4. Place the provided `secret.dart` file in the `lib` directory of the project. Make sure it is in the correct location for the app to access the necessary secrets or configurations.
+5. Place the provided `secret.dart` file in the `lib` directory of the project. Make sure it is in the correct location for the app to access the necessary secrets or configurations.
 ![image](https://github.com/87Unlimited/travel-assistant/assets/94755505/c3e8650a-f936-4f7c-9ecc-60e745b7308c)
 
 

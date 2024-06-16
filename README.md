@@ -1,4 +1,4 @@
-![image](https://github.com/87Unlimited/travel-assistant/assets/94755505/f16d243a-879d-4e0a-abc9-13d6d8d1165a)# travel_assistant
+travel_assistant
 
 A new Flutter project.
 
@@ -30,7 +30,10 @@ $flutter pub get
 
 This will download and configure the necessary packages specified in the `pubspec.yaml` file.
 
-3. Place the provided `secret.dart` file in the `lib` directory of your project. Make sure it is in the correct location for the app to access the necessary secrets or configurations.
+3. Place the provided `.env` file in the `lib` directory of your project. Make sure it is in the correct location for the app to access the necessary secrets or configurations.
+![image](https://github.com/87Unlimited/travel-assistant/assets/94755505/d32b3c7a-0763-4e09-9b0f-18b7bbe35400)
+
+4. Place the provided `secret.dart` file in the `lib` directory of your project. Make sure it is in the correct location for the app to access the necessary secrets or configurations.
 
 ### Run the App
 

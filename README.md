@@ -30,10 +30,12 @@ $flutter pub get
 
 This will download and configure the necessary packages specified in the `pubspec.yaml` file.
 
-3. Place the provided `.env` file in the `lib` directory of your project. Make sure it is in the correct location for the app to access the necessary secrets or configurations.
+3. Place the provided `.env` file in the root directory of the project. Make sure it is in the correct location for the app to access the necessary secrets or configurations.
 ![image](https://github.com/87Unlimited/travel-assistant/assets/94755505/d32b3c7a-0763-4e09-9b0f-18b7bbe35400)
 
-4. Place the provided `secret.dart` file in the `lib` directory of your project. Make sure it is in the correct location for the app to access the necessary secrets or configurations.
+4. Place the provided `secret.dart` file in the `lib` directory of the project. Make sure it is in the correct location for the app to access the necessary secrets or configurations.
+![image](https://github.com/87Unlimited/travel-assistant/assets/94755505/c3e8650a-f936-4f7c-9ecc-60e745b7308c)
+
 
 ### Run the App
 

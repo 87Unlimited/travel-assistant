@@ -29,6 +29,7 @@ class RecommendationController extends GetxController {
     flightController.clearData();
     activities.clear();
     activities.refresh();
+    flight == FlightModel.empty();
     super.onClose();
   }
 
@@ -42,6 +43,8 @@ class RecommendationController extends GetxController {
   /// Flight Recommendation
   Future<void> getFlightRecommendation(TripModel trip) async {
     try {
+      flight == FlightModel.empty();
+
       isFlightsLoading.value = true;
 
       // Get latlng of location

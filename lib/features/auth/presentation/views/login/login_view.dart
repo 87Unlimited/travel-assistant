@@ -14,14 +14,9 @@ import 'package:travel_assistant/navigation_menu.dart';
 import '../../../../../common/widgets/social_button.dart';
 import '../../../../../common/widgets/text/signup_signin_text_switch.dart';
 
-class LoginView extends StatefulWidget {
+class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
-  @override
-  State<LoginView> createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final dark = HelperFunctions.isDarkMode(context);

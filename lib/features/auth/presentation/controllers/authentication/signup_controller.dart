@@ -94,6 +94,7 @@ class SignupController extends GetxController {
     } catch (e) {
       // Show error to the user
       CustomLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+      print(e);
     } finally {
       // Remove Loader
       FullScreenLoader.stopLoading();

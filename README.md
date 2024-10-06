@@ -1,6 +1,38 @@
-travel_assistant
+# Trip Assistant
 
-A new Flutter project.
+Trip Assistant is a comprehensive Flutter application that offers a seamless experience for planning your trips. This app integrates itinerary scheduling, location details, and flight search functionalities to help users organize their travel plans efficiently.
+
+## Features
+
+- **Itinerary Planning**: Easily create and manage your trip itineraries, including adding activities, setting reminders, and organizing your schedule.
+- **Location Information**: Access detailed information about various destinations, including attractions, restaurants, and local services.
+- **Flight Search**: Seamlessly search and book flights directly within the app, making travel planning more convenient.
+- **Customization Options**: Personalize your trip plans by adding notes, photos, and customizing your itinerary layouts.
+
+## Project Screenshots
+Main menu page
+![image](https://github.com/user-attachments/assets/3c4e5e02-daf3-4efe-b420-56a9460b7a3a)
+
+Create a trip itinerary
+![image](https://github.com/user-attachments/assets/7b582d59-b763-4273-b4c3-56bf77ca1efc)
+
+Trip Details Planning
+![image](https://github.com/user-attachments/assets/d54a9dcf-262d-477b-8905-f7574421eee8)
+
+Location Selection
+![image](https://github.com/user-attachments/assets/152ad16c-2f97-4191-828b-b7e823ccb797)
+
+Flight Searching
+![image](https://github.com/user-attachments/assets/dbc65b19-6ea1-4d8d-b137-4e567bd9ba58)
+
+Trip Recommendation
+![image](https://github.com/user-attachments/assets/a0c7be7d-cb3e-4dbb-9778-77914a432ee7)
+
+![image](https://github.com/user-attachments/assets/d42ae4b5-be9e-4a6f-9824-8a3ab93b42ee)
+
+Activity Details
+![image](https://github.com/user-attachments/assets/f928edf5-fa8f-4f8a-b55d-dd21019169ac)
+
 
 ## Getting Started
 
